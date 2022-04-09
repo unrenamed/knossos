@@ -1,0 +1,32 @@
+[package]
+name = "daedalus"
+version = "0.1.0"
+authors = ["unrenamed <renkonazbka@gmail.com>"]
+description = "Rust library for generating and rendering mazes"
+edition = "2021"
+readme = "README.md"
+license = "Apache-2.0"
+homepage = "https://github.com/unrenamed/daedalus"
+repository = "https://github.com/unrenamed/daedalus"
+keywords = [
+  "maze",
+  "labyrinth",
+  "recursive-backtrackig",
+  "growing-tree",
+  "prim",
+  "kruskal",
+  "eller",
+  "hunt&kill",
+  "binary-tree",
+  "sidewinder",
+  "recursive-division",
+  "aldous-broder",
+]
+categories = ["algorithms"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+lazy_static = "1.4.0"
+rand = "0.8.4"
+image = "0.24.1"
