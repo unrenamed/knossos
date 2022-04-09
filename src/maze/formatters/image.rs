@@ -56,9 +56,10 @@ impl Image {
     }
 
     fn sizes(&self, grid: &Grid) -> (usize, usize) {
-        // To calculate maze's width and height we use a simple formula that multiplies a single cell width
-        // and a number of cells (in a row or column). However, since two cells have a single joint wall,
-        // we do the subtraction of the joint walls from the preceding width
+        // To calculate maze's width and height we use a simple formula that multiplies a single
+        // cell width and a number of cells (in a row or column). However, since two cells
+        // have a single joint wall, we do the subtraction of the joint walls from the
+        // preceding width
         let maze_width = self.cell_width() * grid.width() - (grid.width() - 1) * self.wall_width;
         let maze_height = self.cell_width() * grid.height() - (grid.height() - 1) * self.wall_width;
 
@@ -94,10 +95,10 @@ impl Image {
 
         for y in start_y..=start_y + self.cell_width() {
             for x in start_x..=start_x + self.cell_width() {
-                // A cell consists of two main zones: its walls and some empty space between them called "a passage".
-                // To draw a cell, the following code checks some particular zones and skips filling pixes with color
-                // in case a wall should not display or it's a cell passage. In all other cases, we fill pixes with
-                // a given color
+                // A cell consists of two main zones: its walls and some empty space between them
+                // called "a passage". To draw a cell, the following code checks some particular
+                // zones and skips filling pixes with color in case a wall should not display or
+                // it's a cell passage. In all other cases, we fill pixes with a given color
 
                 // Top left corner must display only if either Northern or Western wall exists
                 if x >= start_x

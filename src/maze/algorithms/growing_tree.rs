@@ -14,23 +14,27 @@ pub enum Method {
     /// Selects the most recently added cell, thus imitating the recurive backtracker
     Newest,
 
-    /// Selects the oldest added cell, thus generating an unchallenging maze with lots of long corridors
+    /// Selects the oldest added cell, thus generating an unchallenging maze with lots of long
+    /// corridors
     Oldest,
 
     /// Selects cells at random, thus getting Prim's algorithm behaviour
     Random,
 
-    /// Selects a middle cell from the list of already added, but produces mazes similar to the ones
-    /// created by the [Oldest](Method::Oldest) method
+    /// Selects a middle cell from the list of already added, but produces mazes similar to the
+    /// ones created by the [Oldest](Method::Oldest) method
     Middle,
 
-    /// A combination of the [Newest](Method::Newest) and [Random](Method::Random) methods with 50/50 split
+    /// A combination of the [Newest](Method::Newest) and [Random](Method::Random) methods with
+    /// 50/50 split
     Newest50Random50,
 
-    /// A combination of the [Newest](Method::Newest) and [Random](Method::Random) methods with 75/25 split
+    /// A combination of the [Newest](Method::Newest) and [Random](Method::Random) methods with
+    /// 75/25 split
     Newest75Random25,
 
-    /// A combination of the [Newest](Method::Newest) and [Random](Method::Random) methods with 25/75 split
+    /// A combination of the [Newest](Method::Newest) and [Random](Method::Random) methods with
+    /// 25/75 split
     Newest25Random75,
 }
 
@@ -97,12 +101,18 @@ impl GrowingTree {
 
 /// An implementation of the "Growing Tree" algorithm for generating mazes
 ///
-/// Despite the method you selected, the algorithm steps remain the same and pretty slick. Here is how it works:
+/// Despite the method you selected, the algorithm steps remain the same and pretty slick. Here is
+/// how it works:
+///
 /// 1. Initializes an empty list of cells (hereinafter the C)
+///
 /// 2. Adds one cell to the C, at random
-/// 2. Chooses a cell from the C and carves a passage to any unvisited neighbor of that cell
-/// adding that neighbor to the C as well. If there are no unvisited neighbors, removes the cell from the C
-/// 3. Repeats #2 until the C is empty
+///
+/// 3. Chooses a cell from the C and carves a passage to any unvisited neighbor of that cell
+/// adding that neighbor to the C as well. If there are no unvisited neighbors, removes the cell
+/// from the C
+///
+/// 4. Repeats #3 until the C is empty
 impl Algorithm for GrowingTree {
     fn generate(&mut self, grid: &mut Grid) {
         let mut directions = [E, N, S, W];

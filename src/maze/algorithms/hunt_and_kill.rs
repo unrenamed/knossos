@@ -11,8 +11,8 @@ use rand::prelude::*;
 /// The "Hunt & Kill" algorithm for generating mazes
 ///
 /// This is similar to the recursive backtracker: they both tend to generate long, winding passages
-/// with fewer dead-ends than most of the other algorithms. However, this one differs in that it will
-/// search the grid iteratively, looking for a new blank cell when it encounters a dead-end.
+/// with fewer dead-ends than most of the other algorithms. However, this one differs in that it
+/// will search the grid iteratively, looking for a new blank cell when it encounters a dead-end.
 pub struct HuntAndKill {
     hunt_start_index: usize,
 }
@@ -74,18 +74,27 @@ impl HuntAndKill {
 /// An implementation of the "Hunt & Kill" algorithm for generating mazes
 ///
 /// The algorithm consists of two main phases: walk and hunt, which repeat from row to row.
+///
 /// Here is how it works in detail:
+///
 /// 1. Chooses a starting location
-/// 2. Performs a random walk, carving passages to unvisited neighbors, until the current cell has no unvisited neighbors
-/// 3. Enters the “hunt” mode, where you scan the grid looking for an unvisited cell that is adjacent to a visited cell.
-/// If found, carves a passage between the two and lets the formerly unvisited cell be the new starting location
-/// 4. Repeats steps 2 and 3 until the "hunt" mode scans the entire grid and finds no unvisited cells
+///
+/// 2. Performs a random walk, carving passages to unvisited neighbors, until the current cell has
+/// no unvisited neighbors
+///
+/// 3. Enters the “hunt” mode, where you scan the grid looking for an
+/// unvisited cell that is adjacent to a visited cell. If found, carves a passage between the two
+/// and lets the formerly unvisited cell be the new starting location
+///
+/// 4. Repeats steps 2 and 3 until the "hunt" mode scans the entire grid and finds no unvisited
+/// cells
 ///
 /// # Optimization
 ///
-/// It is worth mentioning that unlike the standard version of this algorithm which gets a little slow towards the end, where
-/// the "hunt" phase has to search over nearly the entire grid to find a candidate cell, this implementation has a simple
-/// optimization that speeds up the later stages of the algorithm. Thus, this algorithm is still pretty fast
+/// It is worth mentioning that unlike the standard version of this algorithm which gets a little
+/// slow towards the end, where the "hunt" phase has to search over nearly the entire grid to find a
+/// candidate cell, this implementation has a simple optimization that speeds up the later stages of
+/// the algorithm. Thus, this algorithm is still pretty fast
 impl Algorithm for HuntAndKill {
     fn generate(&mut self, grid: &mut Grid) {
         let start_coords = get_start_coords(grid);

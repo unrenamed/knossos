@@ -31,8 +31,9 @@ impl Grid {
         &self.cells
     }
 
-    // Emptys the grid cells thus keeping the border walls only. This should be used when a maze generation algorithm
-    // that uses a "wall adding" technique, rather than a "passage carving" one, is selected
+    // Emptys the grid cells thus keeping the border walls only. This should be used when a maze
+    // generation algorithm that uses a "wall adding" technique, rather than a "passage carving"
+    // one, is selected
     pub fn drain(&mut self) {
         let mut cells = vec![vec![Cell::empty(); self.width]; self.height];
 
@@ -96,8 +97,11 @@ impl Grid {
         let next = self.get_next_cell_coords(coords, pole).unwrap();
         let opp_pole = *OPPOSITE_POLES.get(&pole).unwrap();
 
-        self.get_cell_mut(coords).add_wall(pole); // add a wall towards a pole
-        self.get_cell_mut(next).add_wall(opp_pole); // add a wall to a next cell towards an opposite pole
+        // add a wall towards a pole
+        self.get_cell_mut(coords).add_wall(pole);
+
+        // add a wall to a next cell towards an opposite pole
+        self.get_cell_mut(next).add_wall(opp_pole);
     }
 
     pub fn carve_passage(&mut self, coords: Coords, pole: Pole) -> TransitResult<Coords> {

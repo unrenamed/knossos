@@ -36,7 +36,8 @@ impl RecuresiveDivision {
 
         let mut rng = rand::thread_rng();
 
-        // Get X and Y coordinates of a cell where walls will be drawn from, i.e. determine a vector start coordinates
+        // Get X and Y coordinates of a cell where walls will be drawn from, i.e. determine a vector
+        // start coordinates
         let mut wx = x + match orientation {
             Orientation::Vertical if width > 2 => rng.gen_range(0..width - 2),
             _ => 0,
@@ -122,9 +123,14 @@ impl RecuresiveDivision {
 /// An implementation of the "Recuresive Division" algorithm for generating mazes
 ///
 /// It works like this:
+///
 /// 1. Begins with an empty field
-/// 2. Bisects the field with a wall, either horizontally or vertically. Adds a single passage through the wall
+///
+/// 2. Bisects the field with a wall, either horizontally or vertically. Adds a single passage
+/// through the wall
+///
 /// 3. Repeats step #2 with the areas on either side of the wall
+///
 /// 4. Continues, recursively, until the maze reaches the desired resolution
 impl Algorithm for RecuresiveDivision {
     fn generate(&mut self, grid: &mut Grid) {

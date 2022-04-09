@@ -173,14 +173,23 @@ impl Eller {
 /// An implementation of Eller's algorithm for generating mazes
 ///
 /// Generates maze following the algorithm below:
+///
 /// 1. Initializes the cells of the first row to each exist in their own set
-/// 2. Randomly joins adjacent cells, but only if they are not in the same set. When joining adjacent cells,
-/// merges the cells of both sets into a single set, indicating that all cells in both sets are now connected.
-/// 3. For each set, randomly creates vertical connections downward to the next row. Each remaining set must have
-/// at least one vertical connection. The cells in the next row thus connected must share the set of the cell above them.
-/// 4. Fleshes out the next row by putting any remaining cells into their own sets.
-/// 5. Repeats until the last row is reached.
-/// 6. For the last row, joins all adjacent cells that do not share a set, and omit the vertical connections.
+///
+/// 2. Randomly joins adjacent cells, but only if they are not in the same set. When joining
+/// adjacent cells, merges the cells of both sets into a single set, indicating that all cells in
+/// both sets are now connected.
+///
+/// 3. For each set, randomly creates vertical connections downward to the next row. Each
+/// remaining set must have at least one vertical connection. The cells in the next row thus
+/// connected must share the set of the cell above them
+///
+/// 4. Fleshes out the next row by putting any remaining cells into their own sets
+///
+/// 5. Repeats until the last row is reached
+///
+/// 6. For the last row, joins all adjacent cells that do not share a set, and omit the vertical
+/// connections
 impl Algorithm for Eller {
     fn generate(&mut self, grid: &mut Grid) {
         let mut state = State::new(0, None, grid.width()).populate();

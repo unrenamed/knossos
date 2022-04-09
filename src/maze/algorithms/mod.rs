@@ -24,6 +24,7 @@ use crate::maze::grid::Grid;
 
 /// A trait for generating mazes using selected algorithms
 pub trait Algorithm {
-    /// Runs algorithm through the given Grid object, thus mutating the grid and generating a new maze
+    /// Runs algorithm through the given Grid object, thus mutating the grid and generating a new
+    /// maze
     fn generate(&mut self, grid: &mut Grid);
 }

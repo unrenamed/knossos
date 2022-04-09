@@ -24,7 +24,8 @@ pub trait Saveable {
     fn save(&self, path: &str) -> Result<String, MazeSaveError>;
 }
 
-// Custom wrapper over image::RgbImage struct that must be returned when converting a maze to an image
+// Custom wrapper over image::RgbImage struct that must be returned when converting a maze to an
+// image
 pub struct ImageWrapper(pub RgbImage);
 
 // Images with a maze are to be saved as image files require this implementation
@@ -40,7 +41,8 @@ impl Saveable for ImageWrapper {
     }
 }
 
-// Custom wrapper over Rust's String struct that must be returned when converting a maze to a string characters
+// Custom wrapper over Rust's String struct that must be returned when converting a maze to a string
+// characters
 pub struct StringWrapper(pub String);
 
 // Text-like mazes are to be saved into text files require this implementation

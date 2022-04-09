@@ -136,6 +136,8 @@ fn main() {
     println!("{}", &maze);
 
     maze.save("output/maze.txt", Ascii).unwrap();
-    maze.save("output/maze_game_map.txt", GameMap::new().span(3)).unwrap();
-    maze.save("output/maze.png", Image::new().wall(10).passage(40)).unwrap();
+    maze.save("output/maze_game_map.txt", GameMap::new().span(3))
+        .unwrap();
+    maze.save("output/maze.png", Image::new().wall(10).passage(40))
+        .unwrap();
 }

@@ -78,11 +78,16 @@ impl Prim {
 ///
 /// The standard version of the algorithm generates a minimal spanning tree in a graph. With a
 /// slight change of adding some random, it works something like this:
+///
 /// 1. Chooses an arbitrary cell and adds it to the maze
+///
 /// 2. Adds all neighbor cells that are not in the F yet to F
+///
 /// 3. Removes one of the F cells at random and carves a passage from that to whichever adjacent
 /// cell is already part of the maze
+///
 /// 4. Adds the neighbours of the formerly frontier cell to the F
+///
 /// 5. Repeats steps 3 and 4 until the F is empty
 impl Algorithm for Prim {
     fn generate(&mut self, grid: &mut Grid) {

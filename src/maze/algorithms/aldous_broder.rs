@@ -10,19 +10,23 @@ use rand::prelude::*;
 
 /// The Aldous-Broder's algorithm for generating mazes
 ///
-/// This is an easy one to implement. And yet, it is also one of the least intelligent algorithms, since
-/// the latest steps may take so much time that you may not want to wait until it's finished. It is not
-/// even guaranteed to finish if you get really unlucky with the random
+/// This is an easy one to implement. And yet, it is also one of the least intelligent algorithms,
+/// since the latest steps may take so much time that you may not want to wait until it's finished.
+/// It is not even guaranteed to finish if you get really unlucky with the random
 pub struct AldouBroder;
 
 impl AldouBroder {}
 
 /// An implementation of Aldous-Broder's algorithm for generating mazes.
 ///
-/// The problem domain the algorithm was created for is finding unform spanning trees. Here is how it works:
+/// The problem domain the algorithm was created for is finding unform spanning trees. Here is how
+/// it works:
+///
 /// 1. Chooses any vertex
-/// 2. Chooses a connected neighbor of the vertex and travels to it. If the neighbor has not yet been visited,
-/// adds the traveled edge to the spanning tree.
+///
+/// 2. Chooses a connected neighbor of the vertex and travels to it. If the neighbor has not yet
+/// been visited, adds the traveled edge to the spanning tree.
+///
 /// 3. Repeats step 2 until all vertexes have been visited.
 impl Algorithm for AldouBroder {
     fn generate(&mut self, grid: &mut Grid) {

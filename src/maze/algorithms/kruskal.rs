@@ -10,14 +10,19 @@ type Edges = Vec<Edge>;
 /// The Kruskal's algorithm for generating mazes
 ///
 /// Kruskal’s algorithm is a method for producing a minimal spanning tree from a weighted graph.
-/// The randomized version of it can be used for generating a rather convincing maze very effectively.
+/// The randomized version of it can be used for generating a rather convincing maze very
+/// effectively.
 pub struct Kruskal;
 
 /// An implementation of the Kruskal's algorithm for generating mazes
 ///
 /// The randomized variation of the Kruskal's algorithm looks as follows:
+///
 /// 1. Throw all the edges in the graph into a set
-/// 2. Pull out the edge at random. If the edge connects two disjoint trees, join the trees. Otherwise, throw that edge away
+///
+/// 2. Pull out the edge at random. If the edge connects two disjoint trees, join the trees.
+/// Otherwise, throw that edge away
+///
 /// 3. Repeat until there are no more edges left in the set
 impl Algorithm for Kruskal {
     fn generate(&mut self, grid: &mut Grid) {

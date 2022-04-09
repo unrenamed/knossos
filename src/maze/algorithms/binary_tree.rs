@@ -24,9 +24,9 @@ pub enum Bias {
 /// The "Binary Tree" algorithm for generating mazes
 ///
 /// This is an almost-trivially simple one, but you pay for that simplicity with a few side effects:
-/// a notable bias (routes tend to run diagonally) and long corridors spanning two sides. Still, this is
-/// quite a performant algorithm since it operates without any state at all looking at the current cell only,
-/// without regard for the rest of the cells and rows in the maze.
+/// a notable bias (routes tend to run diagonally) and long corridors spanning two sides. Still,
+/// this is quite a performant algorithm since it operates without any state at all looking at the
+/// current cell only, without regard for the rest of the cells and rows in the maze.
 pub struct BinaryTree {
     bias: Bias,
 }
@@ -89,7 +89,8 @@ impl BinaryTree {
 
 /// An implementation of the "Binary Tree" algorithm for generating mazes
 ///
-/// The algorithm is pretty simple: for every cell in the grid, randomly carve a passage either north, or west.
+/// The algorithm is pretty simple: for every cell in the grid, randomly carve a passage either
+/// north, or west.
 impl Algorithm for BinaryTree {
     fn generate(&mut self, grid: &mut Grid) {
         for y in 0..grid.height() {
