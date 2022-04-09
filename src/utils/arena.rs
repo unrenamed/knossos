@@ -3,7 +3,7 @@ pub struct ArenaTree {
 }
 #[derive(Debug)]
 struct Node {
-    id: NodeId,
+    _id: NodeId,
     parent: Option<NodeId>,
 }
 
@@ -19,7 +19,7 @@ impl ArenaTree {
         let next_idx = NodeId(self.nodes.len());
 
         self.nodes.push(Node {
-            id: next_idx,
+            _id: next_idx,
             parent: None,
         });
 
