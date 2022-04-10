@@ -5,9 +5,22 @@ use std::iter;
 
 use super::StringWrapper;
 
+/// An Ascii formatter for a generated maze
+///
+/// # Example:
+///
+/// ```no_test
+///  _______
+/// |  ___| |
+/// |_  |  _|
+/// | | |_  |
+/// |_______|
+/// ```
 pub struct Ascii;
 
+/// An implementation of a formatter
 impl Formatter<StringWrapper> for Ascii {
+    /// Converts a given grid into ascii characters and returns an [StringWrapper] over that image
     fn format(&self, grid: &Grid) -> StringWrapper {
         let mut result = String::new();
 

@@ -1,3 +1,5 @@
+//! Algorithms for generating mazes
+
 mod aldous_broder;
 mod binary_tree;
 mod eller;
@@ -22,7 +24,7 @@ pub use sidewinder::Sidewinder;
 
 use crate::maze::grid::Grid;
 
-/// A trait for generating mazes using selected algorithms
+/// A trait for generating a maze using a selected algorithm
 pub trait Algorithm {
     /// Runs algorithm through the given Grid object, thus mutating the grid and generating a new
     /// maze

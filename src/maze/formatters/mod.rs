@@ -1,3 +1,5 @@
+//! Formatters for converting a generated maze into other data types
+
 mod ascii;
 mod game_map;
 mod image;
@@ -11,25 +13,30 @@ use super::errors::MazeSaveError;
 pub use ascii::Ascii;
 pub use game_map::GameMap;
 
-// Public interface for a maze formatters
+/// A trait for maze formatters
 pub trait Formatter<T>
 where
     T: Saveable,
 {
+    /// Returns a given grid converted into a given type that implements [Saveable]
     fn format(&self, grid: &Grid) -> T;
 }
 
-// Public interface for a data wrappers that must be returned after formatting the grid
+/// A trait for data wrappers that must be returned after formatting the grid
 pub trait Saveable {
+    /// Saves a given object into a file
+    ///
+    /// In case of success, returns the string with a success message.
+    /// Otherwise, returns a [MazeSaveError] with a custom reason message.
     fn save(&self, path: &str) -> Result<String, MazeSaveError>;
 }
 
-// Custom wrapper over image::RgbImage struct that must be returned when converting a maze to an
-// image
+/// A custom wrapper over [RgbImage] for converting a maze to an image
 pub struct ImageWrapper(pub RgbImage);
 
-// Images with a maze are to be saved as image files require this implementation
+/// An implementation of [Saveable] for saving a maze image into a file
 impl Saveable for ImageWrapper {
+    /// Saves an image to a file to a given path
     fn save(&self, path: &str) -> Result<String, MazeSaveError> {
         if let Err(reason) = self.0.save(path) {
             return Err(MazeSaveError {
@@ -41,12 +48,13 @@ impl Saveable for ImageWrapper {
     }
 }
 
-// Custom wrapper over Rust's String struct that must be returned when converting a maze to a string
-// characters
+/// A custom wrapper over [std::string::String](std::string::String) for converting a maze into
+/// string characters
 pub struct StringWrapper(pub String);
 
-// Text-like mazes are to be saved into text files require this implementation
+/// An implementation of [Saveable] for saving a maze string into a text file
 impl Saveable for StringWrapper {
+    /// Saves a maze string to a file to a given path
     fn save(&self, path: &str) -> Result<String, MazeSaveError> {
         let path = match std::env::current_dir() {
             Err(why) => {

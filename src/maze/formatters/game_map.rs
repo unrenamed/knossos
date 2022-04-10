@@ -6,22 +6,55 @@ use std::fmt::Write;
 
 use super::StringWrapper;
 
+/// A GameMap formatter for a generated maze
+///
+/// This can be used for generating a game map for pseudo 3D games that use ray casting algorithm
+/// for modeling and rendering the map. The formatter supports several colors for maze walls that
+/// are randomly set when formatting the grid:
+/// - R - red
+/// - G - green
+/// - B - blue
+/// - Y - yellow
+/// - O - orange
+///
+/// # Example:
+///
+/// The span value is 2.
+/// ```no_test
+/// OOYGRGYOGOYOY
+/// R        Y  R
+/// O        Y  G
+/// Y  R  ROBY  R
+/// B  B        G
+/// Y  Y        B
+/// G  GOBB  B  G
+/// R     R  B  O
+/// R     B  O  R
+/// BRGY  G  Y  R
+/// O           Y
+/// O           R
+/// BGYRGBBOGYGGO
+/// ```
 pub struct GameMap {
     span: usize,
 }
 
 impl GameMap {
+    /// Returns a new instance of an [GameMap] formatter with a default settings
     pub fn new() -> GameMap {
         GameMap { span: 2 }
     }
 
+    /// Sets a span (a distance between two walls) and returns itself
     pub fn span(mut self, span: usize) -> Self {
         self.span = span;
         self
     }
 }
 
+/// An implementation of a formatter
 impl Formatter<StringWrapper> for GameMap {
+    /// Converts a given grid into the map characters and returns an [StringWrapper] over that image
     fn format(&self, grid: &Grid) -> StringWrapper {
         let mut map = String::new();
 
