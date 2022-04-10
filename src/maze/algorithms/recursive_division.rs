@@ -7,7 +7,7 @@ enum Orientation {
     Vertical,
 }
 
-/// The "Recuresive Division" algorithm for generating mazes
+/// The "Recursive Division" algorithm for generating mazes
 ///
 /// This is one, and the only one in this library so far, that uses a "wall adding" technique
 /// instead of a "passage carving". It's also novel in its fractal nature: you could theoretically
@@ -18,9 +18,9 @@ enum Orientation {
 /// And yet, the algorithm's fractal nature leads to some visual artifacts and bottlenecks like
 /// a single passage between two sections that effectevily divide the entire mize into two distinct
 /// regions, thus making it easy to spot the passage and work backward to a solution.
-pub struct RecuresiveDivision;
+pub struct RecursiveDivision;
 
-impl RecuresiveDivision {
+impl RecursiveDivision {
     fn divide(
         &mut self,
         grid: &mut Grid,
@@ -120,7 +120,7 @@ impl RecuresiveDivision {
     }
 }
 
-/// An implementation of the "Recuresive Division" algorithm for generating mazes
+/// An implementation of the "Recursive Division" algorithm for generating mazes
 ///
 /// It works like this:
 ///
@@ -132,9 +132,9 @@ impl RecuresiveDivision {
 /// 3. Repeats step #2 with the areas on either side of the wall
 ///
 /// 4. Continues, recursively, until the maze reaches the desired resolution
-impl Algorithm for RecuresiveDivision {
+impl Algorithm for RecursiveDivision {
     fn generate(&mut self, grid: &mut Grid) {
-        // Recuresive division algorithm acts as a wall adder, i.e. uses a "wall adding" technique,
+        // Recursive division algorithm acts as a wall adder, i.e. uses a "wall adding" technique,
         // rather than a "passage carving" one. To start adding walls to the maze cells we "drain"
         // the grid, thus having a proper input for this algorithm
         grid.drain();

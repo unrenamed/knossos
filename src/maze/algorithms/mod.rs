@@ -17,7 +17,7 @@ pub use hunt_and_kill::HuntAndKill;
 pub use kruskal::Kruskal;
 pub use prim::Prim;
 pub use recursive_backtracking::RecursiveBacktracking;
-pub use recursive_division::RecuresiveDivision;
+pub use recursive_division::RecursiveDivision;
 pub use sidewinder::Sidewinder;
 
 use crate::maze::grid::Grid;

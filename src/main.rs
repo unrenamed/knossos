@@ -120,7 +120,7 @@ fn main() {
     println!("{}", &maze);
 
     let maze = OrthogonalMazeBuilder::new()
-        .algorithm(Box::new(RecuresiveDivision))
+        .algorithm(Box::new(RecursiveDivision))
         .build();
 
     println!("\nRecursive Division");
