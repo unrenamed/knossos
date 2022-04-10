@@ -1,7 +1,7 @@
 use super::{
     errors::MazeSaveError,
     formatters::{Formatter, Saveable},
-    grid::Grid,
+    grid::{Grid, pole::Pole},
 };
 use std::fmt;
 
@@ -28,9 +28,14 @@ impl OrthogonalMaze {
 
     /// Returns `true` if a maze is valid. Otherwise, returns `false`
     pub fn is_valid(&self) -> bool {
-        for y in 0..self.grid.height() {
-            for x in 0..self.grid.width() {
-                if !self.grid.is_cell_visited((x, y)) {
+        for row in self.grid.cells() {
+            for cell in row {
+                let walls = cell.get_walls();
+                if !(walls.carved(Pole::N)
+                    || walls.carved(Pole::S)
+                    || walls.carved(Pole::E)
+                    || walls.carved(Pole::W))
+                {
                     return false;
                 }
             }
