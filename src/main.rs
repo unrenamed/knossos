@@ -111,8 +111,8 @@ fn main() {
     println!("{}", &maze);
 
     let maze = OrthogonalMazeBuilder::new()
-        .height(3)
-        .width(3)
+        .height(25)
+        .width(20)
         .algorithm(Box::new(AldouBroder))
         .build();
 
@@ -127,8 +127,8 @@ fn main() {
     println!("{}", &maze);
 
     let maze = OrthogonalMazeBuilder::new()
-        .height(4)
-        .width(4)
+        .height(15)
+        .width(15)
         .algorithm(Box::new(Eller))
         .build();
 
@@ -138,6 +138,6 @@ fn main() {
     maze.save("output/maze.txt", Ascii).unwrap();
     maze.save("output/maze_game_map.txt", GameMap::new().span(3))
         .unwrap();
-    maze.save("output/maze.jpg", Image::new().wall(10).passage(40))
+    maze.save("output/maze.png", Image::new().wall(15).passage(20))
         .unwrap();
 }
