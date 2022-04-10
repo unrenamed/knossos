@@ -1,2 +1,9 @@
+# Builds
 /target
+
+# IO results
 /output
+
+# Test output
+tests/output/*
+!*.gitkeep
