@@ -8,7 +8,7 @@
 //!
 //! ```no_test
 //! [dependencies]
-//! knossos = "0.1.0"
+//! knossos = "0.1.2"
 //! ```
 //!
 //! # Usage
