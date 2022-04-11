@@ -4,7 +4,7 @@
 /// # Usage
 ///
 /// ```
-/// use daedalus::{maze::*, Color};
+/// use knossos::{maze::*, Color};
 ///
 /// let formatter = Image::new().background(Color::RGB(0, 0, 0));
 /// ```

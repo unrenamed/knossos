@@ -1,4 +1,4 @@
-use daedalus::maze::*;
+use knossos::maze::*;
 
 fn main() {
     let maze = OrthogonalMazeBuilder::new().width(16).height(18).build();
@@ -113,7 +113,7 @@ fn main() {
     let maze = OrthogonalMazeBuilder::new()
         .height(25)
         .width(20)
-        .algorithm(Box::new(AldouBroder))
+        .algorithm(Box::new(AldousBroder))
         .build();
 
     println!("\nAldou-Broder");

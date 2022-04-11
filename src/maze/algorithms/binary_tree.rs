@@ -36,7 +36,7 @@ impl BinaryTree {
     ///
     /// # Example
     /// ```
-    /// use daedalus::maze::{BinaryTree, Bias};
+    /// use knossos::maze::{BinaryTree, Bias};
     ///
     /// let algorithm = BinaryTree::new(Bias::NorthWest);
     /// ```

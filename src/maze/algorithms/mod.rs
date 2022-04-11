@@ -11,7 +11,7 @@ mod recursive_backtracking;
 mod recursive_division;
 mod sidewinder;
 
-pub use aldous_broder::AldouBroder;
+pub use aldous_broder::AldousBroder;
 pub use binary_tree::{Bias, BinaryTree};
 pub use eller::Eller;
 pub use growing_tree::{GrowingTree, Method};

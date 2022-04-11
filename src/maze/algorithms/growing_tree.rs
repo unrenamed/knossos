@@ -55,7 +55,7 @@ impl GrowingTree {
     ///
     /// # Example
     /// ```
-    /// use daedalus::maze::{GrowingTree, Method};
+    /// use knossos::maze::{GrowingTree, Method};
     ///
     /// let algorithm = GrowingTree::new(Method::Newest);
     /// ```

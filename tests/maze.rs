@@ -1,4 +1,4 @@
-use daedalus::maze::*;
+use knossos::maze::*;
 
 macro_rules! maze {
     ($algo:expr) => {
@@ -31,7 +31,7 @@ fn builds_valid_maze_with_custom_params() {
 
 #[test]
 fn builds_valid_maze_with_aldou_broder_algorithm() {
-    assert!(maze!(AldouBroder).is_valid());
+    assert!(maze!(AldousBroder).is_valid());
 }
 
 #[test]

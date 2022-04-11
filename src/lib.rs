@@ -8,7 +8,7 @@
 //!
 //! ```no_test
 //! [dependencies]
-//! daedalus = "0.1.0"
+//! knossos = "0.1.0"
 //! ```
 //!
 //! # Usage
@@ -18,14 +18,14 @@
 //!
 //! ## Generate with default parameters
 //! ```rust,no_run
-//! use daedalus::maze::*;
+//! use knossos::maze::*;
 //!
 //! let maze = OrthogonalMazeBuilder::new().build();
 //! ```
 //!
 //! ## Generate with custom parameters
 //! ```rust,no_run
-//! use daedalus::maze::*;
+//! use knossos::maze::*;
 //!
 //! let maze = OrthogonalMazeBuilder::new()
 //!  .height(10)
@@ -38,7 +38,7 @@
 //!
 //! ## Display
 //! ```rust,no_run
-//! use daedalus::maze::*;
+//! use knossos::maze::*;
 //!
 //! let maze = OrthogonalMazeBuilder::new().build();
 //! println!("{}", &maze);
@@ -46,7 +46,7 @@
 //!
 //! ## Save to file
 //! ```rust,no_run
-//! use daedalus::maze::*;
+//! use knossos::maze::*;
 //!
 //! let maze = OrthogonalMazeBuilder::new().build();
 //!
@@ -67,7 +67,7 @@
 //! mazes that look hard to puzzle out, and others are extremely flexible and customizable. Do give
 //! each of them a shot and find the best one that suits you:
 //!
-//! - [`AldouBroder`](maze::AldouBroder)
+//! - [`AldousBroder`](maze::AldousBroder)
 //! - [`BinaryTree`](maze::BinaryTree)
 //! - [`Eller`](maze::Eller)
 //! - [`GrowingTree`](maze::GrowingTree)

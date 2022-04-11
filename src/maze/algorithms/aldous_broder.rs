@@ -13,9 +13,9 @@ use rand::prelude::*;
 /// This is an easy one to implement. And yet, it is also one of the least intelligent algorithms,
 /// since the latest steps may take so much time that you may not want to wait until it's finished.
 /// It is not even guaranteed to finish if you get really unlucky with the random
-pub struct AldouBroder;
+pub struct AldousBroder;
 
-impl AldouBroder {}
+impl AldousBroder {}
 
 /// An implementation of Aldous-Broder's algorithm for generating mazes.
 ///
@@ -28,7 +28,7 @@ impl AldouBroder {}
 /// been visited, adds the traveled edge to the spanning tree.
 ///
 /// 3. Repeats step 2 until all vertexes have been visited.
-impl Algorithm for AldouBroder {
+impl Algorithm for AldousBroder {
     fn generate(&mut self, grid: &mut Grid) {
         let start_coords = get_start_coords(grid);
         let mut x = start_coords.0;
