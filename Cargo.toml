@@ -8,20 +8,7 @@ readme = "README.md"
 license = "Apache-2.0"
 homepage = "https://github.com/unrenamed/daedalus"
 repository = "https://github.com/unrenamed/daedalus"
-keywords = [
-  "maze",
-  "labyrinth",
-  "recursive-backtrackig",
-  "growing-tree",
-  "prim",
-  "kruskal",
-  "eller",
-  "hunt-and-kill",
-  "binary-tree",
-  "sidewinder",
-  "recursive-division",
-  "aldous-broder",
-]
+keywords = ["maze", "growing-tree", "kruskal", "hunt-and-kill", "prim"]
 categories = ["algorithms"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
