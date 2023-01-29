@@ -1,143 +1,254 @@
-use knossos::maze::*;
+use clap::{Parser, Subcommand, ValueEnum};
+use knossos::{
+    maze::{self, formatters},
+    Color,
+};
 
-fn main() {
-    let maze = OrthogonalMazeBuilder::new().width(16).height(18).build();
-    println!("\nRecursive backtracking");
-    println!("{}", &maze);
+#[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum)]
+enum Algorithm {
+    AldousBroder,
+    BinaryTree,
+    Eller,
+    GrowingTree,
+    HuntAndKill,
+    Kruskal,
+    Prim,
+    RecursiveBacktracking,
+    RecursiveDivision,
+    Sidewinder,
+}
 
-    let maze = OrthogonalMazeBuilder::new()
-        .algorithm(Box::new(BinaryTree::new(Bias::NorthEast)))
-        .build();
-    println!("\nBinary Tree (NorthEast)");
-    println!("{}", &maze);
+#[derive(Parser, Debug)]
+#[command(author, version, about, long_about = None)]
+struct Cli {
+    #[command(subcommand)]
+    command: Commands,
+}
 
-    let maze = OrthogonalMazeBuilder::new()
-        .algorithm(Box::new(BinaryTree::new(Bias::NorthWest)))
-        .build();
-    println!("\nBinary Tree (NorthWest)");
-    println!("{}", &maze);
+#[derive(Debug, Subcommand)]
+enum Commands {
+    /// Generates a maze
+    Generate {
+        #[command(subcommand)]
+        output: OutputCommands,
 
-    let maze = OrthogonalMazeBuilder::new()
-        .algorithm(Box::new(BinaryTree::new(Bias::SouthEast)))
-        .build();
-    println!("\nBinary Tree (SouthEast)");
-    println!("{}", &maze);
+        /// Maze generation algorithm
+        #[arg(short = 'A', long, value_enum, default_value_t = Algorithm::RecursiveBacktracking)]
+        algorithm: Algorithm,
 
-    let maze = OrthogonalMazeBuilder::new()
-        .algorithm(Box::new(BinaryTree::new(Bias::SouthWest)))
-        .build();
-    println!("\nBinary Tree (SouthWest)");
-    println!("{}", &maze);
+        /// Grid height in a number of cells
+        #[arg(short = 'H', long, default_value_t = 10)]
+        height: usize,
 
-    let maze = OrthogonalMazeBuilder::new()
-        .width(20)
-        .algorithm(Box::new(Sidewinder))
-        .build();
-    println!("\nSidewinder");
-    println!("{}", &maze);
+        #[arg(short = 'W', long, default_value_t = 10)]
+        /// Grid width in a number of cells
+        width: usize,
 
-    let maze = OrthogonalMazeBuilder::new()
-        .height(10)
-        .width(15)
-        .algorithm(Box::new(Kruskal))
-        .build();
+        /// Bias to use for the "Binary Tree" algorithm
+        #[arg(
+            long,
+            default_value_t = maze::Bias::NorthEast,
+            require_equals = true,
+            num_args = 0..=1,
+            default_missing_value = "always",
+            value_enum,
+        )]
+        bias: maze::Bias,
 
-    println!("\nKruskal");
-    println!("{}", &maze);
+        /// Growing mwethod to use for the "Growing Tree" algorithm
+        #[arg(
+            long,
+            default_value_t = maze::Method::Newest,
+            require_equals = true,
+            num_args = 0..=1,
+            default_missing_value = "always",
+            value_enum,
+        )]
+        growing_method: maze::Method,
+    },
+    /// Converts an input maze into given output
+    Convert {},
+}
 
-    let maze = OrthogonalMazeBuilder::new()
-        .algorithm(Box::new(GrowingTree::new(Method::Newest)))
-        .build();
+#[derive(Debug, Subcommand)]
+enum OutputCommands {
+    /// Save to a text file with an ASCII representation of a maze
+    Ascii {
+        /// Output path
+        #[arg(short = 'P', long)]
+        output_path: String,
+    },
+    /// Save to a text file as a game map with colored walls for pseudo 3D games that use ray casting algorithm for modeling and rendering the map
+    GameMap {
+        /// Output path
+        #[arg(short = 'P', long)]
+        output_path: String,
 
-    println!("\nGrowing tree (Newest)");
-    println!("{}", &maze);
+        /// Distance between any two walls
+        #[arg(long, default_value_t = 3)]
+        span: usize,
+    },
+    /// Save to a text file as an ASCII game map for pseudo 3D games that use ray casting algorithm for modeling and rendering the map
+    AsciiGameMap {
+        /// Output path
+        #[arg(short = 'P', long)]
+        output_path: String,
 
-    let maze = OrthogonalMazeBuilder::new()
-        .algorithm(Box::new(GrowingTree::new(Method::Oldest)))
-        .build();
+        /// Distance between any two walls
+        #[arg(long, default_value_t = 3)]
+        span: usize,
 
-    println!("\nGrowing tree (Oldest)");
-    println!("{}", &maze);
+        /// ASCII character for a passage
+        #[arg(long, default_value_t = '.')]
+        passage: char,
 
-    let maze = OrthogonalMazeBuilder::new()
-        .algorithm(Box::new(GrowingTree::new(Method::Random)))
-        .build();
+        /// ASCII character for a wall
+        #[arg(long, default_value_t = '#')]
+        wall: char,
+    },
+    /// Save to PNG or JPG file
+    Image {
+        /// Output path
+        #[arg(short = 'P', long)]
+        output_path: String,
 
-    println!("\nGrowing tree (Random)");
-    println!("{}", &maze);
+        /// Wall size in pixels
+        #[arg(long = "wall-size", default_value_t = 40)]
+        wall_size: usize,
 
-    let maze = OrthogonalMazeBuilder::new()
-        .algorithm(Box::new(GrowingTree::new(Method::Middle)))
-        .build();
+        /// Passage size in pixels
+        #[arg(long = "passage-size", default_value_t = 40)]
+        passage_size: usize,
 
-    println!("\nGrowing tree (Middle)");
-    println!("{}", &maze);
+        /// Size of the margin area that implies an empty space between an image borders and grid
+        #[arg(long, default_value_t = 50)]
+        margin: usize,
 
-    let maze = OrthogonalMazeBuilder::new()
-        .algorithm(Box::new(GrowingTree::new(Method::Newest50Random50)))
-        .build();
+        /// Color of passages
+        #[arg(long = "passage-color", default_value = "#ffffff", value_parser = hex_to_rgb)]
+        passage_color: Color,
 
-    println!("\nGrowing tree (Newest50Random50)");
-    println!("{}", &maze);
+        /// Color of walls
+        #[arg(long = "wall-color", default_value = "#000000", value_parser = hex_to_rgb)]
+        wall_color: Color,
+    },
+}
 
-    let maze = OrthogonalMazeBuilder::new()
-        .algorithm(Box::new(GrowingTree::new(Method::Newest75Random25)))
-        .build();
+fn main() -> Result<(), maze::MazeSaveError> {
+    let args = Cli::parse();
 
-    println!("\nGrowing tree (Newest75Random25)");
-    println!("{}", &maze);
+    match args.command {
+        Commands::Generate {
+            output,
+            algorithm,
+            height,
+            width,
+            bias,
+            growing_method,
+        } => {
+            let algorithm: Box<dyn maze::Algorithm> = match algorithm {
+                Algorithm::AldousBroder => Box::new(maze::AldousBroder),
+                Algorithm::BinaryTree => Box::new(maze::BinaryTree::new(bias)),
+                Algorithm::Eller => Box::new(maze::Eller),
+                Algorithm::GrowingTree => Box::new(maze::GrowingTree::new(growing_method)),
+                Algorithm::HuntAndKill => Box::new(maze::HuntAndKill::new()),
+                Algorithm::Kruskal => Box::new(maze::Kruskal),
+                Algorithm::Prim => Box::new(maze::Prim::new()),
+                Algorithm::RecursiveBacktracking => Box::new(maze::RecursiveBacktracking),
+                Algorithm::RecursiveDivision => Box::new(maze::RecursiveDivision),
+                Algorithm::Sidewinder => Box::new(maze::Sidewinder),
+            };
 
-    let maze = OrthogonalMazeBuilder::new()
-        .algorithm(Box::new(GrowingTree::new(Method::Newest25Random75)))
-        .build();
+            let maze = maze::OrthogonalMazeBuilder::new()
+                .height(height)
+                .width(width)
+                .algorithm(algorithm)
+                .build();
 
-    println!("\nGrowing tree (Newest25Random75)");
-    println!("{}", &maze);
+            match output {
+                OutputCommands::Ascii { output_path } => {
+                    maze.save(output_path.as_str(), formatters::Ascii)?;
+                }
+                OutputCommands::GameMap { output_path, span } => {
+                    maze.save(output_path.as_str(), maze::GameMap::new().span(span))?;
+                }
+                OutputCommands::AsciiGameMap {
+                    output_path,
+                    span,
+                    passage,
+                    wall,
+                } => {
+                    maze.save(
+                        output_path.as_str(),
+                        maze::AsciiGameMap::new()
+                            .span(span)
+                            .passage(passage)
+                            .wall(wall),
+                    )?;
+                }
+                OutputCommands::Image {
+                    output_path,
+                    wall_size,
+                    passage_size,
+                    margin,
+                    passage_color,
+                    wall_color,
+                } => {
+                    maze.save(
+                        output_path.as_str(),
+                        maze::Image::new()
+                            .wall(wall_size)
+                            .passage(passage_size)
+                            .margin(margin)
+                            .background(passage_color)
+                            .foreground(wall_color),
+                    )?;
+                }
+            };
 
-    let maze = OrthogonalMazeBuilder::new()
-        .algorithm(Box::new(Prim::new()))
-        .build();
+            Ok(())
+        }
+        Commands::Convert {} => todo!(),
+    }
+}
 
-    println!("\nPrim");
-    println!("{}", &maze);
+fn hex_to_rgb(s: &str) -> Result<Color, ParseHexError> {
+    let s = if s.starts_with('#') { &s[1..] } else { s };
 
-    let maze = OrthogonalMazeBuilder::new()
-        .height(10)
-        .width(10)
-        .algorithm(Box::new(HuntAndKill::new()))
-        .build();
+    if s.len() != 6 {
+        return Err(ParseHexError::Length(s.to_string()));
+    }
 
-    println!("\nHunt & kill");
-    println!("{}", &maze);
+    let mut rgb = [0_u8; 3];
+    rgb[0] = u8::from_str_radix(&s[..2], 16)?;
+    rgb[1] = u8::from_str_radix(&s[2..4], 16)?;
+    rgb[2] = u8::from_str_radix(&s[4..6], 16)?;
+    Ok(Color::RGB(rgb[0], rgb[1], rgb[2]))
+}
 
-    let maze = OrthogonalMazeBuilder::new()
-        .height(25)
-        .width(20)
-        .algorithm(Box::new(AldousBroder))
-        .build();
+#[derive(Debug)]
+enum ParseHexError {
+    IntError(std::num::ParseIntError),
+    Length(String),
+}
 
-    println!("\nAldou-Broder");
-    println!("{}", &maze);
+impl std::error::Error for ParseHexError {}
 
-    let maze = OrthogonalMazeBuilder::new()
-        .algorithm(Box::new(RecursiveDivision))
-        .build();
+impl std::fmt::Display for ParseHexError {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        match self {
+            ParseHexError::Length(e) => write!(
+                f,
+                "Expected a 6 charactor color value in hex, but got: {:?}",
+                e
+            ),
+            ParseHexError::IntError(ref e) => e.fmt(f),
+        }
+    }
+}
 
-    println!("\nRecursive Division");
-    println!("{}", &maze);
-
-    let maze = OrthogonalMazeBuilder::new()
-        .height(15)
-        .width(15)
-        .algorithm(Box::new(Eller))
-        .build();
-
-    println!("\nEller");
-    println!("{}", &maze);
-
-    maze.save("output/maze.txt", Ascii).unwrap();
-    maze.save("output/maze_game_map.txt", GameMap::new().span(3))
-        .unwrap();
-    maze.save("output/maze.png", Image::new().wall(15).passage(20))
-        .unwrap();
+impl From<std::num::ParseIntError> for ParseHexError {
+    fn from(err: std::num::ParseIntError) -> ParseHexError {
+        ParseHexError::IntError(err)
+    }
 }
