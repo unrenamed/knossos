@@ -4,12 +4,14 @@ use crate::maze::grid::{
     Grid,
 };
 use crate::utils::types::Coords;
+use clap::ValueEnum;
 use rand::prelude::*;
 
 /// An enumeration over supported cell selection methods for the "Growing Tree" algorithm
 ///
 /// Each method represents the way a new cell is selected causing the "Growing Tree" algorithm
 /// to imitate other algorithms or theirs combinations
+#[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum)]
 pub enum Method {
     /// Selects the most recently added cell, thus imitating the recurive backtracker
     Newest,

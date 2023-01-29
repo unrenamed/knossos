@@ -1,12 +1,14 @@
 use super::Algorithm;
 use crate::maze::grid::{pole::Pole, Grid};
 use crate::utils::types::Coords;
+use clap::ValueEnum;
 use rand::prelude::*;
 
 /// An enumeration over supported biases for the "Binary Tree" algorithm
 ///
 /// Each bias represents the two of four sides of the maze that will be spanned
 /// by a single corridor.
+#[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum)]
 pub enum Bias {
     /// Produces two long corridors on the Northern and Western sides of the maze
     NorthWest,
