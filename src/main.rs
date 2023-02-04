@@ -1,8 +1,6 @@
 use clap::{Parser, Subcommand, ValueEnum};
-use knossos::{
-    maze::{self, formatters},
-    Color,
-};
+use knossos::Color;
+use knossos::maze::{self, formatters};
 
 #[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum)]
 enum Algorithm {
@@ -16,6 +14,12 @@ enum Algorithm {
     RecursiveBacktracking,
     RecursiveDivision,
     Sidewinder,
+}
+
+#[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum)]
+enum AsciiOutputType {
+    Default,
+    Enhanced,
 }
 
 #[derive(Parser, Debug)]
@@ -50,24 +54,22 @@ enum Commands {
             default_value_t = maze::Bias::NorthEast,
             require_equals = true,
             num_args = 0..=1,
-            default_missing_value = "always",
+            default_missing_value = "north-east",
             value_enum,
         )]
         bias: maze::Bias,
 
-        /// Growing mwethod to use for the "Growing Tree" algorithm
+        /// Growing method to use for the "Growing Tree" algorithm
         #[arg(
             long,
             default_value_t = maze::Method::Newest,
             require_equals = true,
             num_args = 0..=1,
-            default_missing_value = "always",
+            default_missing_value = "newest",
             value_enum,
         )]
         growing_method: maze::Method,
     },
-    /// Converts an input maze into given output
-    Convert {},
 }
 
 #[derive(Debug, Subcommand)]
@@ -75,23 +77,26 @@ enum OutputCommands {
     /// Save to a text file with an ASCII representation of a maze
     Ascii {
         /// Output path
-        #[arg(short = 'P', long)]
-        output_path: String,
-    },
-    /// Save to a text file as a game map with colored walls for pseudo 3D games that use ray casting algorithm for modeling and rendering the map
-    GameMap {
-        /// Output path
-        #[arg(short = 'P', long)]
+        #[arg(short = 'O', long)]
         output_path: String,
 
-        /// Distance between any two walls
-        #[arg(long, default_value_t = 3)]
-        span: usize,
+        /// Output type
+        #[arg(
+            short = 'T',
+            long,
+            value_enum,
+            default_value_t = AsciiOutputType::Default,
+            require_equals = true,
+            num_args = 0..=1,
+            default_missing_value = "default",
+        )]
+        output_type: AsciiOutputType,
     },
-    /// Save to a text file as an ASCII game map for pseudo 3D games that use ray casting algorithm for modeling and rendering the map
-    AsciiGameMap {
+    /// Save to a text file as an ASCII game map for pseudo 3D games that use ray casting
+    /// for modeling and rendering the map
+    GameMap {
         /// Output path
-        #[arg(short = 'P', long)]
+        #[arg(short = 'O', long)]
         output_path: String,
 
         /// Distance between any two walls
@@ -109,7 +114,7 @@ enum OutputCommands {
     /// Save to PNG or JPG file
     Image {
         /// Output path
-        #[arg(short = 'P', long)]
+        #[arg(short = 'O', long)]
         output_path: String,
 
         /// Wall size in pixels
@@ -166,13 +171,22 @@ fn main() -> Result<(), maze::MazeSaveError> {
                 .build();
 
             match output {
-                OutputCommands::Ascii { output_path } => {
-                    maze.save(output_path.as_str(), formatters::Ascii)?;
+                OutputCommands::Ascii {
+                    output_path,
+                    output_type,
+                } => {
+                    match output_type {
+                        AsciiOutputType::Default => maze.save(
+                            output_path.as_str(),
+                            formatters::Ascii::<maze::formatters::Default>::new(),
+                        )?,
+                        AsciiOutputType::Enhanced => maze.save(
+                            output_path.as_str(),
+                            formatters::Ascii::<maze::formatters::Enhanced>::new(),
+                        )?,
+                    };
                 }
-                OutputCommands::GameMap { output_path, span } => {
-                    maze.save(output_path.as_str(), maze::GameMap::new().span(span))?;
-                }
-                OutputCommands::AsciiGameMap {
+                OutputCommands::GameMap {
                     output_path,
                     span,
                     passage,
@@ -180,10 +194,7 @@ fn main() -> Result<(), maze::MazeSaveError> {
                 } => {
                     maze.save(
                         output_path.as_str(),
-                        maze::AsciiGameMap::new()
-                            .span(span)
-                            .passage(passage)
-                            .wall(wall),
+                        maze::GameMap::new().span(span).passage(passage).wall(wall),
                     )?;
                 }
                 OutputCommands::Image {
@@ -208,7 +219,6 @@ fn main() -> Result<(), maze::MazeSaveError> {
 
             Ok(())
         }
-        Commands::Convert {} => todo!(),
     }
 }
 
@@ -219,11 +229,11 @@ fn hex_to_rgb(s: &str) -> Result<Color, ParseHexError> {
         return Err(ParseHexError::Length(s.to_string()));
     }
 
-    let mut rgb = [0_u8; 3];
-    rgb[0] = u8::from_str_radix(&s[..2], 16)?;
-    rgb[1] = u8::from_str_radix(&s[2..4], 16)?;
-    rgb[2] = u8::from_str_radix(&s[4..6], 16)?;
-    Ok(Color::RGB(rgb[0], rgb[1], rgb[2]))
+    Ok(Color::RGB(
+        u8::from_str_radix(&s[..2], 16)?,
+        u8::from_str_radix(&s[2..4], 16)?,
+        u8::from_str_radix(&s[4..6], 16)?,
+    ))
 }
 
 #[derive(Debug)]
@@ -239,7 +249,7 @@ impl std::fmt::Display for ParseHexError {
         match self {
             ParseHexError::Length(e) => write!(
                 f,
-                "Expected a 6 charactor color value in hex, but got: {:?}",
+                "Expected a 6 character color value in hex, but got: {:?}",
                 e
             ),
             ParseHexError::IntError(ref e) => e.fmt(f),
