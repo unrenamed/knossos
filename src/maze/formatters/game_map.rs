@@ -1,5 +1,3 @@
-use rand::Rng;
-
 use crate::maze::grid::pole::Pole;
 use crate::maze::{formatters::Formatter, grid::Grid};
 use std::fmt::Write;
@@ -9,45 +7,57 @@ use super::StringWrapper;
 /// A GameMap formatter for a generated maze
 ///
 /// This can be used for generating a game map for pseudo 3D games that use ray casting algorithm
-/// for modeling and rendering the map. The formatter supports several colors for maze walls that
-/// are randomly set when formatting the grid:
-/// - R - red
-/// - G - green
-/// - B - blue
-/// - Y - yellow
-/// - O - orange
-///
+/// for modeling and rendering the map.
+/// 
 /// # Example:
 ///
 /// The span value is 2.
 /// ```no_test
-/// OOYGRGYOGOYOY
-/// R        Y  R
-/// O        Y  G
-/// Y  R  ROBY  R
-/// B  B        G
-/// Y  Y        B
-/// G  GOBB  B  G
-/// R     R  B  O
-/// R     B  O  R
-/// BRGY  G  Y  R
-/// O           Y
-/// O           R
-/// BGYRGBBOGYGGO
+/// #############
+/// #........#..#
+/// #........#..#
+/// #..#  ####..#
+/// #..#........#
+/// #..#........#
+/// #..####..#..#
+/// #.....#..#..#
+/// #.....#..#..#
+/// ####..#..#..#
+/// #...........#
+/// #...........#
+/// #############
 /// ```
 pub struct GameMap {
     span: usize,
+    wall: char,
+    passage: char,
 }
 
 impl GameMap {
     /// Returns a new instance of an [GameMap] formatter with a default settings
     pub fn new() -> GameMap {
-        GameMap { span: 2 }
+        GameMap {
+            span: 2,
+            wall: '#',
+            passage: '.',
+        }
     }
 
     /// Sets a span (a distance between two walls) and returns itself
     pub fn span(mut self, span: usize) -> Self {
         self.span = span;
+        self
+    }
+
+    /// Sets a wall and returns itself
+    pub fn wall(mut self, wall: char) -> Self {
+        self.wall = wall;
+        self
+    }
+
+    /// Sets a passage and returns itself
+    pub fn passage(mut self, passage: char) -> Self {
+        self.passage = passage;
         self
     }
 }
@@ -61,10 +71,10 @@ impl Formatter<StringWrapper> for GameMap {
         // Span (width of a passage) + 1 (place for a wall)
         let span = self.span + 1;
 
-        add_horizontal_border(&mut map, grid.width(), span);
+        add_horizontal_border(&mut map, grid.width(), span, self.wall);
 
         for y in 0..grid.height() * span {
-            add_wall(&mut map);
+            add_wall(&mut map, self.wall);
 
             for x in 0..grid.width() * span {
                 // X coordinate of a cell in the grid
@@ -79,19 +89,19 @@ impl Formatter<StringWrapper> for GameMap {
                 let is_last_col = (x as f64 + 1.0) / span as f64 == cx as f64 + 1.0;
 
                 match (is_last_row, is_last_col) {
-                    (false, false) => add_passage(&mut map),
+                    (false, false) => add_passage(&mut map, self.passage),
                     (false, true) => {
                         if walls.carved(Pole::E) {
-                            add_passage(&mut map);
+                            add_passage(&mut map, self.passage);
                         } else {
-                            add_wall(&mut map);
+                            add_wall(&mut map, self.wall);
                         }
                     }
                     (true, false) => {
                         if walls.carved(Pole::S) {
-                            add_passage(&mut map);
+                            add_passage(&mut map, self.passage);
                         } else {
-                            add_wall(&mut map);
+                            add_wall(&mut map, self.wall);
                         }
                     }
                     (true, true) => {
@@ -99,9 +109,9 @@ impl Formatter<StringWrapper> for GameMap {
                             && walls.carved(Pole::S)
                             && bottom_right_neighbour_exists(cx, cy, grid)
                         {
-                            add_passage(&mut map);
+                            add_passage(&mut map, self.passage);
                         } else {
-                            add_wall(&mut map);
+                            add_wall(&mut map, self.wall);
                         }
                     }
                 }
@@ -114,35 +124,26 @@ impl Formatter<StringWrapper> for GameMap {
     }
 }
 
-fn add_horizontal_border(map: &mut String, width: usize, span: usize) {
+fn add_horizontal_border(map: &mut String, width: usize, span: usize, ch: char) {
     let mut horizontal_border = String::new();
     let border_len = width * span + 1;
     for _ in 0..border_len {
-        horizontal_border.push_str(get_rand_wall())
+        horizontal_border.push(ch);
     }
 
     writeln!(map, "{}", horizontal_border).unwrap();
 }
 
-fn add_passage(map: &mut String) {
-    write!(map, " ").unwrap();
+fn add_passage(map: &mut String, ch: char) {
+    write!(map, "{}", ch).unwrap();
 }
 
-fn add_wall(map: &mut String) {
-    write!(map, "{}", get_rand_wall()).unwrap();
+fn add_wall(map: &mut String, ch: char) {
+    write!(map, "{}", ch).unwrap();
 }
 
 fn move_to_next_line(map: &mut String) {
     writeln!(map, "").unwrap();
-}
-
-fn get_rand_wall<'a>() -> &'a str {
-    #[cfg(not(test))]
-    let colors = ["R", "G", "B", "Y", "O"];
-    #[cfg(test)]
-    let colors = ["R"];
-
-    colors[rand::thread_rng().gen_range(0..colors.len())]
 }
 
 fn bottom_right_neighbour_exists(cx: usize, cy: usize, grid: &Grid) -> bool {
@@ -173,17 +174,21 @@ mod tests {
     #[test]
     fn format() {
         let mut expected = String::new();
-        expected.push_str("RRRRRRRRR\n");
-        expected.push_str("R R     R\n");
-        expected.push_str("R RRRRR R\n");
-        expected.push_str("R     R R\n");
-        expected.push_str("RRR RRR R\n");
-        expected.push_str("R       R\n");
-        expected.push_str("R RRRRRRR\n");
-        expected.push_str("R       R\n");
-        expected.push_str("RRRRRRRRR\n");
+        expected.push_str("#########\n");
+        expected.push_str("#.#.....#\n");
+        expected.push_str("#.#####.#\n");
+        expected.push_str("#.....#.#\n");
+        expected.push_str("###.###.#\n");
+        expected.push_str("#.......#\n");
+        expected.push_str("#.#######\n");
+        expected.push_str("#.......#\n");
+        expected.push_str("#########\n");
 
-        let formatter = GameMap { span: 1 };
+        let formatter = GameMap {
+            span: 1,
+            passage: '.',
+            wall: '#',
+        };
         let mut grid = generate_maze();
         let actual = formatter.format(&mut grid).0;
 

@@ -5,6 +5,9 @@ use std::iter;
 
 use super::StringWrapper;
 
+pub struct Default;
+pub struct Enhanced;
+
 /// An Ascii formatter for a generated maze
 ///
 /// # Example:
@@ -16,10 +19,24 @@ use super::StringWrapper;
 /// | | |_  |
 /// |_______|
 /// ```
-pub struct Ascii;
+pub struct Ascii<Type> {
+    _type: Type,
+}
 
-/// An implementation of a formatter
-impl Formatter<StringWrapper> for Ascii {
+impl Ascii<Default> {
+    pub fn new() -> Self {
+        Ascii { _type: Default }
+    }
+}
+
+impl Ascii<Enhanced> {
+    pub fn new() -> Self {
+        Ascii { _type: Enhanced }
+    }
+}
+
+/// An implementation of a default formatter
+impl Formatter<StringWrapper> for Ascii<Default> {
     /// Converts a given grid into ascii characters and returns an [StringWrapper] over that image
     fn format(&self, grid: &Grid) -> StringWrapper {
         let mut result = String::new();
@@ -61,12 +78,46 @@ impl Formatter<StringWrapper> for Ascii {
     }
 }
 
+/// An implementation of an enhanced formatter
+impl Formatter<StringWrapper> for Ascii<Enhanced> {
+    /// Converts a given grid into ascii characters and returns an [StringWrapper] over that image
+    fn format(&self, grid: &Grid) -> StringWrapper {
+        let mut output = format!("+{}\n", "---+".to_string().repeat(grid.width()));
+
+        for y in 0..grid.height() {
+            let mut top_line = "|".to_string();
+            let mut bottom_line = "+".to_string();
+
+            for x in 0..grid.width() {
+                let walls = grid.get_cell((x, y)).get_walls();
+
+                top_line.push_str("   ");
+                let east_boundary = if walls.carved(Pole::E) { " " } else { "|" };
+                top_line.push_str(east_boundary);
+
+                let south_boundary = if walls.carved(Pole::S) { "   " } else { "---" };
+                bottom_line.push_str(&south_boundary);
+                bottom_line.push('+');
+
+                if x == grid.width() - 1 {
+                    output.push_str(&top_line);
+                    output.push_str("\n");
+                    output.push_str(&bottom_line);
+                    output.push_str("\n");
+                }
+            }
+        }
+
+        StringWrapper(output)
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
-    fn format() {
+    fn format_default() {
         let mut expected = String::new();
         expected.push_str(" _______ \n");
         expected.push_str("| |___  |\n");
@@ -74,7 +125,27 @@ mod tests {
         expected.push_str("|  _____|\n");
         expected.push_str("|_______|\n");
 
-        let formatter = Ascii;
+        let formatter = Ascii::<Default>::new();
+        let mut grid = generate_maze();
+        let actual = formatter.format(&mut grid).0;
+
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn format_ehanced() {
+        let mut expected = String::new();
+        expected.push_str("+---+---+---+---+\n");
+        expected.push_str("|   |           |\n");
+        expected.push_str("+   +---+---+   +\n");
+        expected.push_str("|           |   |\n");
+        expected.push_str("+---+   +---+   +\n");
+        expected.push_str("|               |\n");
+        expected.push_str("+   +---+---+---+\n");
+        expected.push_str("|               |\n");
+        expected.push_str("+---+---+---+---+\n");
+
+        let formatter = Ascii::<Enhanced>::new();
         let mut grid = generate_maze();
         let actual = formatter.format(&mut grid).0;
 

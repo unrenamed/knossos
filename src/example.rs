@@ -135,7 +135,8 @@ fn main() {
     println!("\nEller");
     println!("{}", &maze);
 
-    maze.save("output/maze.txt", Ascii).unwrap();
+    maze.save("output/maze.txt", Ascii::<formatters::Default>::new())
+        .unwrap();
     maze.save("output/maze_game_map.txt", GameMap::new().span(3))
         .unwrap();
     maze.save("output/maze.png", Image::new().wall(15).passage(20))

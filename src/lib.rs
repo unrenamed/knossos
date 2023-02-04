@@ -51,7 +51,7 @@
 //! let maze = OrthogonalMazeBuilder::new().build();
 //!
 //! // Save as ascii
-//! maze.save("output/maze.txt", Ascii).unwrap();
+//! maze.save("output/maze.txt", Ascii::<formatters::Default>::new()).unwrap();
 //! // Save as a game map
 //! maze.save("output/maze_game_map.txt", GameMap::new().span(3)).unwrap();
 //! // Save as a PNG image

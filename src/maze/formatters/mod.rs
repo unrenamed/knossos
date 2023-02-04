@@ -3,7 +3,6 @@
 mod ascii;
 mod game_map;
 mod image;
-mod ascii_game_map;
 
 use crate::maze::grid::Grid;
 use ::image::RgbImage;
@@ -11,9 +10,8 @@ use std::{fs::File, io::Write};
 
 pub use self::image::Image;
 use super::errors::MazeSaveError;
-pub use ascii::Ascii;
+pub use ascii::{Ascii, Default, Enhanced};
 pub use game_map::GameMap;
-pub use ascii_game_map::AsciiGameMap;
 
 /// A trait for maze formatters
 pub trait Formatter<T>

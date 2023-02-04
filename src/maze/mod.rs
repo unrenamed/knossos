@@ -13,6 +13,6 @@ pub mod formatters;
 
 pub use algorithms::*;
 pub use builder::OrthogonalMazeBuilder;
-pub use formatters::{Ascii, AsciiGameMap, GameMap, Image};
+pub use formatters::{Ascii, GameMap, Image};
 pub use errors::MazeSaveError;
 pub use maze::OrthogonalMaze;
