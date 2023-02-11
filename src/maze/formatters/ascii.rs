@@ -5,11 +5,8 @@ use std::iter;
 
 use super::StringWrapper;
 
-pub struct Default;
-pub struct Enhanced;
-
-/// An Ascii formatter for a generated maze
-///
+/// A default output type of an Ascii formatter
+/// 
 /// # Example:
 ///
 /// ```no_test
@@ -19,6 +16,25 @@ pub struct Enhanced;
 /// | | |_  |
 /// |_______|
 /// ```
+pub struct Default;
+/// An enhanced output of an Ascii formatter using broader passages and "+" for corners.
+/// 
+/// # Example:
+/// 
+/// ```no_test
+/// +---+---+---+---+
+/// |               |
+/// +---+---+   +   +
+/// |           |   |
+/// +   +---+   +   +
+/// |   |       |   |
+/// +   +---+---+   +
+/// |   |           |
+/// +---+---+---+---+
+/// ```
+pub struct Enhanced;
+
+/// An Ascii formatter for a generated maze
 pub struct Ascii<Type> {
     _type: Type,
 }
