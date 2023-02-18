@@ -1,8 +1,5 @@
 use super::Algorithm;
-use crate::maze::grid::{
-    pole::Pole::{E, N, S, W},
-    Grid,
-};
+use crate::maze::grid::{Grid, cell::Cell};
 use crate::utils::types::Coords;
 use rand::prelude::*;
 
@@ -38,7 +35,7 @@ impl Algorithm for RecursiveBacktracking {
 }
 
 fn carve_passages_from(coords: Coords, grid: &mut Grid) {
-    let mut dirs = [N, E, S, W];
+    let mut dirs = [Cell::NORTH, Cell::SOUTH, Cell::WEST, Cell::EAST];
     dirs.shuffle(&mut rand::thread_rng());
 
     for dir in dirs {

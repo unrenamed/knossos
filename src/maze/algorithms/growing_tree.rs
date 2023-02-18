@@ -1,8 +1,5 @@
 use super::Algorithm;
-use crate::maze::grid::{
-    pole::Pole::{E, N, S, W},
-    Grid,
-};
+use crate::maze::grid::{Grid, cell::Cell};
 use crate::utils::types::Coords;
 use clap::ValueEnum;
 use rand::prelude::*;
@@ -117,7 +114,7 @@ impl GrowingTree {
 /// 4. Repeats #3 until the C is empty
 impl Algorithm for GrowingTree {
     fn generate(&mut self, grid: &mut Grid) {
-        let mut directions = [E, N, S, W];
+        let mut directions = [Cell::NORTH, Cell::SOUTH, Cell::WEST, Cell::EAST];
         let mut cells = vec![];
         cells.push(get_rand_coords(grid));
 

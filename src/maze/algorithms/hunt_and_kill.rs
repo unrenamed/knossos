@@ -1,9 +1,6 @@
 use super::Algorithm;
 use crate::{
-    maze::grid::{
-        pole::Pole::{E, N, S, W},
-        Grid,
-    },
+    maze::grid::{Grid, cell::Cell},
     utils::types::Coords,
 };
 use rand::prelude::*;
@@ -26,7 +23,7 @@ impl HuntAndKill {
     }
 
     fn walk(&self, coords: Coords, grid: &mut Grid) -> Option<Coords> {
-        let mut directions = [N, E, W, S];
+        let mut directions = [Cell::NORTH, Cell::SOUTH, Cell::WEST, Cell::EAST];
         directions.shuffle(&mut rand::thread_rng());
 
         for dir in directions {
@@ -41,7 +38,7 @@ impl HuntAndKill {
     }
 
     fn hunt(&mut self, grid: &mut Grid) -> Option<Coords> {
-        let directions = [N, E, W, S];
+        let directions = [Cell::NORTH, Cell::SOUTH, Cell::WEST, Cell::EAST];
 
         for y in self.hunt_start_index..grid.height() {
             let mut unvisited_cells_count = 0;

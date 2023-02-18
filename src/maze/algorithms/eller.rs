@@ -1,6 +1,6 @@
 use super::Algorithm;
 use crate::{
-    maze::grid::{pole::Pole, Grid},
+    maze::grid::{Grid, cell::Cell as GridCell},
     utils::types::Coords,
 };
 use rand::prelude::*;
@@ -121,7 +121,7 @@ impl Eller {
 
             state.connect(cell_id, next_cell_id);
             let (x, y) = state.get_cell_coords(cell_id);
-            grid.carve_passage((x, y), Pole::E).unwrap();
+            grid.carve_passage((x, y), GridCell::EAST).unwrap();
         }
     }
 
@@ -141,7 +141,7 @@ impl Eller {
         for (set_id, cells) in state.sets() {
             for cell_id in self.cells_to_connect(cells) {
                 let (x, y) = state.get_cell_coords(cell_id);
-                grid.carve_passage((x, y), Pole::S).unwrap();
+                grid.carve_passage((x, y), GridCell::SOUTH).unwrap();
                 next_state.add(cell_id, set_id, (x, y + 1));
             }
         }

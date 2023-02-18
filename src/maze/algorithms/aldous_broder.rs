@@ -1,9 +1,6 @@
 use super::Algorithm;
 use crate::{
-    maze::grid::{
-        pole::Pole::{E, N, S, W},
-        Grid,
-    },
+    maze::grid::{Grid, cell::Cell},
     utils::types::Coords,
 };
 use rand::prelude::*;
@@ -37,7 +34,7 @@ impl Algorithm for AldousBroder {
         let mut remaining = grid.width() * grid.height() - 1; // the number of remaining unvisited cells
 
         while remaining > 0 {
-            let mut directions = [N, E, S, W];
+            let mut directions = [Cell::NORTH, Cell::SOUTH, Cell::WEST, Cell::EAST];
             directions.shuffle(&mut rand::thread_rng());
 
             for dir in directions {

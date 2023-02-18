@@ -1,5 +1,5 @@
 use super::Algorithm;
-use crate::maze::grid::{pole::Pole, Grid};
+use crate::maze::grid::{Grid, cell::Cell};
 use rand::prelude::*;
 
 /// The "Sidewinder" algorithm for generating mazes
@@ -38,10 +38,10 @@ impl Algorithm for Sidewinder {
                 let carve_east: bool = rng.gen();
 
                 if y == 0 || (carve_east && x + 1 < grid.width()) {
-                    grid.carve_passage((x, y), Pole::E).ok();
+                    grid.carve_passage((x, y), Cell::EAST).ok();
                 } else {
                     let rand_x = rng.gen_range(run_start..=x);
-                    grid.carve_passage((rand_x, y), Pole::N).ok();
+                    grid.carve_passage((rand_x, y), Cell::NORTH).ok();
                     run_start = x + 1;
                 }
             }

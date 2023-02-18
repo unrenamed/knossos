@@ -1,21 +1,18 @@
 pub mod cell;
-pub mod pole;
-pub mod walls;
+use self::cell::CellStatus;
 
 use super::errors::TransitError;
-use crate::utils::{num, types::Coords};
+use crate::utils::types::Coords;
 use cell::Cell;
-use pole::{Pole, OPPOSITE_POLES, POLE_DIR_X, POLE_DIR_Y};
-use std::fmt;
-use std::iter;
+use std::{fmt, iter};
 
-type Cells = Vec<Vec<Cell>>;
 type TransitResult<T> = Result<T, TransitError>;
 
 pub struct Grid {
     width: usize,
     height: usize,
-    cells: Cells,
+    cells: Vec<Cell>,
+    cell_statuses: Vec<CellStatus>,
 }
 
 impl Grid {
@@ -23,50 +20,19 @@ impl Grid {
         Grid {
             width,
             height,
-            cells: vec![vec![Cell::new(); width]; height],
+            cells: vec![Cell::default(); width * height],
+            cell_statuses: vec![CellStatus::default(); width * height],
         }
     }
 
-    pub fn cells(&self) -> &Cells {
+    pub fn cells(&self) -> &Vec<Cell> {
         &self.cells
     }
 
     // Emptys the grid cells thus keeping the border walls only. This should be used when a maze
     // generation algorithm that uses a "wall adding" technique, rather than a "passage carving"
     // one, is selected
-    pub fn drain(&mut self) {
-        let mut cells = vec![vec![Cell::empty(); self.width]; self.height];
-
-        // Add Northern walls to the cells in the first row
-        for cell in cells[0].iter_mut() {
-            (*cell).add_wall(Pole::N);
-        }
-
-        // Add Southern walls to the cells in the last row
-        for cell in cells[self.height - 1].iter_mut() {
-            (*cell).add_wall(Pole::S);
-        }
-
-        // Add Western walls to the cells in the first column
-        for y in 0..cells.len() {
-            for x in 0..cells[y].len() {
-                if x == 0 {
-                    cells[y][x].add_wall(Pole::W);
-                }
-            }
-        }
-
-        // Add Eastern walls to the cells in the last column
-        for y in 0..cells.len() {
-            for x in 0..cells[y].len() {
-                if x == cells[y].len() - 1 {
-                    cells[y][x].add_wall(Pole::E);
-                }
-            }
-        }
-
-        self.cells = cells;
-    }
+    pub fn drain(&mut self) {}
 
     pub fn height(&self) -> usize {
         self.height
@@ -77,97 +43,107 @@ impl Grid {
     }
 
     pub fn mark_cell(&mut self, coords: Coords) {
-        self.get_cell_mut(coords).mark()
+        self.get_cell_status_mut(coords).mark()
     }
 
     pub fn is_cell_visited(&self, coords: Coords) -> bool {
-        self.get_cell(coords).visited()
+        self.get_cell_status(coords).visited()
     }
 
     pub fn is_cell_marked(&self, coords: Coords) -> bool {
-        self.get_cell(coords).marked()
+        self.get_cell_status(coords).marked()
+    }
+
+    pub fn get_cell_status(&self, coords: Coords) -> CellStatus {
+        let (x, y) = coords;
+        self.cell_statuses[y * self.width + x]
     }
 
     pub fn get_cell(&self, coords: Coords) -> &Cell {
         let (x, y) = coords;
-        &self.cells[y][x]
+        &self.cells[y * self.width + x]
     }
 
-    pub fn add_wall(&mut self, coords: Coords, pole: Pole) {
-        let next = self.get_next_cell_coords(coords, pole).unwrap();
-        let opp_pole = *OPPOSITE_POLES.get(&pole).unwrap();
-
-        // add a wall towards a pole
-        self.get_cell_mut(coords).add_wall(pole);
-
-        // add a wall to a next cell towards an opposite pole
-        self.get_cell_mut(next).add_wall(opp_pole);
+    pub fn is_carved(&self, coords: Coords, direction: Cell) -> bool {
+        let (x, y) = coords;
+        self.cells[y * self.width + x].contains(direction)
     }
 
-    pub fn carve_passage(&mut self, coords: Coords, pole: Pole) -> TransitResult<Coords> {
-        let next = self.get_next_cell_coords(coords, pole)?;
-        let opp_pole = *OPPOSITE_POLES.get(&pole).unwrap();
+    pub fn carve_passage(&mut self, coords: Coords, direction: Cell) -> TransitResult<Coords> {
+        let (x, y) = coords;
+        let (nx, ny) = self.get_next_cell_coords(coords, direction)?;
 
-        self.get_cell_mut(coords).remove_wall(pole); // remove a wall towards a pole
-        self.get_cell_mut(next).remove_wall(opp_pole); // remove a wall of a next cell towards an opposite pole
+        match direction {
+            Cell::NORTH => {
+                self.cells[y * self.width + x] |= Cell::NORTH;
+                self.cells[ny * self.width + nx] |= Cell::SOUTH;
+            }
+            Cell::SOUTH => {
+                self.cells[y * self.width + x] |= Cell::SOUTH;
+                self.cells[ny * self.width + nx] |= Cell::NORTH;
+            }
+            Cell::EAST => {
+                self.cells[y * self.width + x] |= Cell::EAST;
+                self.cells[ny * self.width + nx] |= Cell::WEST;
+            }
+            Cell::WEST => {
+                self.cells[y * self.width + x] |= Cell::WEST;
+                self.cells[ny * self.width + nx] |= Cell::EAST;
+            }
+            _ => (),
+        }
 
         self.visit_cell(coords);
-        self.visit_cell(next);
-
-        Ok(next)
-    }
-
-    pub fn get_next_cell_coords(&mut self, coords: Coords, pole: Pole) -> TransitResult<Coords> {
-        self.validate_transit(coords, pole)?;
-
-        let (x, y) = coords;
-        let nx = num::add(x, *POLE_DIR_X.get(&pole).unwrap());
-        let ny = num::add(y, *POLE_DIR_Y.get(&pole).unwrap());
+        self.visit_cell((nx, ny));
 
         Ok((nx, ny))
     }
 
+    pub fn get_next_cell_coords(
+        &mut self,
+        coords: Coords,
+        direction: Cell,
+    ) -> TransitResult<Coords> {
+        self.validate_transit(coords, direction)?;
+
+        let (x, y) = coords;
+        let (nx, ny) = match direction {
+            Cell::NORTH => (x, y - 1),
+            Cell::SOUTH => (x, y + 1),
+            Cell::WEST => (x - 1, y),
+            Cell::EAST => (x + 1, y),
+            _ => (x, y),
+        };
+        Ok((nx, ny))
+    }
+
     fn visit_cell(&mut self, coords: Coords) {
-        self.get_cell_mut(coords).visit()
+        self.get_cell_status_mut(coords).visit()
     }
 
-    fn get_cell_mut(&mut self, coords: Coords) -> &mut Cell {
+    fn get_cell_status_mut(&mut self, coords: Coords) -> &mut CellStatus {
         let (x, y) = coords;
-        &mut self.cells[y][x]
+        &mut self.cell_statuses[y * self.width + x]
     }
 
-    fn validate_transit(&self, coords: Coords, pole: Pole) -> TransitResult<()> {
+    fn validate_transit(&self, coords: Coords, direction: Cell) -> TransitResult<()> {
         let (x, y) = coords;
+        let reason = match direction {
+            Cell::NORTH if y < 1 => Some("First row in the grid cannot go North"),
+            Cell::SOUTH if y + 1 == self.height => Some("Last row in the grid cannot go South"),
+            Cell::WEST if x < 1 => Some("First cell in a row cannot go West"),
+            Cell::EAST if x + 1 == self.width => Some("Last column in the grid cannot go East"),
+            _ => None,
+        };
 
-        if x < 1 && pole == Pole::W {
-            return Err(TransitError {
-                coords: (x, y),
-                reason: String::from("First cell in a row cannot go West"),
-            });
+        if reason.is_none() {
+            return Ok(());
         }
 
-        if y < 1 && pole == Pole::N {
-            return Err(TransitError {
-                coords: (x, y),
-                reason: String::from("First row in the grid cannot go North"),
-            });
-        }
-
-        if x + 1 == self.width && pole == Pole::E {
-            return Err(TransitError {
-                coords: (x, y),
-                reason: String::from("Last column in the grid cannot go East"),
-            });
-        }
-
-        if y + 1 == self.height && pole == Pole::S {
-            return Err(TransitError {
-                coords: (x, y),
-                reason: String::from("Last row in the grid cannot go South"),
-            });
-        }
-
-        Ok(())
+        return Err(TransitError {
+            coords: (x, y),
+            reason: reason.unwrap().to_string(),
+        });
     }
 }
 
@@ -183,17 +159,16 @@ impl fmt::Display for Grid {
             write!(f, "|")?; // display left border
 
             for x in 0..self.width {
-                let walls = self.get_cell((x, y)).get_walls();
-
-                if walls.carved(Pole::S) {
+                if self.is_carved((x, y), Cell::SOUTH) {
                     write!(f, " ")?;
                 } else {
                     write!(f, "_")?;
                 }
 
-                if walls.carved(Pole::E) {
-                    let next_cell_walls = self.get_cell((x + 1, y)).get_walls();
-                    if walls.carved(Pole::S) || next_cell_walls.carved(Pole::S) {
+                if self.is_carved((x, y), Cell::EAST) {
+                    if self.is_carved((x, y), Cell::SOUTH)
+                        || self.is_carved((x + 1, y), Cell::SOUTH)
+                    {
                         write!(f, " ")?;
                     } else {
                         write!(f, "_")?;

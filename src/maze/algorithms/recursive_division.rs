@@ -1,5 +1,5 @@
 use super::Algorithm;
-use crate::maze::grid::{pole::Pole, Grid};
+use crate::maze::grid::{cell::Cell, Grid};
 use rand::prelude::*;
 
 enum Orientation {
@@ -80,14 +80,15 @@ impl RecursiveDivision {
 
         // Define what direction is corresponding to the wall orientation
         let dir = match orientation {
-            Orientation::Horizontal => Pole::S,
-            Orientation::Vertical => Pole::E,
+            Orientation::Horizontal => Cell::SOUTH,
+            Orientation::Vertical => Cell::EAST,
         };
 
         // Add the walls and carve a passage
         for _ in 0..length {
             if wx != px || wy != py {
-                grid.add_wall((wx, wy), dir)
+                // TODO: fix
+                grid.carve_passage((wx, wy), dir);
             }
 
             wx += dx;

@@ -13,6 +13,7 @@ macro_rules! maze {
     };
 }
 
+// TODO: use assert_fs
 mod formatters {
     use test::Bencher;
     use knossos::{maze::*};
