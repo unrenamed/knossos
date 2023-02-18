@@ -1,10 +1,11 @@
 use rand::prelude::SliceRandom;
 
 use super::Algorithm;
-use crate::maze::grid::{pole::Pole, Grid};
+use crate::maze::grid::cell::Cell;
+use crate::maze::grid::Grid;
 use crate::utils::arena::{ArenaTree, NodeId};
 
-type Edge = (usize, usize, Pole);
+type Edge = (usize, usize, Cell);
 type Edges = Vec<Edge>;
 
 /// The Kruskal's algorithm for generating mazes
@@ -36,14 +37,14 @@ impl Algorithm for Kruskal {
                 break;
             }
 
-            let (x, y, pole) = edge.unwrap();
-            let (nx, ny) = grid.get_next_cell_coords((x, y), pole).unwrap();
+            let (x, y, direction) = edge.unwrap();
+            let (nx, ny) = grid.get_next_cell_coords((x, y), direction).unwrap();
 
             let node1 = NodeId(y * grid.width() + x);
             let node2 = NodeId(ny * grid.width() + nx);
             if !arena.connected(node1, node2) {
                 arena.connect(node1, node2);
-                grid.carve_passage((x, y), pole).unwrap();
+                grid.carve_passage((x, y), direction).unwrap();
             }
         }
     }
@@ -63,10 +64,10 @@ fn populate_edges(grid: &Grid) -> Edges {
     for y in 0..grid.height() {
         for x in 0..grid.width() {
             if y > 0 {
-                edges.push((x, y, Pole::N))
+                edges.push((x, y, Cell::NORTH))
             }
             if x > 0 {
-                edges.push((x, y, Pole::W))
+                edges.push((x, y, Cell::WEST))
             }
         }
     }

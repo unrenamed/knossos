@@ -1,4 +1,4 @@
-use crate::maze::grid::pole::Pole;
+use crate::maze::grid::cell::Cell;
 use crate::maze::{formatters::Formatter, grid::Grid};
 use std::fmt::Write;
 use std::iter;
@@ -6,7 +6,7 @@ use std::iter;
 use super::StringWrapper;
 
 /// A default output type of an Ascii formatter
-/// 
+///
 /// # Example:
 ///
 /// ```no_test
@@ -18,9 +18,9 @@ use super::StringWrapper;
 /// ```
 pub struct Default;
 /// An enhanced output of an Ascii formatter using broader passages and "+" for corners.
-/// 
+///
 /// # Example:
-/// 
+///
 /// ```no_test
 /// +---+---+---+---+
 /// |               |
@@ -67,17 +67,16 @@ impl Formatter<StringWrapper> for Ascii<Default> {
             write!(result, "|").unwrap();
 
             for x in 0..grid.width() {
-                let walls = grid.get_cell((x, y)).get_walls();
-
-                if walls.carved(Pole::S) {
+                if grid.is_carved((x, y), Cell::SOUTH) {
                     write!(result, " ").unwrap();
                 } else {
                     write!(result, "_").unwrap();
                 }
 
-                if walls.carved(Pole::E) {
-                    let next_cell_walls = grid.get_cell((x + 1, y)).get_walls();
-                    if walls.carved(Pole::S) || next_cell_walls.carved(Pole::S) {
+                if grid.is_carved((x, y), Cell::EAST) {
+                    if grid.is_carved((x, y), Cell::SOUTH)
+                        || grid.is_carved((x + 1, y), Cell::SOUTH)
+                    {
                         write!(result, " ").unwrap();
                     } else {
                         write!(result, "_").unwrap();
@@ -105,13 +104,19 @@ impl Formatter<StringWrapper> for Ascii<Enhanced> {
             let mut bottom_line = "+".to_string();
 
             for x in 0..grid.width() {
-                let walls = grid.get_cell((x, y)).get_walls();
-
                 top_line.push_str("   ");
-                let east_boundary = if walls.carved(Pole::E) { " " } else { "|" };
+                let east_boundary = if grid.is_carved((x, y), Cell::EAST) {
+                    " "
+                } else {
+                    "|"
+                };
                 top_line.push_str(east_boundary);
 
-                let south_boundary = if walls.carved(Pole::S) { "   " } else { "---" };
+                let south_boundary = if grid.is_carved((x, y), Cell::SOUTH) {
+                    "   "
+                } else {
+                    "---"
+                };
                 bottom_line.push_str(&south_boundary);
                 bottom_line.push('+');
 
@@ -171,24 +176,24 @@ mod tests {
     fn generate_maze() -> Grid {
         let mut grid = Grid::new(4, 4);
 
-        grid.carve_passage((0, 0), Pole::S).unwrap();
-        grid.carve_passage((0, 1), Pole::E).unwrap();
-        grid.carve_passage((0, 2), Pole::E).unwrap();
-        grid.carve_passage((0, 2), Pole::S).unwrap();
-        grid.carve_passage((0, 3), Pole::E).unwrap();
+        grid.carve_passage((0, 0), Cell::SOUTH).unwrap();
+        grid.carve_passage((0, 1), Cell::EAST).unwrap();
+        grid.carve_passage((0, 2), Cell::EAST).unwrap();
+        grid.carve_passage((0, 2), Cell::SOUTH).unwrap();
+        grid.carve_passage((0, 3), Cell::EAST).unwrap();
 
-        grid.carve_passage((1, 0), Pole::E).unwrap();
-        grid.carve_passage((1, 1), Pole::E).unwrap();
-        grid.carve_passage((1, 1), Pole::S).unwrap();
-        grid.carve_passage((1, 2), Pole::E).unwrap();
-        grid.carve_passage((1, 3), Pole::E).unwrap();
+        grid.carve_passage((1, 0), Cell::EAST).unwrap();
+        grid.carve_passage((1, 1), Cell::EAST).unwrap();
+        grid.carve_passage((1, 1), Cell::SOUTH).unwrap();
+        grid.carve_passage((1, 2), Cell::EAST).unwrap();
+        grid.carve_passage((1, 3), Cell::EAST).unwrap();
 
-        grid.carve_passage((2, 0), Pole::E).unwrap();
-        grid.carve_passage((2, 2), Pole::E).unwrap();
-        grid.carve_passage((2, 3), Pole::E).unwrap();
+        grid.carve_passage((2, 0), Cell::EAST).unwrap();
+        grid.carve_passage((2, 2), Cell::EAST).unwrap();
+        grid.carve_passage((2, 3), Cell::EAST).unwrap();
 
-        grid.carve_passage((3, 1), Pole::N).unwrap();
-        grid.carve_passage((3, 1), Pole::S).unwrap();
+        grid.carve_passage((3, 1), Cell::NORTH).unwrap();
+        grid.carve_passage((3, 1), Cell::SOUTH).unwrap();
 
         grid
     }

@@ -1,5 +1,4 @@
 use crate::maze::grid::cell::Cell;
-use crate::maze::grid::pole::Pole;
 use crate::maze::{formatters::Formatter, grid::Grid};
 use crate::utils::color::Color;
 use crate::utils::types::Coords;
@@ -85,17 +84,15 @@ impl Image {
     }
 
     fn draw_maze(&self, image: &mut RgbImage, grid: &Grid) {
-        for (y, row) in grid.cells().iter().enumerate() {
-            for (x, cell) in row.iter().enumerate() {
-                self.draw_cell((x, y), cell, image);
+        for y in 0..grid.height() {
+            for x in 0..grid.width() {
+                self.draw_cell((x, y), grid, image);
             }
         }
     }
 
-    fn draw_cell(&self, coords: Coords, cell: &Cell, image: &mut RgbImage) {
+    fn draw_cell(&self, coords: Coords, grid: &Grid, image: &mut RgbImage) {
         let (x, y) = coords;
-        let walls = cell.get_walls();
-
         let cell_width_without_joint_wall = self.cell_width() - self.wall_width;
         let start_x = x * cell_width_without_joint_wall + self.margin;
         let start_y = y * cell_width_without_joint_wall + self.margin;
@@ -113,7 +110,7 @@ impl Image {
                     && y >= start_y
                     && y <= start_y + self.wall_width
                 {
-                    if walls.carved(Pole::N) && walls.carved(Pole::W) {
+                    if grid.is_carved(coords, Cell::NORTH) && grid.is_carved(coords, Cell::WEST) {
                         continue;
                     }
                 }
@@ -124,7 +121,7 @@ impl Image {
                     && y >= start_y
                     && y <= start_y + self.wall_width
                 {
-                    if walls.carved(Pole::N) {
+                    if grid.is_carved(coords, Cell::NORTH) {
                         continue;
                     }
                 }
@@ -135,7 +132,7 @@ impl Image {
                     && y >= start_y
                     && y <= start_y + self.wall_width
                 {
-                    if walls.carved(Pole::N) && walls.carved(Pole::E) {
+                    if grid.is_carved(coords, Cell::NORTH) && grid.is_carved(coords, Cell::EAST) {
                         continue;
                     }
                 }
@@ -146,7 +143,7 @@ impl Image {
                     && y >= start_y + self.wall_width
                     && y <= start_y + cell_width_without_joint_wall
                 {
-                    if walls.carved(Pole::W) {
+                    if grid.is_carved(coords, Cell::WEST) {
                         continue;
                     }
                 }
@@ -166,7 +163,7 @@ impl Image {
                     && y >= start_y + self.wall_width
                     && y <= start_y + cell_width_without_joint_wall
                 {
-                    if walls.carved(Pole::E) {
+                    if grid.is_carved(coords, Cell::EAST) {
                         continue;
                     }
                 }
@@ -177,7 +174,7 @@ impl Image {
                     && y >= start_y + cell_width_without_joint_wall
                     && y <= start_y + self.cell_width()
                 {
-                    if walls.carved(Pole::S) && walls.carved(Pole::W) {
+                    if grid.is_carved(coords, Cell::SOUTH) && grid.is_carved(coords, Cell::WEST) {
                         continue;
                     }
                 }
@@ -188,7 +185,7 @@ impl Image {
                     && y >= start_y + cell_width_without_joint_wall
                     && y <= start_y + self.cell_width()
                 {
-                    if walls.carved(Pole::S) {
+                    if grid.is_carved(coords, Cell::SOUTH) {
                         continue;
                     }
                 }
@@ -199,7 +196,7 @@ impl Image {
                     && y >= start_y + cell_width_without_joint_wall
                     && y <= start_y + self.cell_width()
                 {
-                    if walls.carved(Pole::S) && walls.carved(Pole::E) {
+                    if grid.is_carved(coords, Cell::SOUTH) && grid.is_carved(coords, Cell::EAST) {
                         continue;
                     }
                 }
@@ -230,6 +227,8 @@ impl Formatter<ImageWrapper> for Image {
 #[cfg(test)]
 mod tests {
     use image::EncodableLayout;
+
+    use crate::maze::grid::cell::Cell;
 
     use super::*;
 
@@ -273,24 +272,24 @@ mod tests {
     fn generate_maze() -> Grid {
         let mut grid = Grid::new(4, 4);
 
-        grid.carve_passage((0, 0), Pole::S).unwrap();
-        grid.carve_passage((0, 1), Pole::E).unwrap();
-        grid.carve_passage((0, 2), Pole::E).unwrap();
-        grid.carve_passage((0, 2), Pole::S).unwrap();
-        grid.carve_passage((0, 3), Pole::E).unwrap();
+        grid.carve_passage((0, 0), Cell::SOUTH).unwrap();
+        grid.carve_passage((0, 1), Cell::EAST).unwrap();
+        grid.carve_passage((0, 2), Cell::EAST).unwrap();
+        grid.carve_passage((0, 2), Cell::SOUTH).unwrap();
+        grid.carve_passage((0, 3), Cell::EAST).unwrap();
 
-        grid.carve_passage((1, 0), Pole::E).unwrap();
-        grid.carve_passage((1, 1), Pole::E).unwrap();
-        grid.carve_passage((1, 1), Pole::S).unwrap();
-        grid.carve_passage((1, 2), Pole::E).unwrap();
-        grid.carve_passage((1, 3), Pole::E).unwrap();
+        grid.carve_passage((1, 0), Cell::EAST).unwrap();
+        grid.carve_passage((1, 1), Cell::EAST).unwrap();
+        grid.carve_passage((1, 1), Cell::SOUTH).unwrap();
+        grid.carve_passage((1, 2), Cell::EAST).unwrap();
+        grid.carve_passage((1, 3), Cell::EAST).unwrap();
 
-        grid.carve_passage((2, 0), Pole::E).unwrap();
-        grid.carve_passage((2, 2), Pole::E).unwrap();
-        grid.carve_passage((2, 3), Pole::E).unwrap();
+        grid.carve_passage((2, 0), Cell::EAST).unwrap();
+        grid.carve_passage((2, 2), Cell::EAST).unwrap();
+        grid.carve_passage((2, 3), Cell::EAST).unwrap();
 
-        grid.carve_passage((3, 1), Pole::N).unwrap();
-        grid.carve_passage((3, 1), Pole::S).unwrap();
+        grid.carve_passage((3, 1), Cell::NORTH).unwrap();
+        grid.carve_passage((3, 1), Cell::SOUTH).unwrap();
 
         grid
     }

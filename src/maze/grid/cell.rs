@@ -1,48 +1,28 @@
-use super::pole::Pole;
-use super::walls::Walls;
+use bitflags::bitflags;
 
-#[derive(Debug, Clone)]
-pub struct Cell {
-    walls: Walls,
+bitflags! {
+    #[derive(Default)]
+    pub struct Cell: u8 {
+        const NORTH = 0b0001;
+        const SOUTH = 0b0010;
+        const EAST =  0b0100;
+        const WEST =  0b1000;
+    }
+}
+
+#[derive(Default, Copy, Clone)]
+pub struct CellStatus {
     visited: bool,
     marked: bool,
 }
 
-impl Cell {
-    pub fn new() -> Cell {
-        Cell {
-            walls: Walls::init(),
-            visited: false,
-            marked: false,
-        }
-    }
-
-    pub fn empty() -> Cell {
-        Cell {
-            walls: Walls::empty(),
-            visited: false,
-            marked: false,
-        }
-    }
-
-    pub fn get_walls(&self) -> &Walls {
-        &self.walls
-    }
-
+impl CellStatus {
     pub fn visited(&self) -> bool {
         self.visited
     }
 
     pub fn marked(&self) -> bool {
         self.marked
-    }
-
-    pub fn add_wall(&mut self, pole: Pole) {
-        self.walls.add(pole)
-    }
-
-    pub fn remove_wall(&mut self, pole: Pole) {
-        self.walls.remove(pole);
     }
 
     pub fn visit(&mut self) {

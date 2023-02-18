@@ -1,5 +1,6 @@
 use super::Algorithm;
-use crate::maze::grid::{pole::Pole, Grid};
+use crate::maze::grid::cell::Cell;
+use crate::maze::grid::Grid;
 use crate::utils::types::Coords;
 use clap::ValueEnum;
 use rand::prelude::*;
@@ -46,41 +47,41 @@ impl BinaryTree {
         BinaryTree { bias }
     }
 
-    fn populate_dirs(&self, coords: Coords, grid: &Grid) -> Vec<Pole> {
+    fn populate_dirs(&self, coords: Coords, grid: &Grid) -> Vec<Cell> {
         let mut dirs = vec![];
         let (x, y) = coords;
 
         match self.bias {
             Bias::NorthWest => {
                 if y > 0 {
-                    dirs.push(Pole::N)
+                    dirs.push(Cell::NORTH)
                 }
                 if x > 0 {
-                    dirs.push(Pole::W)
+                    dirs.push(Cell::WEST)
                 }
             }
             Bias::NorthEast => {
                 if y > 0 {
-                    dirs.push(Pole::N)
+                    dirs.push(Cell::NORTH)
                 }
                 if x + 1 < grid.width() {
-                    dirs.push(Pole::E)
+                    dirs.push(Cell::EAST)
                 }
             }
             Bias::SouthWest => {
                 if y + 1 < grid.height() {
-                    dirs.push(Pole::S)
+                    dirs.push(Cell::SOUTH)
                 }
                 if x > 0 {
-                    dirs.push(Pole::W)
+                    dirs.push(Cell::WEST)
                 }
             }
             Bias::SouthEast => {
                 if y + 1 < grid.height() {
-                    dirs.push(Pole::S)
+                    dirs.push(Cell::SOUTH)
                 }
                 if x + 1 < grid.width() {
-                    dirs.push(Pole::E)
+                    dirs.push(Cell::EAST)
                 }
             }
         }
