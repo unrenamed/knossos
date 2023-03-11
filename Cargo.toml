@@ -18,3 +18,5 @@ lazy_static = "1.4.0"
 rand = "0.8.4"
 image = "0.24.1"
 clap = { version = "4.1.4", features = ["derive"] }
+assert_cmd = "2.0.8"
+assert_fs = "1.0.10"
