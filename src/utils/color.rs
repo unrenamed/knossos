@@ -20,3 +20,13 @@ impl std::fmt::Display for Color {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn display_color() {
+        assert_eq!(Color::RGB(0, 10, 20).to_string(), format!("rgb(0, 10, 20)"));
+    }
+}
