@@ -1,4 +1,4 @@
-name: Rust
+name: Build
 
 on:
   push:
@@ -37,5 +37,3 @@ jobs:
           cargo +nightly tarpaulin --verbose --all-features --workspace --timeout 120 --out Lcov --output-dir ./coverage
       - name: Upload to coveralls.io
         uses: coverallsapp/github-action@v2
-        with:
-          fail_ci_if_error: true
