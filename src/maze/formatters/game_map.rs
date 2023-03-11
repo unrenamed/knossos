@@ -8,7 +8,7 @@ use super::StringWrapper;
 ///
 /// This can be used for generating a game map for pseudo 3D games that use ray casting algorithm
 /// for modeling and rendering the map.
-/// 
+///
 /// # Example:
 ///
 /// The span value is 2.
@@ -169,6 +169,18 @@ mod tests {
     fn span_change() {
         let formatter = GameMap::new().span(10);
         assert_eq!(10, formatter.span);
+    }
+
+    #[test]
+    fn wall_change() {
+        let formatter = GameMap::new().wall('#');
+        assert_eq!('#', formatter.wall);
+    }
+
+    #[test]
+    fn passage_change() {
+        let formatter = GameMap::new().passage('.');
+        assert_eq!('.', formatter.passage);
     }
 
     #[test]
