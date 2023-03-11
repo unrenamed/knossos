@@ -170,20 +170,26 @@ fn main() -> Result<(), maze::MazeSaveError> {
                 .algorithm(algorithm)
                 .build();
 
+            let result;
+
             match output {
                 OutputCommands::Ascii {
                     output_path,
                     output_type,
                 } => {
                     match output_type {
-                        AsciiOutputType::Default => maze.save(
-                            output_path.as_str(),
-                            formatters::Ascii::<maze::formatters::Default>::new(),
-                        )?,
-                        AsciiOutputType::Enhanced => maze.save(
-                            output_path.as_str(),
-                            formatters::Ascii::<maze::formatters::Enhanced>::new(),
-                        )?,
+                        AsciiOutputType::Default => {
+                            result = maze.save(
+                                output_path.as_str(),
+                                formatters::Ascii::<maze::formatters::Default>::new(),
+                            )
+                        }
+                        AsciiOutputType::Enhanced => {
+                            result = maze.save(
+                                output_path.as_str(),
+                                formatters::Ascii::<maze::formatters::Enhanced>::new(),
+                            )
+                        }
                     };
                 }
                 OutputCommands::GameMap {
@@ -192,10 +198,10 @@ fn main() -> Result<(), maze::MazeSaveError> {
                     passage,
                     wall,
                 } => {
-                    maze.save(
+                    result = maze.save(
                         output_path.as_str(),
                         maze::GameMap::new().span(span).passage(passage).wall(wall),
-                    )?;
+                    );
                 }
                 OutputCommands::Image {
                     output_path,
@@ -205,7 +211,7 @@ fn main() -> Result<(), maze::MazeSaveError> {
                     passage_color,
                     wall_color,
                 } => {
-                    maze.save(
+                    result = maze.save(
                         output_path.as_str(),
                         maze::Image::new()
                             .wall(wall_size)
@@ -213,11 +219,17 @@ fn main() -> Result<(), maze::MazeSaveError> {
                             .margin(margin)
                             .background(passage_color)
                             .foreground(wall_color),
-                    )?;
+                    );
                 }
             };
 
-            Ok(())
+            match result {
+                Ok(msg) => {
+                    println!("{}", msg);
+                    return Ok(());
+                }
+                Err(err) => return Err(err),
+            }
         }
     }
 }
@@ -260,5 +272,16 @@ impl std::fmt::Display for ParseHexError {
 impl From<std::num::ParseIntError> for ParseHexError {
     fn from(err: std::num::ParseIntError) -> ParseHexError {
         ParseHexError::IntError(err)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn verify_cli() {
+        use clap::CommandFactory;
+        Cli::command().debug_assert()
     }
 }
