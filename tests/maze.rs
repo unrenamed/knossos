@@ -1,4 +1,5 @@
 use knossos::maze::*;
+use assert_fs::fixture::TempDir;
 
 macro_rules! maze {
     ($algo:expr) => {
@@ -13,13 +14,13 @@ macro_rules! maze {
 }
 
 #[test]
-fn builds_valid_maze_with_default_params() {
+fn build_valid_maze_with_default_params() {
     let maze = OrthogonalMazeBuilder::new().build();
     assert!(maze.is_valid());
 }
 
 #[test]
-fn builds_valid_maze_with_custom_params() {
+fn build_valid_maze_with_custom_params() {
     let maze = OrthogonalMazeBuilder::new()
         .height(10)
         .width(20)
@@ -30,12 +31,12 @@ fn builds_valid_maze_with_custom_params() {
 }
 
 #[test]
-fn builds_valid_maze_with_aldou_broder_algorithm() {
+fn build_valid_maze_with_aldou_broder_algorithm() {
     assert!(maze!(AldousBroder).is_valid());
 }
 
 #[test]
-fn builds_valid_maze_with_binary_tree_algorithm() {
+fn build_valid_maze_with_binary_tree_algorithm() {
     assert!(maze!(BinaryTree::new(Bias::NorthWest)).is_valid());
     assert!(maze!(BinaryTree::new(Bias::SouthWest)).is_valid());
     assert!(maze!(BinaryTree::new(Bias::NorthEast)).is_valid());
@@ -43,12 +44,12 @@ fn builds_valid_maze_with_binary_tree_algorithm() {
 }
 
 #[test]
-fn builds_valid_maze_with_eller_algorithm() {
+fn build_valid_maze_with_eller_algorithm() {
     assert!(maze!(Eller).is_valid());
 }
 
 #[test]
-fn builds_valid_maze_with_growing_tree_algorithm() {
+fn build_valid_maze_with_growing_tree_algorithm() {
     assert!(maze!(GrowingTree::new(Method::Newest)).is_valid());
     assert!(maze!(GrowingTree::new(Method::Oldest)).is_valid());
     assert!(maze!(GrowingTree::new(Method::Middle)).is_valid());
@@ -59,32 +60,32 @@ fn builds_valid_maze_with_growing_tree_algorithm() {
 }
 
 #[test]
-fn builds_valid_maze_with_hunt_and_kill_algorithm() {
+fn build_valid_maze_with_hunt_and_kill_algorithm() {
     assert!(maze!(HuntAndKill::new()).is_valid());
 }
 
 #[test]
-fn builds_valid_maze_with_kruskal_algorithm() {
+fn build_valid_maze_with_kruskal_algorithm() {
     assert!(maze!(Kruskal).is_valid());
 }
 
 #[test]
-fn builds_valid_maze_with_prim_algorithm() {
+fn build_valid_maze_with_prim_algorithm() {
     assert!(maze!(Prim::new()).is_valid());
 }
 
 #[test]
-fn builds_valid_maze_with_recursive_backtracking_algorithm() {
+fn build_valid_maze_with_recursive_backtracking_algorithm() {
     assert!(maze!(RecursiveBacktracking).is_valid());
 }
 
 #[test]
-fn builds_valid_maze_with_recursive_division_algorithm() {
+fn build_valid_maze_with_recursive_division_algorithm() {
     assert!(maze!(RecursiveDivision).is_valid());
 }
 
 #[test]
-fn builds_valid_maze_with_sidewinder_algorithm() {
+fn build_valid_maze_with_sidewinder_algorithm() {
     assert!(maze!(Sidewinder).is_valid());
 }
 
@@ -111,17 +112,14 @@ macro_rules! assert_save_maze_error {
 }
 
 #[test]
-fn saves_maze_as_ascii() {
+fn save_maze_as_ascii() {
+    let output_dir = TempDir::new().unwrap();
+    let file_path = format!("{}/maze.png", output_dir.path().display());
     let expected = format!(
         "Maze was successfully written to a file: {}",
-        to_absolute_path!("tests/output/ascii.txt")
+        to_absolute_path!(&file_path)
     );
-
-    assert_save_maze!(
-        "tests/output/ascii.txt",
-        Ascii::<formatters::Default>::new(),
-        expected
-    );
+    assert_save_maze!(&file_path, Ascii::<formatters::Default>::new(), expected);
 }
 
 #[test]
@@ -139,13 +137,14 @@ fn save_maze_as_ascii_returns_error() {
 }
 
 #[test]
-fn saves_maze_as_game_map() {
+fn save_maze_as_game_map() {
+    let output_dir = TempDir::new().unwrap();
+    let file_path = format!("{}/maze.png", output_dir.path().display());
     let expected = format!(
         "Maze was successfully written to a file: {}",
-        to_absolute_path!("tests/output/game_map.txt")
+        to_absolute_path!(&file_path)
     );
-
-    assert_save_maze!("tests/output/game_map.txt", GameMap::new(), expected);
+    assert_save_maze!(&file_path, GameMap::new(), expected);
 }
 
 #[test]
@@ -159,9 +158,11 @@ fn save_maze_as_game_map_returns_error() {
 }
 
 #[test]
-fn saves_maze_as_png() {
-    let expected = format!("Maze was successfully saved as an image: tests/output/image.png");
-    assert_save_maze!("tests/output/image.png", Image::new(), expected);
+fn save_maze_as_png() {
+    let output_dir = TempDir::new().unwrap();
+    let file_path = format!("{}/maze.png", output_dir.path().display());
+    let expected = format!("Maze was successfully saved as an image: {}", &file_path);
+    assert_save_maze!(&file_path, Image::new(), expected);
 }
 
 #[test]
