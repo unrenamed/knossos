@@ -1,6 +1,7 @@
-[![](https://img.shields.io/crates/v/knossos)](https://crates.io/crates/knossos)
-[![](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![](https://github.com/unrenamed/knossos/actions/workflows/rust.yml/badge.svg?branch=main)](https://github.com/unrenamed/knossos/actions/workflows/rust.yml)
+[![Latest Version](https://img.shields.io/crates/v/knossos)](https://crates.io/crates/knossos)
+[![License:Apache](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Build Status](https://github.com/unrenamed/knossos/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/unrenamed/knossos/actions/workflows/build.yml)
+[![Coverage Status](https://coveralls.io/repos/github/unrenamed/knossos/badge.svg)](https://coveralls.io/github/unrenamed/knossos)
 
 <p align="center">
   <img src="assets/daedalus.png?raw=true" width="400" height="400">
