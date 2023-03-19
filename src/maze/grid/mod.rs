@@ -29,11 +29,6 @@ impl Grid {
         &self.cells
     }
 
-    // Emptys the grid cells thus keeping the border walls only. This should be used when a maze
-    // generation algorithm that uses a "wall adding" technique, rather than a "passage carving"
-    // one, is selected
-    pub fn drain(&mut self) {}
-
     pub fn height(&self) -> usize {
         self.height
     }
