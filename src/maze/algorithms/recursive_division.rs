@@ -21,62 +21,42 @@ enum Orientation {
 pub struct RecursiveDivision;
 
 impl RecursiveDivision {
-    fn divide(
-        &mut self,
-        grid: &mut Grid,
-        x: usize,
-        y: usize,
-        width: usize,
-        height: usize,
-        orientation: Orientation,
-    ) {
-        if width < 2 || height < 2 {
+    fn divide(&mut self, grid: &mut Grid, x: usize, y: usize, ax: usize, ay: usize) {
+        let w = ax - x;
+        let h = ay - y;
+
+        if w < 2 || h < 2 {
+            if w > 1 {
+                for cx in x..(ax - 1) {
+                    grid.carve_passage((cx, y), Cell::EAST).unwrap();
+                }
+            } else if h > 1 {
+                for cy in y..(ay - 1) {
+                    grid.carve_passage((x, cy), Cell::SOUTH).unwrap();
+                }
+            }
             return;
         }
 
         let mut rng = rand::thread_rng();
 
-        // Get X and Y coordinates of a cell where walls will be drawn from, i.e. determine a vector
-        // start coordinates
-        let mut wx = x + match orientation {
-            Orientation::Vertical if width > 2 => rng.gen_range(0..width - 2),
-            _ => 0,
-        };
+        // Which way a field with the given dimensions ought to be bisected
+        let orientation = choose_orientation(w, h);
 
-        let mut wy = y + match orientation {
-            Orientation::Horizontal if height > 2 => rng.gen_range(0..height - 2),
-            _ => 0,
-        };
+        // Get X and Y coordinates of a cell where a wall will be carved
+        let px = rng.gen_range(
+            x..match orientation {
+                Orientation::Vertical => ax - 1,
+                Orientation::Horizontal => ax,
+            },
+        );
 
-        // Get X and Y coordinates of a cell where a passage will be carved through the wall
-        let px = wx
-            + match orientation {
-                Orientation::Horizontal => rng.gen_range(0..width),
-                Orientation::Vertical => 0,
-            };
-
-        let py = wy
-            + match orientation {
-                Orientation::Horizontal => 0,
-                Orientation::Vertical => rng.gen_range(0..height),
-            };
-
-        // Get X and Y coordinates of a vector direction in which walls will be added
-        let dx = match orientation {
-            Orientation::Horizontal => 1,
-            Orientation::Vertical => 0,
-        };
-
-        let dy = match orientation {
-            Orientation::Horizontal => 0,
-            Orientation::Vertical => 1,
-        };
-
-        // Determine how long the entire wall will be
-        let length = match orientation {
-            Orientation::Horizontal => width,
-            Orientation::Vertical => height,
-        };
+        let py = rng.gen_range(
+            y..match orientation {
+                Orientation::Vertical => ay,
+                Orientation::Horizontal => ay - 1,
+            },
+        );
 
         // Define what direction is corresponding to the wall orientation
         let dir = match orientation {
@@ -84,40 +64,24 @@ impl RecursiveDivision {
             Orientation::Vertical => Cell::EAST,
         };
 
-        // Add the walls and carve a passage
-        for _ in 0..length {
-            if wx != px || wy != py {
-                // TODO: fix
-                grid.carve_passage((wx, wy), dir);
+        // Carve passage
+        let (nx, ny) = grid.carve_passage((px, py), dir).unwrap();
+
+        // Determine the bounds of the sub-fields and get them split
+        match orientation {
+            Orientation::Horizontal => {
+                // I sub-field
+                self.divide(grid, x, y, ax, ny);
+                // II sub-field
+                self.divide(grid, x, ny, ax, ay);
             }
-
-            wx += dx;
-            wy += dy;
+            Orientation::Vertical => {
+                // I sub-field
+                self.divide(grid, x, y, nx, ay);
+                // II sub-field
+                self.divide(grid, nx, y, ax, ay);
+            }
         }
-
-        // Determine the bounds of the I-st sub-grid and get it split
-        let nx = x;
-        let ny = y;
-
-        let (w, h) = match orientation {
-            Orientation::Horizontal => (width, wy - y + 1),
-            Orientation::Vertical => (wx - x + 1, height),
-        };
-
-        self.divide(grid, nx, ny, w, h, choose_orientation(w, h));
-
-        // Determine the bounds of the II-nd sub-grid and get it split
-        let (nx, ny) = match orientation {
-            Orientation::Horizontal => (x, wy + 1),
-            Orientation::Vertical => (wx + 1, y),
-        };
-
-        let (w, h) = match orientation {
-            Orientation::Horizontal => (width, y + height - wy - 1),
-            Orientation::Vertical => (x + width - wx - 1, height),
-        };
-
-        self.divide(grid, nx, ny, w, h, choose_orientation(w, h));
     }
 }
 
@@ -135,15 +99,9 @@ impl RecursiveDivision {
 /// 4. Continues, recursively, until the maze reaches the desired resolution
 impl Algorithm for RecursiveDivision {
     fn generate(&mut self, grid: &mut Grid) {
-        // Recursive division algorithm acts as a wall adder, i.e. uses a "wall adding" technique,
-        // rather than a "passage carving" one. To start adding walls to the maze cells we "drain"
-        // the grid, thus having a proper input for this algorithm
-        grid.drain();
-
         let width = grid.width();
         let height = grid.height();
-
-        self.divide(grid, 0, 0, width, height, choose_orientation(width, height))
+        self.divide(grid, 0, 0, width, height);
     }
 }
 
