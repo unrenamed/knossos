@@ -25,10 +25,6 @@ impl Grid {
         }
     }
 
-    pub fn cells(&self) -> &Vec<Cell> {
-        &self.cells
-    }
-
     pub fn height(&self) -> usize {
         self.height
     }
@@ -95,7 +91,7 @@ impl Grid {
     }
 
     pub fn get_next_cell_coords(
-        &mut self,
+        &self,
         coords: Coords,
         direction: Cell,
     ) -> TransitResult<Coords> {
