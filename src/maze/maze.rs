@@ -1,7 +1,8 @@
 use super::{
     errors::MazeSaveError,
     formatters::{Formatter, Saveable},
-    grid::{Grid, cell::Cell},
+    grid::Grid,
+    validate::validate,
 };
 use std::fmt;
 
@@ -28,17 +29,7 @@ impl OrthogonalMaze {
 
     /// Returns `true` if a maze is valid. Otherwise, returns `false`
     pub fn is_valid(&self) -> bool {
-        for cell in self.grid.cells() {
-            if !(cell.contains(Cell::NORTH)
-                || cell.contains(Cell::SOUTH)
-                || cell.contains(Cell::EAST)
-                || cell.contains(Cell::WEST))
-            {
-                return false;
-            }
-        }
-
-        true
+        validate(&self.grid)
     }
 
     // Saves a maze into a file to a given path using a given formatter
@@ -62,6 +53,8 @@ impl fmt::Display for OrthogonalMaze {
 
 #[cfg(test)]
 mod tests {
+    use crate::maze::grid::cell::Cell;
+
     use super::*;
 
     #[test]
@@ -73,7 +66,7 @@ mod tests {
         expected.push_str("|  _____|\n");
         expected.push_str("|_______|\n");
 
-        let grid = generate_maze();
+        let grid = generate_valid_maze();
         let maze = OrthogonalMaze { grid };
         let actual = maze.to_string();
 
@@ -82,24 +75,19 @@ mod tests {
 
     #[test]
     fn valid_maze() {
-        let grid = generate_maze();
+        let grid = generate_valid_maze();
         let maze = OrthogonalMaze { grid };
         assert_eq!(maze.is_valid(), true);
     }
 
-    // TODO: fix
-    // #[test]
-    // fn invalid_maze() {
-    //     let mut grid = generate_maze();
+    #[test]
+    fn invalid_maze() {
+        let grid = generate_invalid_maze();
+        let maze = OrthogonalMaze { grid };
+        assert_eq!(maze.is_valid(), false);
+    }
 
-    //     // isolate a top-left cell by adding a South wall
-    //     grid.add_wall((0, 0), Cell::NORTH);
-
-    //     let maze = OrthogonalMaze { grid };
-    //     assert_eq!(maze.is_valid(), false);
-    // }
-
-    fn generate_maze() -> Grid {
+    fn generate_valid_maze() -> Grid {
         let mut grid = Grid::new(4, 4);
 
         grid.carve_passage((0, 0), Cell::SOUTH).unwrap();
@@ -111,6 +99,30 @@ mod tests {
         grid.carve_passage((1, 0), Cell::EAST).unwrap();
         grid.carve_passage((1, 1), Cell::EAST).unwrap();
         grid.carve_passage((1, 1), Cell::SOUTH).unwrap();
+        grid.carve_passage((1, 2), Cell::EAST).unwrap();
+        grid.carve_passage((1, 3), Cell::EAST).unwrap();
+
+        grid.carve_passage((2, 0), Cell::EAST).unwrap();
+        grid.carve_passage((2, 2), Cell::EAST).unwrap();
+        grid.carve_passage((2, 3), Cell::EAST).unwrap();
+
+        grid.carve_passage((3, 1), Cell::NORTH).unwrap();
+        grid.carve_passage((3, 1), Cell::SOUTH).unwrap();
+
+        grid
+    }
+
+    fn generate_invalid_maze() -> Grid {
+        let mut grid = Grid::new(4, 4);
+
+        grid.carve_passage((0, 0), Cell::SOUTH).unwrap();
+        grid.carve_passage((0, 1), Cell::EAST).unwrap();
+        grid.carve_passage((0, 2), Cell::EAST).unwrap();
+        grid.carve_passage((0, 2), Cell::SOUTH).unwrap();
+        grid.carve_passage((0, 3), Cell::EAST).unwrap();
+
+        grid.carve_passage((1, 1), Cell::EAST).unwrap();
+        grid.carve_passage((1, 1), Cell::NORTH).unwrap();
         grid.carve_passage((1, 2), Cell::EAST).unwrap();
         grid.carve_passage((1, 3), Cell::EAST).unwrap();
 

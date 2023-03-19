@@ -7,6 +7,7 @@ mod builder;
 mod grid;
 mod maze;
 mod errors;
+mod validate;
 
 pub mod algorithms;
 pub mod formatters;
