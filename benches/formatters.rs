@@ -13,10 +13,10 @@ macro_rules! maze {
     };
 }
 
-// TODO: use assert_fs
 mod formatters {
+    use assert_fs::fixture::TempDir;
     use test::Bencher;
-    use knossos::{maze::*};
+    use knossos::maze::*;
 
     mod image {
         use super::*;
@@ -24,16 +24,20 @@ mod formatters {
         #[bench]
         fn format_10_x_10(b: &mut Bencher) {
             b.iter(|| {
+                let output_dir = TempDir::new().unwrap();
+                let file_path = format!("{}/maze.png", output_dir.path().display());
                 let maze = maze!(10, 10);
-                maze.save("output/maze.png", Image::new())
+                maze.save(&file_path, Image::new())
             });
         }
 
         #[bench]
         fn format_50_x_50(b: &mut Bencher) {
             b.iter(|| {
+                let output_dir = TempDir::new().unwrap();
+                let file_path = format!("{}/maze.png", output_dir.path().display());
                 let maze = maze!(50, 50);
-                maze.save("output/maze.png", Image::new())
+                maze.save(&file_path, Image::new())
             });
         }
     }
@@ -44,16 +48,20 @@ mod formatters {
         #[bench]
         fn format_10_x_10(b: &mut Bencher) {
             b.iter(|| {
+                let output_dir = TempDir::new().unwrap();
+                let file_path = format!("{}/maze.txt", output_dir.path().display());
                 let maze = maze!(10, 10);
-                maze.save("output/maze.txt", Ascii::<formatters::Default>::new())
+                maze.save(&file_path, Ascii::<formatters::Default>::new())
             });
         }
 
         #[bench]
         fn format_100_x_100(b: &mut Bencher) {
             b.iter(|| {
+                let output_dir = TempDir::new().unwrap();
+                let file_path = format!("{}/maze.txt", output_dir.path().display());
                 let maze = maze!(100, 100);
-                maze.save("output/maze.txt", Ascii::<formatters::Default>::new())
+                maze.save(&file_path, Ascii::<formatters::Default>::new())
             });
         }
     }
@@ -64,16 +72,20 @@ mod formatters {
         #[bench]
         fn format_10_x_10(b: &mut Bencher) {
             b.iter(|| {
+                let output_dir = TempDir::new().unwrap();
+                let file_path = format!("{}/maze.txt", output_dir.path().display());
                 let maze = maze!(10, 10);
-                maze.save("output/maze.txt", Ascii::<formatters::Enhanced>::new())
+                maze.save(&file_path, Ascii::<formatters::Enhanced>::new())
             });
         }
 
         #[bench]
         fn format_100_x_100(b: &mut Bencher) {
             b.iter(|| {
+                let output_dir = TempDir::new().unwrap();
+                let file_path = format!("{}/maze.txt", output_dir.path().display());
                 let maze = maze!(100, 100);
-                maze.save("output/maze.txt", Ascii::<formatters::Enhanced>::new())
+                maze.save(&file_path, Ascii::<formatters::Enhanced>::new())
             });
         }
     }
@@ -84,16 +96,20 @@ mod formatters {
         #[bench]
         fn format_10_x_10(b: &mut Bencher) {
             b.iter(|| {
+                let output_dir = TempDir::new().unwrap();
+                let file_path = format!("{}/maze.txt", output_dir.path().display());
                 let maze = maze!(10, 10);
-                maze.save("output/maze.txt", GameMap::new().span(5))
+                maze.save(&file_path, GameMap::new().span(5))
             });
         }
 
         #[bench]
         fn format_100_x_100(b: &mut Bencher) {
             b.iter(|| {
+                let output_dir = TempDir::new().unwrap();
+                let file_path = format!("{}/maze.txt", output_dir.path().display());
                 let maze = maze!(100, 100);
-                maze.save("output/maze.txt", GameMap::new().span(5))
+                maze.save(&file_path, GameMap::new().span(5))
             });
         }
     }
