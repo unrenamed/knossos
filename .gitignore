@@ -7,3 +7,6 @@
 # Test output
 tests/output/*
 !*.gitkeep
+
+# VSCode
+.vscode
