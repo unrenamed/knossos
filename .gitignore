@@ -1,12 +1,8 @@
 # Builds
-/target
-
-# IO results
-/output
+target
 
 # Test output
-tests/output/*
-!*.gitkeep
+coverage
 
 # VSCode
 .vscode

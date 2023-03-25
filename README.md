@@ -102,10 +102,9 @@ You can find more examples in [src/example.rs](src/example.rs)
 
 ## Benchmarks
 ```bash
-cargo +nightly bench
-   Compiling knossos v0.1.2 (/home/nazar-home/Documents/dev/rust/knossos)
-    Finished bench [optimized] target(s) in 2.59s
-     Running unittests src/lib.rs (target/release/deps/knossos-b73d675c8a8d5427)
+cargo +nightly bench 
+    Finished bench [optimized] target(s) in 0.51s
+     Running unittests src/lib.rs (target/release/deps/knossos-43150be123983d04)
 
 running 22 tests
 test maze::builder::tests::build ... ignored
@@ -115,75 +114,76 @@ test maze::formatters::ascii::tests::format_default ... ignored
 test maze::formatters::ascii::tests::format_ehanced ... ignored
 test maze::formatters::game_map::tests::format ... ignored
 test maze::formatters::game_map::tests::new_call_default_params ... ignored
+test maze::formatters::game_map::tests::passage_change ... ignored
 test maze::formatters::game_map::tests::span_change ... ignored
+test maze::formatters::game_map::tests::wall_change ... ignored
 test maze::formatters::image::tests::format ... ignored
 test maze::formatters::image::tests::new_call_default_params ... ignored
 test maze::formatters::image::tests::params_change ... ignored
-test maze::grid::walls::tests::add_wall ... ignored
-test maze::grid::walls::tests::build ... ignored
-test maze::grid::walls::tests::build_empty ... ignored
-test maze::grid::walls::tests::is_wall_carved ... ignored
-test maze::grid::walls::tests::remove_wall ... ignored
+test maze::maze::tests::display_orthogonal_maze ... ignored
+test maze::maze::tests::invalid_maze ... ignored
+test maze::maze::tests::valid_maze ... ignored
 test utils::arena::tests::connect_one_none_node ... ignored
 test utils::arena::tests::connect_three_nodes ... ignored
 test utils::arena::tests::connect_two_nodes ... ignored
 test utils::arena::tests::connect_two_none_node ... ignored
 test utils::arena::tests::unconnected_nodes ... ignored
-test utils::num::tests::it_adds_numbers ... ignored
+test utils::color::tests::display_color ... ignored
 
 test result: ok. 0 passed; 0 failed; 22 ignored; 0 measured; 0 filtered out; finished in 0.00s
 
-     Running unittests src/main.rs (target/release/deps/knossos-262c03a544ace7be)
+     Running unittests src/main.rs (target/release/deps/knossos-c42e4506ba8fe599)
 
-running 0 tests
+running 1 test
+test tests::verify_cli ... ignored
 
-test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
 
-     Running benches/algorithms.rs (target/release/deps/algorithms-bcd11aa94cd6bfd7)
+     Running benches/algorithms.rs (target/release/deps/algorithms-99993a694f1f462a)
 
 running 26 tests
-test algorithms::aldous_broder::generate_100_x_100                       ... bench:  45,266,902 ns/iter (+/- 14,973,744)
-test algorithms::aldous_broder::generate_10_x_10                         ... bench:     150,370 ns/iter (+/- 12,344)
-test algorithms::binary_tree::generate_100_x_100                         ... bench:   1,832,534 ns/iter (+/- 149,965)
-test algorithms::binary_tree::generate_10_x_10                           ... bench:      17,417 ns/iter (+/- 377)
-test algorithms::eller::generate_100_x_100                               ... bench:   4,331,760 ns/iter (+/- 86,095)
-test algorithms::eller::generate_10_x_10                                 ... bench:      39,670 ns/iter (+/- 1,653)
-test algorithms::growing_tree_hunt_and_kill::generate_100_x_100          ... bench:   6,223,144 ns/iter (+/- 3,055,071)
-test algorithms::growing_tree_hunt_and_kill::generate_10_x_10            ... bench:      33,034 ns/iter (+/- 2,883)
-test algorithms::growing_tree_kruskal::generate_100_x_100                ... bench:  37,008,342 ns/iter (+/- 6,333,645)
-test algorithms::growing_tree_kruskal::generate_10_x_10                  ... bench:      36,099 ns/iter (+/- 2,789)
-test algorithms::growing_tree_method_middle::generate_100_x_100          ... bench:   6,053,555 ns/iter (+/- 565,047)
-test algorithms::growing_tree_method_middle::generate_10_x_10            ... bench:      55,696 ns/iter (+/- 785)
-test algorithms::growing_tree_method_newest::generate_100_x_100          ... bench:   5,611,988 ns/iter (+/- 669,954)
-test algorithms::growing_tree_method_newest::generate_10_x_10            ... bench:      54,763 ns/iter (+/- 1,122)
-test algorithms::growing_tree_method_oldest::generate_100_x_100          ... bench:   5,982,678 ns/iter (+/- 219,966)
-test algorithms::growing_tree_method_oldest::generate_10_x_10            ... bench:      55,528 ns/iter (+/- 1,363)
-test algorithms::growing_tree_method_random::generate_100_x_100          ... bench:   6,405,201 ns/iter (+/- 157,112)
-test algorithms::growing_tree_method_random::generate_10_x_10            ... bench:      58,219 ns/iter (+/- 1,033)
-test algorithms::growing_tree_prim::generate_100_x_100                   ... bench:   7,043,416 ns/iter (+/- 695,387)
-test algorithms::growing_tree_prim::generate_10_x_10                     ... bench:      32,192 ns/iter (+/- 498)
-test algorithms::growing_tree_recursive_backtracking::generate_100_x_100 ... bench:   4,161,864 ns/iter (+/- 287,568)
-test algorithms::growing_tree_recursive_backtracking::generate_10_x_10   ... bench:      40,214 ns/iter (+/- 1,304)
-test algorithms::growing_tree_recursive_division::generate_100_x_100     ... bench:   2,159,627 ns/iter (+/- 18,530)
-test algorithms::growing_tree_recursive_division::generate_10_x_10       ... bench:      18,816 ns/iter (+/- 262)
-test algorithms::growing_tree_sidewinder::generate_100_x_100             ... bench:   1,595,038 ns/iter (+/- 26,018)
-test algorithms::growing_tree_sidewinder::generate_10_x_10               ... bench:      14,648 ns/iter (+/- 229)
+test algorithms::aldous_broder::generate_100_x_100              ... bench:  25,114,116 ns/iter (+/- 8,976,086)
+test algorithms::aldous_broder::generate_10_x_10                ... bench:      82,836 ns/iter (+/- 7,641)
+test algorithms::binary_tree::generate_100_x_100                ... bench:     518,780 ns/iter (+/- 4,661)
+test algorithms::binary_tree::generate_10_x_10                  ... bench:       5,278 ns/iter (+/- 44)
+test algorithms::eller::generate_100_x_100                      ... bench:   2,924,531 ns/iter (+/- 1,151,159)
+test algorithms::eller::generate_10_x_10                        ... bench:      26,874 ns/iter (+/- 922)
+test algorithms::growing_tree_method_middle::generate_100_x_100 ... bench:   2,060,609 ns/iter (+/- 46,684)
+test algorithms::growing_tree_method_middle::generate_10_x_10   ... bench:      20,162 ns/iter (+/- 154)
+test algorithms::growing_tree_method_newest::generate_100_x_100 ... bench:   1,834,971 ns/iter (+/- 18,044)
+test algorithms::growing_tree_method_newest::generate_10_x_10   ... bench:      19,742 ns/iter (+/- 5,935)
+test algorithms::growing_tree_method_oldest::generate_100_x_100 ... bench:   2,059,533 ns/iter (+/- 118,326)
+test algorithms::growing_tree_method_oldest::generate_10_x_10   ... bench:      20,145 ns/iter (+/- 1,032)
+test algorithms::growing_tree_method_random::generate_100_x_100 ... bench:   2,553,812 ns/iter (+/- 390,277)
+test algorithms::growing_tree_method_random::generate_10_x_10   ... bench:      24,224 ns/iter (+/- 6,544)
+test algorithms::hunt_and_kill::generate_100_x_100              ... bench:   1,060,523 ns/iter (+/- 83,817)
+test algorithms::hunt_and_kill::generate_10_x_10                ... bench:       9,249 ns/iter (+/- 301)
+test algorithms::kruskal::generate_100_x_100                    ... bench:  38,615,035 ns/iter (+/- 23,011,185)
+test algorithms::kruskal::generate_10_x_10                      ... bench:      19,223 ns/iter (+/- 909)
+test algorithms::prim::generate_100_x_100                       ... bench:   5,987,027 ns/iter (+/- 2,530,387)
+test algorithms::prim::generate_10_x_10                         ... bench:      21,962 ns/iter (+/- 8,735)
+test algorithms::recursive_backtracking::generate_100_x_100     ... bench:   1,199,184 ns/iter (+/- 146,586)
+test algorithms::recursive_backtracking::generate_10_x_10       ... bench:      11,472 ns/iter (+/- 2,661)
+test algorithms::recursive_division::generate_100_x_100         ... bench:     349,725 ns/iter (+/- 19,278)
+test algorithms::recursive_division::generate_10_x_10           ... bench:       3,511 ns/iter (+/- 57)
+test algorithms::sidewinder::generate_100_x_100                 ... bench:     254,377 ns/iter (+/- 24,068)
+test algorithms::sidewinder::generate_10_x_10                   ... bench:       2,526 ns/iter (+/- 17)
 
-test result: ok. 0 passed; 0 failed; 0 ignored; 26 measured; 0 filtered out; finished in 80.51s
+test result: ok. 0 passed; 0 failed; 0 ignored; 26 measured; 0 filtered out; finished in 71.73s
 
-     Running benches/formatters.rs (target/release/deps/formatters-b5dfc932fa0358ec)
+     Running benches/formatters.rs (target/release/deps/formatters-1b577342650eb048)
 
 running 8 tests
-test formatters::ascii_default::format_100_x_100  ... bench:   4,948,109 ns/iter (+/- 94,340)
-test formatters::ascii_default::format_10_x_10    ... bench:      52,332 ns/iter (+/- 1,220)
-test formatters::ascii_enhanced::format_100_x_100 ... bench:   4,619,765 ns/iter (+/- 28,018)
-test formatters::ascii_enhanced::format_10_x_10   ... bench:      50,595 ns/iter (+/- 968)
-test formatters::game_map::format_100_x_100       ... bench:  13,416,716 ns/iter (+/- 711,886)
-test formatters::game_map::format_10_x_10         ... bench:     140,390 ns/iter (+/- 10,798)
-test formatters::image::format_10_x_10            ... bench:  38,881,197 ns/iter (+/- 1,334,992)
-test formatters::image::format_50_x_50            ... bench: 994,273,476 ns/iter (+/- 88,990,280)
+test formatters::ascii_default::format_100_x_100  ... bench:   1,457,895 ns/iter (+/- 6,362)
+test formatters::ascii_default::format_10_x_10    ... bench:      85,277 ns/iter (+/- 19,651)
+test formatters::ascii_enhanced::format_100_x_100 ... bench:   1,344,412 ns/iter (+/- 5,683)
+test formatters::ascii_enhanced::format_10_x_10   ... bench:      83,734 ns/iter (+/- 1,928)
+test formatters::game_map::format_100_x_100       ... bench:   7,905,384 ns/iter (+/- 104,229)
+test formatters::game_map::format_10_x_10         ... bench:     149,456 ns/iter (+/- 3,197)
+test formatters::image::format_10_x_10            ... bench:  40,956,263 ns/iter (+/- 3,166,280)
+test formatters::image::format_50_x_50            ... bench: 864,432,205 ns/iter (+/- 2,515,914)
 
-test result: ok. 0 passed; 0 failed; 0 ignored; 8 measured; 0 filtered out; finished in 321.34s
+test result: ok. 0 passed; 0 failed; 0 ignored; 8 measured; 0 filtered out; finished in 278.25s
 ```
 
 ## CLI
