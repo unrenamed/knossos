@@ -29,6 +29,6 @@ and this project adheres to [Conventional Commits](https://www.conventionalcommi
 - Orthogonal maze builder with 10 optional generation algorithms
 - Ascii, game map and image formatters to save the generated maze to files
 
-[unreleased]: https://github.com/unrenamed/knossos/compare/v1.2.0...HEAD
+[unreleased]: https://github.com/unrenamed/knossos/compare/v0.2.0...HEAD
 [0.2.0]: https://github.com/unrenamed/knossos/compare/v0.1.2...v0.2.0
 [0.1.2]: https://github.com/unrenamed/knossos/releases/tag/v0.1.2
