@@ -110,8 +110,8 @@ running 22 tests
 test maze::builder::tests::build ... ignored
 test maze::errors::save_error::tests::display ... ignored
 test maze::errors::transit_error::tests::display ... ignored
-test maze::formatters::ascii::tests::format_default ... ignored
-test maze::formatters::ascii::tests::format_ehanced ... ignored
+test maze::formatters::ascii::tests::format_narrow ... ignored
+test maze::formatters::ascii::tests::format_broad ... ignored
 test maze::formatters::game_map::tests::format ... ignored
 test maze::formatters::game_map::tests::new_call_default_params ... ignored
 test maze::formatters::game_map::tests::passage_change ... ignored
@@ -174,10 +174,10 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 26 measured; 0 filtered out; fin
      Running benches/formatters.rs (target/release/deps/formatters-1b577342650eb048)
 
 running 8 tests
-test formatters::ascii_default::format_100_x_100  ... bench:   1,457,895 ns/iter (+/- 6,362)
-test formatters::ascii_default::format_10_x_10    ... bench:      85,277 ns/iter (+/- 19,651)
-test formatters::ascii_enhanced::format_100_x_100 ... bench:   1,344,412 ns/iter (+/- 5,683)
-test formatters::ascii_enhanced::format_10_x_10   ... bench:      83,734 ns/iter (+/- 1,928)
+test formatters::ascii_narrow::format_100_x_100  ... bench:    1,457,895 ns/iter (+/- 6,362)
+test formatters::ascii_narrow::format_10_x_10    ... bench:       85,277 ns/iter (+/- 19,651)
+test formatters::ascii_broad::format_100_x_100 ... bench:      1,344,412 ns/iter (+/- 5,683)
+test formatters::ascii_broad::format_10_x_10   ... bench:         83,734 ns/iter (+/- 1,928)
 test formatters::game_map::format_100_x_100       ... bench:   7,905,384 ns/iter (+/- 104,229)
 test formatters::game_map::format_10_x_10         ... bench:     149,456 ns/iter (+/- 3,197)
 test formatters::image::format_10_x_10            ... bench:  40,956,263 ns/iter (+/- 3,166,280)
@@ -191,7 +191,7 @@ A command-line interface for generating mazes in the terminal uses the library's
 
 ### Examples
 ```bash
-knossos generate -W 5 -H 5 ascii --output-type=enhanced --output-path=maze.txt
+knossos generate -W 5 -H 5 ascii --output-type=broad --output-path=maze.txt
 +---+---+---+---+---+
 |   |           |   |
 +   +   +   +   +   +

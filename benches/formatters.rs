@@ -42,7 +42,7 @@ mod formatters {
         }
     }
 
-    mod ascii_default {
+    mod ascii_narrow {
         use super::*;
 
         #[bench]
@@ -66,7 +66,7 @@ mod formatters {
         }
     }
 
-    mod ascii_enhanced {
+    mod ascii_broad {
         use super::*;
 
         #[bench]

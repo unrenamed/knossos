@@ -154,7 +154,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn format_default() {
+    fn format_narrow() {
         let mut expected = String::new();
         expected.push_str(" _______ \n");
         expected.push_str("| |___  |\n");
@@ -170,7 +170,7 @@ mod tests {
     }
 
     #[test]
-    fn format_ehanced() {
+    fn format_broad() {
         let mut expected = String::new();
         expected.push_str("+---+---+---+---+\n");
         expected.push_str("|   |           |\n");
