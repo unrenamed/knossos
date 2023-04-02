@@ -51,7 +51,7 @@ cargo add knossos
 Or add the following line to your `Cargo.toml`:
 ```no_test
 [dependencies]
-knossos = "0.1.2"
+knossos = "0.2.0"
 ```
 
 ## Usage
