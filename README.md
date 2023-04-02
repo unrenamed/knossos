@@ -234,16 +234,16 @@ knossos generate -W 15 -H 15 image --output-path=maze.png
 
 ### Installation
 
-Ubuntu:
-1. [Download](https://github.com/unrenamed/terminal-fps/releases) the latest binary
+Debian package:
+1. [Download](https://github.com/unrenamed/knossos/releases) the latest binary
 2. `dpkg -i <binary-name>` will install it
 
-From crates.io:
+Or from crates.io:
 ```bash
 cargo install knossos
 ```
 
-From source:
+Or from source:
 ```bash
 $ git clone git@github.com:unrenamed/knossos.git
 $ cd knossos
