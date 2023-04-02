@@ -119,7 +119,7 @@ fn save_maze_as_ascii() {
         "Maze was successfully written to a file: {}",
         to_absolute_path!(&file_path)
     );
-    assert_save_maze!(&file_path, Ascii::<formatters::Default>::new(), expected);
+    assert_save_maze!(&file_path, Ascii::new(), expected);
 }
 
 #[test]
@@ -129,11 +129,7 @@ fn save_maze_as_ascii_returns_error() {
         to_absolute_path!("this is not valid path/")
     );
 
-    assert_save_maze_error!(
-        "this is not valid path/",
-        Ascii::<formatters::Default>::new(),
-        expected
-    );
+    assert_save_maze_error!("this is not valid path/", Ascii::new(), expected);
 }
 
 #[test]

@@ -5,7 +5,7 @@ use std::iter;
 
 use super::StringWrapper;
 
-/// A default output type of an Ascii formatter
+/// A simple output type to emit the maze as ASCII
 ///
 /// # Example:
 ///
@@ -16,8 +16,9 @@ use super::StringWrapper;
 /// | | |_  |
 /// |_______|
 /// ```
-pub struct Default;
-/// An enhanced output of an Ascii formatter using broader passages and "+" for corners.
+pub struct Narrow;
+
+/// An enhanced output of an ASCII formatter using broader passages and "+" for corners
 ///
 /// # Example:
 ///
@@ -32,28 +33,43 @@ pub struct Default;
 /// |   |           |
 /// +---+---+---+---+
 /// ```
-pub struct Enhanced;
+pub struct Broad;
 
-/// An Ascii formatter for a generated maze
-pub struct Ascii<Type> {
-    _type: Type,
+/// An ASCII formatter for a generated maze
+pub struct Ascii<T = Narrow> {
+    t: std::marker::PhantomData<T>,
 }
 
-impl Ascii<Default> {
+/// An implementation of an ASCII formatter
+impl Ascii {
     pub fn new() -> Self {
-        Ascii { _type: Default }
+        Self {
+            t: Default::default(),
+        }
     }
 }
 
-impl Ascii<Enhanced> {
-    pub fn new() -> Self {
-        Ascii { _type: Enhanced }
+/// An implementation of a narrow output type
+impl Ascii<Narrow> {
+    pub fn narrow() -> Ascii<Narrow> {
+        Self {
+            t: std::marker::PhantomData::<Narrow>,
+        }
     }
 }
 
-/// An implementation of a default formatter
-impl Formatter<StringWrapper> for Ascii<Default> {
-    /// Converts a given grid into ascii characters and returns an [StringWrapper] over that image
+/// An implementation of a broad output type
+impl Ascii<Broad> {
+    pub fn broad() -> Ascii<Broad> {
+        Self {
+            t: std::marker::PhantomData::<Broad>,
+        }
+    }
+}
+
+/// An implementation of a narrow formatter
+impl Formatter<StringWrapper> for Ascii<Narrow> {
+    /// Converts a given grid into ASCII characters and returns an [StringWrapper] over that image
     fn format(&self, grid: &Grid) -> StringWrapper {
         let mut result = String::new();
 
@@ -93,9 +109,9 @@ impl Formatter<StringWrapper> for Ascii<Default> {
     }
 }
 
-/// An implementation of an enhanced formatter
-impl Formatter<StringWrapper> for Ascii<Enhanced> {
-    /// Converts a given grid into ascii characters and returns an [StringWrapper] over that image
+/// An implementation of an broad formatter
+impl Formatter<StringWrapper> for Ascii<Broad> {
+    /// Converts a given grid into ASCII characters and returns an [StringWrapper] over that image
     fn format(&self, grid: &Grid) -> StringWrapper {
         let mut output = format!("+{}\n", "---+".to_string().repeat(grid.width()));
 
@@ -146,7 +162,7 @@ mod tests {
         expected.push_str("|  _____|\n");
         expected.push_str("|_______|\n");
 
-        let formatter = Ascii::<Default>::new();
+        let formatter = Ascii::new();
         let mut grid = generate_maze();
         let actual = formatter.format(&mut grid).0;
 
@@ -166,7 +182,7 @@ mod tests {
         expected.push_str("|               |\n");
         expected.push_str("+---+---+---+---+\n");
 
-        let formatter = Ascii::<Enhanced>::new();
+        let formatter = Ascii::broad();
         let mut grid = generate_maze();
         let actual = formatter.format(&mut grid).0;
 

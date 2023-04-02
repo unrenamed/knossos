@@ -125,7 +125,7 @@ Usage: knossos generate ascii [OPTIONS] --output-path <OUTPUT_PATH>
 
 Options:
   -O, --output-path <OUTPUT_PATH>    Output path
-  -T, --output-type[=<OUTPUT_TYPE>]  Output type [default: default] [possible values: default, enhanced]
+  -T, --output-type[=<OUTPUT_TYPE>]  Output type [default: narrow] [possible values: narrow, broad]
   -h, --help                         Print help
 ";
 

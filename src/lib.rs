@@ -4,11 +4,15 @@
 //! files.
 //!
 //! # Installation
-//! Add this to your `Cargo.toml`
-//!
+//! Run the following Cargo command in your project directory:
+//! ```no_test
+//! cargo add knossos
+//! ```
+//! 
+//! Or add the following line to your `Cargo.toml`:
 //! ```no_test
 //! [dependencies]
-//! knossos = "0.1.2"
+//! knossos = "0.2.0"
 //! ```
 //!
 //! # Usage
@@ -51,7 +55,7 @@
 //! let maze = OrthogonalMazeBuilder::new().build();
 //!
 //! // Save as ascii
-//! maze.save("output/maze.txt", Ascii::<formatters::Default>::new()).unwrap();
+//! maze.save("output/maze.txt", Ascii::new()).unwrap();
 //! // Save as a game map
 //! maze.save("output/maze_game_map.txt", GameMap::new().span(3)).unwrap();
 //! // Save as a PNG image
@@ -80,6 +84,6 @@
 
 mod utils;
 
+pub mod example;
 pub mod maze;
-
 pub use utils::color::Color;

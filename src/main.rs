@@ -18,8 +18,8 @@ enum Algorithm {
 
 #[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum)]
 enum AsciiOutputType {
-    Default,
-    Enhanced,
+    Narrow,
+    Broad,
 }
 
 #[derive(Parser, Debug)]
@@ -85,10 +85,10 @@ enum OutputCommands {
             short = 'T',
             long,
             value_enum,
-            default_value_t = AsciiOutputType::Default,
+            default_value_t = AsciiOutputType::Narrow,
             require_equals = true,
             num_args = 0..=1,
-            default_missing_value = "default",
+            default_missing_value = "narrow",
         )]
         output_type: AsciiOutputType,
     },
@@ -178,17 +178,11 @@ fn main() -> Result<(), maze::MazeSaveError> {
                     output_type,
                 } => {
                     match output_type {
-                        AsciiOutputType::Default => {
-                            result = maze.save(
-                                output_path.as_str(),
-                                formatters::Ascii::<maze::formatters::Default>::new(),
-                            )
+                        AsciiOutputType::Narrow => {
+                            result = maze.save(output_path.as_str(), formatters::Ascii::narrow())
                         }
-                        AsciiOutputType::Enhanced => {
-                            result = maze.save(
-                                output_path.as_str(),
-                                formatters::Ascii::<maze::formatters::Enhanced>::new(),
-                            )
+                        AsciiOutputType::Broad => {
+                            result = maze.save(output_path.as_str(), formatters::Ascii::broad())
                         }
                     };
                 }

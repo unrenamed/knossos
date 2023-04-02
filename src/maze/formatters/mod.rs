@@ -10,7 +10,7 @@ use std::{fs::File, io::Write};
 
 pub use self::image::Image;
 use super::errors::MazeSaveError;
-pub use ascii::{Ascii, Default, Enhanced};
+pub use ascii::{Ascii, Narrow, Broad};
 pub use game_map::GameMap;
 
 /// A trait for maze formatters
