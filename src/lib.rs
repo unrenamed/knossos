@@ -84,6 +84,5 @@
 
 mod utils;
 
-pub mod example;
 pub mod maze;
 pub use utils::color::Color;

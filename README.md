@@ -98,7 +98,10 @@ maze.save("output/maze_game_map.txt", GameMap::new().span(3)).unwrap();
 maze.save("output/maze.png", Image::new().wall(10).passage(30)).unwrap();
 ```
 
-You can find more examples in [src/example.rs](src/example.rs)
+You can find more examples in the [examples](examples) directory. To run the example:
+```bash
+cargo run --example mazes
+```
 
 ## Benchmarks
 ```bash
