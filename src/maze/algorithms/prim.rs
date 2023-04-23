@@ -135,5 +135,5 @@ fn direction(x: usize, y: usize, nx: usize, ny: usize) -> Option<Cell> {
         return Some(Cell::NORTH);
     }
 
-    None
+    unreachable!("The x and y coordinates are never equal to nx and ny")
 }
