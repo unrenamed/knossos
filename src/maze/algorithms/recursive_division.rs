@@ -36,7 +36,7 @@ enum Orientation {
 pub struct RecursiveDivision;
 
 impl RecursiveDivision {
-    fn divide(&mut self, grid: &mut Grid, x: usize, y: usize, ax: usize, ay: usize) {
+    fn divide(grid: &mut Grid, x: usize, y: usize, ax: usize, ay: usize) {
         // Calculate subfield width
         let w = ax - x + 1;
         // Calculate subfield height
@@ -79,15 +79,15 @@ impl RecursiveDivision {
         match orientation {
             Orientation::Horizontal => {
                 // Top subfield
-                self.divide(grid, x, y, ax, py);
+                RecursiveDivision::divide(grid, x, y, ax, py);
                 // Bottom subfield
-                self.divide(grid, x, ny, ax, ay);
+                RecursiveDivision::divide(grid, x, ny, ax, ay);
             }
             Orientation::Vertical => {
                 // Left subfield
-                self.divide(grid, x, y, px, ay);
+                RecursiveDivision::divide(grid, x, y, px, ay);
                 // Right subfield
-                self.divide(grid, nx, y, ax, ay);
+                RecursiveDivision::divide(grid, nx, y, ax, ay);
             }
         }
     }
@@ -110,7 +110,7 @@ impl Algorithm for RecursiveDivision {
     fn generate(&mut self, grid: &mut Grid) {
         let width = grid.width();
         let height = grid.height();
-        self.divide(grid, 0, 0, width - 1, height - 1);
+        RecursiveDivision::divide(grid, 0, 0, width - 1, height - 1);
     }
 }
 
@@ -124,7 +124,7 @@ fn choose_orientation(width: usize, height: usize) -> Orientation {
     }
 
     let mut rng = thread_rng();
-    if rng.gen::<bool>() == false {
+    if !rng.gen::<bool>() {
         Orientation::Horizontal
     } else {
         Orientation::Vertical

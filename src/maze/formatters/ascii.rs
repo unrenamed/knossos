@@ -1,7 +1,7 @@
 use crate::maze::grid::cell::Cell;
 use crate::maze::{formatters::Formatter, grid::Grid};
 use std::fmt::Write;
-use std::iter;
+
 
 use super::StringWrapper;
 
@@ -41,9 +41,7 @@ impl Formatter<StringWrapper> for AsciiNarrow {
     fn format(&self, grid: &Grid) -> StringWrapper {
         let mut result = String::new();
 
-        let top_border = iter::repeat("_")
-            .take(grid.width() * 2 - 1)
-            .collect::<String>();
+        let top_border = "_".repeat(grid.width() * 2 - 1);
 
         writeln!(result, " {} ", top_border).unwrap();
 
@@ -70,7 +68,7 @@ impl Formatter<StringWrapper> for AsciiNarrow {
                 }
             }
 
-            writeln!(result, "").unwrap();
+            writeln!(result).unwrap();
         }
 
         StringWrapper(result)
@@ -101,14 +99,14 @@ impl Formatter<StringWrapper> for AsciiBroad {
                 } else {
                     "---"
                 };
-                bottom_line.push_str(&south_boundary);
+                bottom_line.push_str(south_boundary);
                 bottom_line.push('+');
 
                 if x == grid.width() - 1 {
                     output.push_str(&top_line);
-                    output.push_str("\n");
+                    output.push('\n');
                     output.push_str(&bottom_line);
-                    output.push_str("\n");
+                    output.push('\n');
                 }
             }
         }

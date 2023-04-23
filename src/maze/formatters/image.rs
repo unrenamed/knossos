@@ -109,10 +109,10 @@ impl Image {
                     && x <= start_x + self.wall_width
                     && y >= start_y
                     && y <= start_y + self.wall_width
+                    && grid.is_carved(coords, Cell::NORTH)
+                    && grid.is_carved(coords, Cell::WEST)
                 {
-                    if grid.is_carved(coords, Cell::NORTH) && grid.is_carved(coords, Cell::WEST) {
-                        continue;
-                    }
+                    continue;
                 }
 
                 // Northern wall must display only if there is no passage carved to North
@@ -120,10 +120,9 @@ impl Image {
                     && x <= start_x + cell_width_without_joint_wall
                     && y >= start_y
                     && y <= start_y + self.wall_width
+                    && grid.is_carved(coords, Cell::NORTH)
                 {
-                    if grid.is_carved(coords, Cell::NORTH) {
-                        continue;
-                    }
+                    continue;
                 }
 
                 // Top right corner must display only if either Northern or Eastern wall exists
@@ -131,10 +130,10 @@ impl Image {
                     && x <= start_x + self.cell_width()
                     && y >= start_y
                     && y <= start_y + self.wall_width
+                    && grid.is_carved(coords, Cell::NORTH)
+                    && grid.is_carved(coords, Cell::EAST)
                 {
-                    if grid.is_carved(coords, Cell::NORTH) && grid.is_carved(coords, Cell::EAST) {
-                        continue;
-                    }
+                    continue;
                 }
 
                 // Western wall must display only if there is no passage carved to West
@@ -142,10 +141,9 @@ impl Image {
                     && x <= start_x + self.wall_width
                     && y >= start_y + self.wall_width
                     && y <= start_y + cell_width_without_joint_wall
+                    && grid.is_carved(coords, Cell::WEST)
                 {
-                    if grid.is_carved(coords, Cell::WEST) {
-                        continue;
-                    }
+                    continue;
                 }
 
                 // Cell's passage must not be colored, i.e. it remains same as an image background
@@ -162,10 +160,9 @@ impl Image {
                     && x <= start_x + self.cell_width()
                     && y >= start_y + self.wall_width
                     && y <= start_y + cell_width_without_joint_wall
+                    && grid.is_carved(coords, Cell::EAST)
                 {
-                    if grid.is_carved(coords, Cell::EAST) {
-                        continue;
-                    }
+                    continue;
                 }
 
                 // Bottom left corner must display only if either Southern or Western wall exists
@@ -173,10 +170,10 @@ impl Image {
                     && x <= start_x + self.wall_width
                     && y >= start_y + cell_width_without_joint_wall
                     && y <= start_y + self.cell_width()
+                    && grid.is_carved(coords, Cell::SOUTH)
+                    && grid.is_carved(coords, Cell::WEST)
                 {
-                    if grid.is_carved(coords, Cell::SOUTH) && grid.is_carved(coords, Cell::WEST) {
-                        continue;
-                    }
+                    continue;
                 }
 
                 // Southern wall must display only if there is no passage carved to South
@@ -184,10 +181,9 @@ impl Image {
                     && x <= start_x + cell_width_without_joint_wall
                     && y >= start_y + cell_width_without_joint_wall
                     && y <= start_y + self.cell_width()
+                    && grid.is_carved(coords, Cell::SOUTH)
                 {
-                    if grid.is_carved(coords, Cell::SOUTH) {
-                        continue;
-                    }
+                    continue;
                 }
 
                 // Bottom right corner must display only if either Southern or Eastern wall exists
@@ -195,10 +191,10 @@ impl Image {
                     && x <= start_x + self.cell_width()
                     && y >= start_y + cell_width_without_joint_wall
                     && y <= start_y + self.cell_width()
+                    && grid.is_carved(coords, Cell::SOUTH)
+                    && grid.is_carved(coords, Cell::EAST)
                 {
-                    if grid.is_carved(coords, Cell::SOUTH) && grid.is_carved(coords, Cell::EAST) {
-                        continue;
-                    }
+                    continue;
                 }
 
                 // Fill the remaining pixels with a given color
@@ -207,6 +203,12 @@ impl Image {
                 }
             }
         }
+    }
+}
+
+impl Default for Image {
+    fn default() -> Self {
+        Self::new()
     }
 }
 

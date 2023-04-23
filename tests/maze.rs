@@ -163,6 +163,6 @@ fn save_maze_as_png() {
 
 #[test]
 fn save_maze_as_png_returns_error() {
-    let expected = format!("The image format could not be determined");
+    let expected = "The image format could not be determined".to_string();
     assert_save_maze_error!("this is not valid path/", Image::new(), expected);
 }

@@ -4,7 +4,7 @@ use self::cell::CellStatus;
 use super::errors::TransitError;
 use crate::utils::types::Coords;
 use cell::Cell;
-use std::{fmt, iter};
+use std::{fmt};
 
 type TransitResult<T> = Result<T, TransitError>;
 
@@ -131,18 +131,16 @@ impl Grid {
             return Ok(());
         }
 
-        return Err(TransitError {
+        Err(TransitError {
             coords: (x, y),
             reason: reason.unwrap().to_string(),
-        });
+        })
     }
 }
 
 impl fmt::Display for Grid {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let top_border = iter::repeat("_")
-            .take(self.width * 2 - 1)
-            .collect::<String>();
+        let top_border = "_".repeat(self.width * 2 - 1);
 
         writeln!(f, " {} ", top_border)?;
 
@@ -169,7 +167,7 @@ impl fmt::Display for Grid {
                 }
             }
 
-            writeln!(f, "")?; // goto next line
+            writeln!(f)?; // goto next line
         }
 
         Ok(())

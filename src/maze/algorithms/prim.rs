@@ -40,10 +40,12 @@ impl Prim {
     }
 
     fn add_frontier(&mut self, (x, y): Coords, grid: &mut Grid) {
-        if x < grid.width() && y < grid.height() && !grid.is_cell_marked((x, y)) {
-            if let None = self.frontiers.iter().position(|f| *f == (x, y)) {
-                self.frontiers.push((x, y));
-            }
+        if x < grid.width()
+            && y < grid.height()
+            && !grid.is_cell_marked((x, y))
+            && !self.frontiers.iter().any(|f| *f == (x, y))
+        {
+            self.frontiers.push((x, y));
         }
     }
 
@@ -67,6 +69,12 @@ impl Prim {
         }
 
         neighbours
+    }
+}
+
+impl Default for Prim {
+    fn default() -> Self {
+        Self::new()
     }
 }
 

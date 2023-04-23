@@ -68,18 +68,18 @@ impl State {
     fn connect(&mut self, sink_id: CellId, target_id: CellId) {
         let sink = self.cells.get(&sink_id).unwrap().borrow();
         let mut target = self.cells.get(&target_id).unwrap().borrow_mut();
-        (*target).set_id = (*sink).set_id;
+        target.set_id = sink.set_id;
     }
 
     fn connected(&self, id: CellId, other_id: CellId) -> bool {
         let cell = self.cells.get(&id).unwrap().borrow();
         let other = self.cells.get(&other_id).unwrap().borrow();
-        (*cell).set_id == (*other).set_id
+        cell.set_id == other.set_id
     }
 
     fn get_cell_coords(&self, id: CellId) -> Coords {
         let cell = self.cells.get(&id).unwrap().borrow();
-        (*cell).coords
+        cell.coords
     }
 
     fn sets(&self) -> HashMap<SetId, Vec<CellId>> {
@@ -153,7 +153,7 @@ impl Eller {
     fn cells_to_connect(&self, cells: Vec<CellId>) -> Vec<CellId> {
         let mut rng = rand::thread_rng();
 
-        let mut cells = cells.clone();
+        let mut cells = cells;
         cells.shuffle(&mut rng);
 
         let connect_count = if cells.len() >= 2 {

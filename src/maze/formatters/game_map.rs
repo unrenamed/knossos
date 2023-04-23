@@ -64,6 +64,12 @@ impl GameMap {
     }
 }
 
+impl Default for GameMap {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 /// An implementation of a formatter
 impl Formatter<StringWrapper> for GameMap {
     /// Converts a given grid into the map characters and returns an [StringWrapper] over that image
@@ -144,7 +150,7 @@ fn add_wall(map: &mut String, ch: char) {
 }
 
 fn move_to_next_line(map: &mut String) {
-    writeln!(map, "").unwrap();
+    writeln!(map).unwrap();
 }
 
 fn bottom_right_neighbour_exists(cx: usize, cy: usize, grid: &Grid) -> bool {

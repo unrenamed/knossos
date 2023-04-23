@@ -5,6 +5,7 @@
 
 mod builder;
 mod grid;
+#[allow(clippy::module_inception)]
 mod maze;
 mod errors;
 mod validate;

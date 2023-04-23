@@ -8,7 +8,7 @@ fn image_save_success() {
     let expected = format!("Maze was successfully saved as an image: {}\n", &file_path);
 
     let mut cmd = Command::cargo_bin(assert_cmd::crate_name!()).unwrap();
-    cmd.args(&["generate", "image", "--output-path", &file_path])
+    cmd.args(["generate", "image", "--output-path", &file_path])
         .assert()
         .success()
         .stdout(expected);
@@ -21,7 +21,7 @@ fn ascii_save_success() {
     let expected = format!("Maze was successfully written to a file: {}\n", file_path);
 
     let mut cmd = Command::cargo_bin(assert_cmd::crate_name!()).unwrap();
-    cmd.args(&["generate", "ascii", "--output-path", &file_path])
+    cmd.args(["generate", "ascii", "--output-path", &file_path])
         .assert()
         .success()
         .stdout(expected);
@@ -34,7 +34,7 @@ fn game_map_save_success() {
     let expected = format!("Maze was successfully written to a file: {}\n", file_path);
 
     let mut cmd = Command::cargo_bin(assert_cmd::crate_name!()).unwrap();
-    cmd.args(&["generate", "game-map", "--output-path", &file_path])
+    cmd.args(["generate", "game-map", "--output-path", &file_path])
         .assert()
         .success()
         .stdout(expected);

@@ -220,16 +220,20 @@ fn main() -> Result<(), maze::MazeSaveError> {
             match result {
                 Ok(msg) => {
                     println!("{}", msg);
-                    return Ok(());
+                    Ok(())
                 }
-                Err(err) => return Err(err),
+                Err(err) => Err(err),
             }
         }
     }
 }
 
 fn hex_to_rgb(s: &str) -> Result<Color, ParseHexError> {
-    let s = if s.starts_with('#') { &s[1..] } else { s };
+    let s = if let Some(hex) = s.strip_prefix('#') {
+        hex
+    } else {
+        s
+    };
 
     if s.len() != 6 {
         return Err(ParseHexError::Length(s.to_string()));

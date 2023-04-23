@@ -118,7 +118,7 @@ impl Algorithm for GrowingTree {
         let mut cells = vec![];
         cells.push(get_rand_coords(grid));
 
-        while cells.len() > 0 {
+        while !cells.is_empty() {
             let mut index = Some(self.choose_index(cells.len()));
             let coords = cells[index.unwrap_or(0)];
 

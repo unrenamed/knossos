@@ -68,6 +68,12 @@ impl HuntAndKill {
     }
 }
 
+impl Default for HuntAndKill {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 /// An implementation of the "Hunt & Kill" algorithm for generating mazes
 ///
 /// The algorithm consists of two main phases: walk and hunt, which repeat from row to row.

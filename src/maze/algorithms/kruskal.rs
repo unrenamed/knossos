@@ -31,7 +31,7 @@ impl Algorithm for Kruskal {
         let mut edges: Edges = populate_edges(grid);
         edges.shuffle(&mut rand::thread_rng());
 
-        while edges.len() > 0 {
+        while !edges.is_empty() {
             let edge: Option<Edge> = edges.pop();
             if edge.is_none() {
                 break;

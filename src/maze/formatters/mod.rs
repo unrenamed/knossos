@@ -76,7 +76,7 @@ impl Saveable for StringWrapper {
 
         match file.write_all(self.0.as_bytes()) {
             Err(why) => {
-                return Err(MazeSaveError {
+                Err(MazeSaveError {
                     reason: format!("Couldn't write to {}: {}", path.display(), why),
                 })
             }

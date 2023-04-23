@@ -44,13 +44,19 @@ impl OrthogonalMazeBuilder {
     }
 }
 
+impl Default for OrthogonalMazeBuilder {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
     fn build() {
-        let maze = OrthogonalMazeBuilder::new().build();
+        let maze = OrthogonalMazeBuilder::default().build();
         assert!(maze.is_valid());
     }
 }

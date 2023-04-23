@@ -52,9 +52,7 @@ impl ArenaTree {
 
     fn root(&self, id: NodeId) -> Option<NodeId> {
         let node = self.nodes.get(id.0);
-        if node.is_none() {
-            return None;
-        }
+        node?;
 
         if let Some(parent) = node.unwrap().parent {
             self.root(parent)
