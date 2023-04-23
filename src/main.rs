@@ -179,10 +179,10 @@ fn main() -> Result<(), maze::MazeSaveError> {
                 } => {
                     match output_type {
                         AsciiOutputType::Narrow => {
-                            result = maze.save(output_path.as_str(), formatters::Ascii::narrow())
+                            result = maze.save(output_path.as_str(), formatters::AsciiNarrow)
                         }
                         AsciiOutputType::Broad => {
-                            result = maze.save(output_path.as_str(), formatters::Ascii::broad())
+                            result = maze.save(output_path.as_str(), formatters::AsciiBroad)
                         }
                     };
                 }

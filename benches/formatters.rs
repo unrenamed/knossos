@@ -51,7 +51,7 @@ mod formatters {
                 let output_dir = TempDir::new().unwrap();
                 let file_path = format!("{}/maze.txt", output_dir.path().display());
                 let maze = maze!(10, 10);
-                maze.save(&file_path, Ascii::new())
+                maze.save(&file_path, AsciiNarrow)
             });
         }
 
@@ -61,7 +61,7 @@ mod formatters {
                 let output_dir = TempDir::new().unwrap();
                 let file_path = format!("{}/maze.txt", output_dir.path().display());
                 let maze = maze!(100, 100);
-                maze.save(&file_path, Ascii::new())
+                maze.save(&file_path, AsciiNarrow)
             });
         }
     }
@@ -75,7 +75,7 @@ mod formatters {
                 let output_dir = TempDir::new().unwrap();
                 let file_path = format!("{}/maze.txt", output_dir.path().display());
                 let maze = maze!(10, 10);
-                maze.save(&file_path, Ascii::broad())
+                maze.save(&file_path, AsciiBroad)
             });
         }
 
@@ -85,7 +85,7 @@ mod formatters {
                 let output_dir = TempDir::new().unwrap();
                 let file_path = format!("{}/maze.txt", output_dir.path().display());
                 let maze = maze!(100, 100);
-                maze.save(&file_path, Ascii::broad())
+                maze.save(&file_path, AsciiBroad)
             });
         }
     }
