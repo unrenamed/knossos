@@ -1,0 +1,26 @@
+name: Release
+
+on:
+  push:
+    branches: [release]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  debian:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Install cargo-deb
+        run: |
+          rustup update
+          cargo install cargo-deb
+      - name: Create binary Debian package
+        run: cargo deb
+      - name: Archive package
+        uses: actions/upload-artifact@v3
+        with:
+          name: debian
+          path: target/debian/*.deb
