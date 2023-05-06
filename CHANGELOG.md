@@ -7,6 +7,17 @@ and this project adheres to [Conventional Commits](https://www.conventionalcommi
 
 ## [Unreleased]
 
+## [0.3.0] - 2023-05-06
+
+### Added
+
+- New `AsciiNarrow` and `AsciiNarrow` formatters replacing `Ascii::narrow()` and `Ascii::broad()` calls
+
+### Fixed
+
+- Fix usage of old Ascii output types in code and docs
+- Move lib examples to the `examples` dir. `cargo run --example name` to run the specified example
+
 ## [0.2.0] - 2023-04-02
 
 ### Added
@@ -29,6 +40,7 @@ and this project adheres to [Conventional Commits](https://www.conventionalcommi
 - Orthogonal maze builder with 10 optional generation algorithms
 - Ascii, game map and image formatters to save the generated maze to files
 
-[unreleased]: https://github.com/unrenamed/knossos/compare/v0.2.0...HEAD
+[unreleased]: https://github.com/unrenamed/knossos/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/unrenamed/knossos/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/unrenamed/knossos/compare/v0.1.2...v0.2.0
 [0.1.2]: https://github.com/unrenamed/knossos/releases/tag/v0.1.2

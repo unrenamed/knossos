@@ -12,7 +12,7 @@
 //! Or add the following line to your `Cargo.toml`:
 //! ```no_test
 //! [dependencies]
-//! knossos = "0.2.0"
+//! knossos = "0.3.0"
 //! ```
 //!
 //! # Usage

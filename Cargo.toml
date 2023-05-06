@@ -1,6 +1,6 @@
 [package]
 name = "knossos"
-version = "0.2.0"
+version = "0.3.0"
 authors = ["unrenamed <renkonazbka@gmail.com>"]
 description = "Rust library for generating and rendering mazes"
 edition = "2021"
