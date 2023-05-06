@@ -123,9 +123,21 @@ fn save_maze_as_ascii() {
 }
 
 #[test]
+#[cfg(target_os = "linux")]
 fn save_maze_as_ascii_returns_error() {
     let expected = format!(
         "Couldn't create {}: Is a directory (os error 21)",
+        to_absolute_path!("this is not valid path/")
+    );
+
+    assert_save_maze_error!("this is not valid path/", AsciiNarrow, expected);
+}
+
+#[test]
+#[cfg(target_os = "macos")]
+fn save_maze_as_ascii_returns_error() {
+    let expected = format!(
+        "Couldn't create {}: No such file or directory (os error 2)",
         to_absolute_path!("this is not valid path/")
     );
 
@@ -144,9 +156,21 @@ fn save_maze_as_game_map() {
 }
 
 #[test]
+#[cfg(target_os = "linux")]
 fn save_maze_as_game_map_returns_error() {
     let expected = format!(
         "Couldn't create {}: Is a directory (os error 21)",
+        to_absolute_path!("this is not valid path/")
+    );
+
+    assert_save_maze_error!("this is not valid path/", GameMap::new(), expected);
+}
+
+#[test]
+#[cfg(target_os = "macos")]
+fn save_maze_as_game_map_returns_error() {
+    let expected = format!(
+        "Couldn't create {}: No such file or directory (os error 2)",
         to_absolute_path!("this is not valid path/")
     );
 
