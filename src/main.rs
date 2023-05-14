@@ -110,6 +110,10 @@ enum OutputCommands {
         /// ASCII character for a wall
         #[arg(long, default_value_t = '#')]
         wall: char,
+
+        /// With start "S" and goal "G" points randomly spawned on the borders
+        #[arg(long, default_value_t = false)]
+        with_start_goal: bool,
     },
     /// Save to PNG or JPG file
     Image {
@@ -191,11 +195,22 @@ fn main() -> Result<(), maze::MazeSaveError> {
                     span,
                     passage,
                     wall,
+                    with_start_goal,
                 } => {
-                    result = maze.save(
-                        output_path.as_str(),
-                        maze::GameMap::new().span(span).passage(passage).wall(wall),
-                    );
+                    result = match with_start_goal {
+                        true => maze.save(
+                            output_path.as_str(),
+                            maze::GameMap::new()
+                                .span(span)
+                                .passage(passage)
+                                .wall(wall)
+                                .with_start_goal(),
+                        ),
+                        false => maze.save(
+                            output_path.as_str(),
+                            maze::GameMap::new().span(span).passage(passage).wall(wall),
+                        ),
+                    };
                 }
                 OutputCommands::Image {
                     output_path,
