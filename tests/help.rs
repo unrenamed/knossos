@@ -138,6 +138,7 @@ Options:
       --span <SPAN>                Distance between any two walls [default: 3]
       --passage <PASSAGE>          ASCII character for a passage [default: .]
       --wall <WALL>                ASCII character for a wall [default: #]
+      --with-start-goal            With start \"S\" and goal \"G\" points randomly spawned on the borders
   -h, --help                       Print help
 ";
 
