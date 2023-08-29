@@ -50,11 +50,6 @@ impl Grid {
         self.cell_statuses[y * self.width + x]
     }
 
-    pub fn get_cell(&self, coords: Coords) -> &Cell {
-        let (x, y) = coords;
-        &self.cells[y * self.width + x]
-    }
-
     pub fn is_carved(&self, coords: Coords, direction: Cell) -> bool {
         let (x, y) = coords;
         self.cells[y * self.width + x].contains(direction)

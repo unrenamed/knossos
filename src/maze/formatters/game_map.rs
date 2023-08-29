@@ -1,11 +1,9 @@
-use rand::seq::SliceRandom;
-
 use crate::{
     maze::{
         formatters::Formatter,
         grid::{Grid, cell::Cell},
     },
-    utils::types::Coords,
+    utils::{types::Coords, rand::RandPositions},
 };
 use std::fmt::Write;
 
@@ -116,11 +114,12 @@ impl GameMap<WithStartGoal> {
         cols: usize,
         rows: usize,
     ) -> (usize, usize) {
-        let mut rng = rand::thread_rng();
         let mut positions: Vec<Coords> = self
             .iter_possible_start_and_goal_positions(&map, cols, rows)
             .collect();
-        positions.shuffle(&mut rng);
+        
+        // shuffle possible positions
+        RandPositions::rand(&mut positions);
 
         let (srow, scol) = positions[0];
 
@@ -362,9 +361,19 @@ mod tests {
     use super::*;
 
     #[test]
-    fn new_call_default_params() {
+    fn new_call() {
         let formatter = GameMap::new();
         assert_eq!(2, formatter.state.span);
+        assert_eq!('#', formatter.state.wall);
+        assert_eq!('.', formatter.state.passage);
+    }
+
+    #[test]
+    fn default_call() {
+        let formatter = GameMap::default();
+        assert_eq!(2, formatter.state.span);
+        assert_eq!('#', formatter.state.wall);
+        assert_eq!('.', formatter.state.passage);
     }
 
     #[test]
@@ -386,7 +395,50 @@ mod tests {
     }
 
     #[test]
-    fn format() {
+    fn goal_change() {
+        let formatter = GameMap::new().with_start_goal().goal('2');
+        assert_eq!('2', formatter.extra.goal);
+    }
+
+    #[test]
+    fn start_change() {
+        let formatter = GameMap::new().with_start_goal().start('1');
+        assert_eq!('1', formatter.extra.start);
+    }
+
+    #[test]
+    fn possible_start_and_goal_positions() {
+        let formatter = GameMap::new().with_start_goal();
+        let map = vec![
+            '#', '#', '#', '#', '#', '#', '#', '#', '#', 
+            '#', '.', '.', '.', '#', '.', '.', '.', '#', 
+            '#', '#', '#', '.', '#', '.', '#', '.', '#',
+            '#', '.', '.', '.', '#', '.', '#', '.', '#', 
+            '#', '.', '#', '#', '#', '.', '#', '.', '#', 
+            '#', '.', '.', '.', '.', '.', '#', '.', '#', 
+            '#', '#', '#', '#', '#', '#', '#', '.', '#', 
+            '#', '.', '.', '.', '.', '.', '.', '.', '#', 
+            '#', '#', '#', '#', '#', '#', '#', '#', '#',
+        ];
+        let positions = vec![
+            (0, 1), (0, 2), (0, 3), (0, 5), (0, 6),
+            (0, 7),(1, 0),(1, 8),(2, 8),(3, 0),(3, 8),(4, 0),(4, 8),(5, 0),(5, 8),(6, 8),(7, 0),(7, 8),(8, 1),(8, 2),(8, 3),(8, 4),(8, 5),(8, 6),(8, 7),
+        ];
+        let result = formatter.iter_possible_start_and_goal_positions(&map, 9, 9);
+        assert_eq!(positions, result.collect::<Vec<_>>());
+    }
+
+    #[test]
+    fn possible_start_and_goal_positions_when_map_is_empty() {
+        let formatter = GameMap::new().with_start_goal();
+        let map = vec![ ];
+        let positions: Vec<Coords> = vec![];
+        let result = formatter.iter_possible_start_and_goal_positions(&map, 0, 0);
+        assert_eq!(positions, result.collect::<Vec<Coords>>());
+    }
+
+    #[test]
+    fn format_with_no_start_and_goal() {
         let mut expected = String::new();
         expected.push_str("#########\n");
         expected.push_str("#.#.....#\n");
@@ -398,7 +450,27 @@ mod tests {
         expected.push_str("#.......#\n");
         expected.push_str("#########\n");
 
-        let formatter = GameMap::new().span(1).wall('#').passage('.');
+        let formatter = GameMap::new().span(1);
+        let mut grid = generate_maze();
+        let actual = formatter.format(&mut grid).0;
+
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn format_with_start_and_goal() {
+        let mut expected = String::new();
+        expected.push_str("#S#######\n");
+        expected.push_str("G.#.....#\n");
+        expected.push_str("#.#####.#\n");
+        expected.push_str("#.....#.#\n");
+        expected.push_str("###.###.#\n");
+        expected.push_str("#.......#\n");
+        expected.push_str("#.#######\n");
+        expected.push_str("#.......#\n");
+        expected.push_str("#########\n");
+
+        let formatter = GameMap::new().span(1).with_start_goal();
         let mut grid = generate_maze();
         let actual = formatter.format(&mut grid).0;
 
