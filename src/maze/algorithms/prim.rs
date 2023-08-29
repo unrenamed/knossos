@@ -145,3 +145,15 @@ fn direction(x: usize, y: usize, nx: usize, ny: usize) -> Option<Cell> {
 
     unreachable!("The x and y coordinates are never equal to nx and ny")
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn default_call() {
+        let algo = Prim::default();
+        let v: Vec<Coords> = vec![];
+        assert_eq!(v, algo.frontiers);
+    }
+}
