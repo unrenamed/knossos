@@ -21,12 +21,16 @@ impl ExtraState for WithStartGoal {}
 
 /// A GameMap formatter for a generated maze
 ///
-/// This can be used for generating a game map for pseudo 3D games that use ray casting algorithm
-/// for modeling and rendering the map.
+/// This formatter is designed for generating game maps suitable for pseudo-3D games utilizing the ray-casting
+/// algorithm for map modeling and rendering.
 ///
-/// # Example:
+/// By default, it generates a self-contained map without predefined start and exit points. However, it also offers
+/// the option to randomly place the start and goal points along the map borders, ensuring a viable path between the
+/// two points.
 ///
-/// The span value is 2.
+/// # Examples:
+///
+/// A standard map with a span set to 2, and no designated start or goal characters.
 /// ```no_test
 /// #############
 /// #........#..#
@@ -42,6 +46,17 @@ impl ExtraState for WithStartGoal {}
 /// #...........#
 /// #############
 /// ```
+///
+/// An alternative map with a span value of 1 and randomly placed start and goal characters.
+/// ```no_test
+/// #######
+/// S...#.#
+/// ###.#.#
+/// #...#.#
+/// #.###.#
+/// #.....G
+/// #######
+/// ```
 pub struct GameMap<S: ExtraState> {
     state: Box<GameMapState>,
     extra: S,
@@ -53,8 +68,9 @@ struct GameMapState {
     passage: char,
 }
 
+/// An implementation of a formatter without predefined start and exit points
 impl GameMap<NoStartGoal> {
-    /// Returns a new instance of an [GameMap] formatter with a default settings
+    /// Returns a new instance of a [GameMap] formatter with a default settings
     pub fn new() -> GameMap<NoStartGoal> {
         GameMap {
             state: Box::new(GameMapState {
@@ -66,6 +82,7 @@ impl GameMap<NoStartGoal> {
         }
     }
 
+    /// Returns a new instance of a [GameMap] formatter of a new type with an option to randonly spawn the start and goal characters on the borders of a map
     pub fn with_start_goal(self) -> GameMap<WithStartGoal> {
         GameMap {
             state: self.state,
@@ -95,6 +112,7 @@ impl GameMap<NoStartGoal> {
     }
 }
 
+/// An implementation of a formatter with the predefined start and goal points randomly placed along the map borders
 impl GameMap<WithStartGoal> {
     /// Sets a goal charachter and returns itself
     pub fn goal(mut self, goal: char) -> Self {
@@ -108,7 +126,7 @@ impl GameMap<WithStartGoal> {
         self
     }
 
-    pub fn get_random_start_and_goal_positions(
+    fn get_random_start_and_goal_positions(
         &self,
         map: &Vec<char>,
         cols: usize,
@@ -117,7 +135,7 @@ impl GameMap<WithStartGoal> {
         let mut positions: Vec<Coords> = self
             .iter_possible_start_and_goal_positions(&map, cols, rows)
             .collect();
-        
+
         // shuffle possible positions
         RandPositions::rand(&mut positions);
 
@@ -422,7 +440,10 @@ mod tests {
         ];
         let positions = vec![
             (0, 1), (0, 2), (0, 3), (0, 5), (0, 6),
-            (0, 7),(1, 0),(1, 8),(2, 8),(3, 0),(3, 8),(4, 0),(4, 8),(5, 0),(5, 8),(6, 8),(7, 0),(7, 8),(8, 1),(8, 2),(8, 3),(8, 4),(8, 5),(8, 6),(8, 7),
+            (0, 7), (1, 0), (1, 8), (2, 8), (3, 0),
+            (3, 8), (4, 0), (4, 8), (5, 0), (5, 8),
+            (6, 8), (7, 0), (7, 8), (8, 1), (8, 2),
+            (8, 3), (8, 4), (8, 5), (8, 6), (8, 7),
         ];
         let result = formatter.iter_possible_start_and_goal_positions(&map, 9, 9);
         assert_eq!(positions, result.collect::<Vec<_>>());
@@ -431,7 +452,7 @@ mod tests {
     #[test]
     fn possible_start_and_goal_positions_when_map_is_empty() {
         let formatter = GameMap::new().with_start_goal();
-        let map = vec![ ];
+        let map = vec![];
         let positions: Vec<Coords> = vec![];
         let result = formatter.iter_possible_start_and_goal_positions(&map, 0, 0);
         assert_eq!(positions, result.collect::<Vec<Coords>>());
