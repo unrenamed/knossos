@@ -263,9 +263,9 @@ mod tests {
     #[test]
     fn format() {
         let formatter = Image::new();
-        let mut grid = generate_maze();
+        let grid = generate_maze();
 
-        let actual = formatter.format(&mut grid).0;
+        let actual = formatter.format(&grid).0;
         let expected = image::open("tests/fixtures/maze.png").unwrap();
 
         assert_eq!(actual.as_bytes(), expected.as_bytes());

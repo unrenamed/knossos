@@ -76,8 +76,8 @@ mod tests {
         let node2 = arena.new_node();
         let node3 = arena.new_node();
 
-        assert_eq!(arena.connected(node1, node2), false);
-        assert_eq!(arena.connected(node1, node3), false);
+        assert!(!arena.connected(node1, node2));
+        assert!(!arena.connected(node1, node3));
     }
 
     #[test]
@@ -89,8 +89,8 @@ mod tests {
         let node3 = arena.new_node();
 
         arena.connect(node1, node2);
-        assert_eq!(arena.connected(node1, node2), true);
-        assert_eq!(arena.connected(node1, node3), false);
+        assert!(arena.connected(node1, node2));
+        assert!(!arena.connected(node1, node3));
     }
 
     #[test]
@@ -104,9 +104,9 @@ mod tests {
         arena.connect(node1, node2);
         arena.connect(node3, node2);
 
-        assert_eq!(arena.connected(node1, node2), true);
-        assert_eq!(arena.connected(node1, node3), true);
-        assert_eq!(arena.connected(node3, node2), true);
+        assert!(arena.connected(node1, node2));
+        assert!(arena.connected(node1, node3));
+        assert!(arena.connected(node3, node2));
     }
 
     #[test]

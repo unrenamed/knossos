@@ -2,7 +2,6 @@ use crate::maze::grid::cell::Cell;
 use crate::maze::{formatters::Formatter, grid::Grid};
 use std::fmt::Write;
 
-
 use super::StringWrapper;
 
 /// A formatter to emit the maze as ASCII with narrow passages
@@ -129,8 +128,8 @@ mod tests {
         expected.push_str("|_______|\n");
 
         let formatter = AsciiNarrow;
-        let mut grid = generate_maze();
-        let actual = formatter.format(&mut grid).0;
+        let grid = generate_maze();
+        let actual = formatter.format(&grid).0;
 
         assert_eq!(actual, expected);
     }
@@ -149,8 +148,8 @@ mod tests {
         expected.push_str("+---+---+---+---+\n");
 
         let formatter = AsciiBroad;
-        let mut grid = generate_maze();
-        let actual = formatter.format(&mut grid).0;
+        let grid = generate_maze();
+        let actual = formatter.format(&grid).0;
 
         assert_eq!(actual, expected);
     }

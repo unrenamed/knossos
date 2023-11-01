@@ -77,14 +77,14 @@ mod tests {
     fn valid_maze() {
         let grid = generate_valid_maze();
         let maze = OrthogonalMaze { grid };
-        assert_eq!(maze.is_valid(), true);
+        assert!(maze.is_valid());
     }
 
     #[test]
     fn invalid_maze() {
         let grid = generate_invalid_maze();
         let maze = OrthogonalMaze { grid };
-        assert_eq!(maze.is_valid(), false);
+        assert!(!maze.is_valid());
     }
 
     fn generate_valid_maze() -> Grid {

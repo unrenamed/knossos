@@ -133,7 +133,7 @@ impl GameMap<WithStartGoal> {
         rows: usize,
     ) -> (usize, usize) {
         let mut positions: Vec<Coords> = self
-            .iter_possible_start_and_goal_positions(&map, cols, rows)
+            .iter_possible_start_and_goal_positions(map, cols, rows)
             .collect();
 
         // shuffle possible positions
@@ -344,10 +344,10 @@ fn bottom_right_neighbour_exists(cx: usize, cy: usize, grid: &Grid) -> bool {
     grid.is_carved((cx + 1, cy + 1), Cell::WEST) && grid.is_carved((cx + 1, cy + 1), Cell::NORTH)
 }
 
-fn write_map(map: &Vec<char>, cols: usize) -> String {
+fn write_map(map: &[char], cols: usize) -> String {
     let mut ascii_map: String = String::new();
-    for i in 0..map.len() {
-        write!(ascii_map, "{}", map[i]).unwrap();
+    for (i, ch) in map.iter().enumerate() {
+        write!(ascii_map, "{}", ch).unwrap();
         if (i + 1) % cols == 0 {
             writeln!(ascii_map).unwrap();
         }
@@ -472,8 +472,8 @@ mod tests {
         expected.push_str("#########\n");
 
         let formatter = GameMap::new().span(1);
-        let mut grid = generate_maze();
-        let actual = formatter.format(&mut grid).0;
+        let grid = generate_maze();
+        let actual = formatter.format(&grid).0;
 
         assert_eq!(actual, expected);
     }
@@ -492,8 +492,8 @@ mod tests {
         expected.push_str("#########\n");
 
         let formatter = GameMap::new().span(1).with_start_goal();
-        let mut grid = generate_maze();
-        let actual = formatter.format(&mut grid).0;
+        let grid = generate_maze();
+        let actual = formatter.format(&grid).0;
 
         assert_eq!(actual, expected);
     }
