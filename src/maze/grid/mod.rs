@@ -85,11 +85,7 @@ impl Grid {
         Ok((nx, ny))
     }
 
-    pub fn get_next_cell_coords(
-        &self,
-        coords: Coords,
-        direction: Cell,
-    ) -> TransitResult<Coords> {
+    pub fn get_next_cell_coords(&self, coords: Coords, direction: Cell) -> TransitResult<Coords> {
         self.validate_transit(coords, direction)?;
 
         let (x, y) = coords;

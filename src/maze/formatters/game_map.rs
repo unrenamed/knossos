@@ -21,12 +21,12 @@ impl ExtraState for WithStartGoal {}
 
 /// A GameMap formatter for a generated maze
 ///
-/// This formatter is designed for generating game maps suitable for pseudo-3D games utilizing the ray-casting
-/// algorithm for map modeling and rendering.
+/// This formatter is designed for generating game maps suitable for pseudo-3D games utilizing the
+/// ray-casting algorithm for map modeling and rendering.
 ///
-/// By default, it generates a self-contained map without predefined start and exit points. However, it also offers
-/// the option to randomly place the start and goal points along the map borders, ensuring a viable path between the
-/// two points.
+/// By default, it generates a self-contained map without predefined start and exit points. However,
+/// it also offers the option to randomly place the start and goal points along the map borders,
+/// ensuring a viable path between the two points.
 ///
 /// # Examples:
 ///
@@ -82,7 +82,8 @@ impl GameMap<NoStartGoal> {
         }
     }
 
-    /// Returns a new instance of a [GameMap] formatter of a new type with an option to randonly spawn the start and goal characters on the borders of a map
+    /// Returns a new instance of a [GameMap] formatter of a new type with an option to randonly
+    /// spawn the start and goal characters on the borders of a map
     pub fn with_start_goal(self) -> GameMap<WithStartGoal> {
         GameMap {
             state: self.state,
@@ -112,7 +113,8 @@ impl GameMap<NoStartGoal> {
     }
 }
 
-/// An implementation of a formatter with the predefined start and goal points randomly placed along the map borders
+/// An implementation of a formatter with the predefined start and goal points randomly placed along
+/// the map borders
 impl GameMap<WithStartGoal> {
     /// Sets a goal charachter and returns itself
     pub fn goal(mut self, goal: char) -> Self {
@@ -145,7 +147,8 @@ impl GameMap<WithStartGoal> {
             .iter()
             .filter(|(nrow, ncol)| *ncol != scol && *nrow != srow)
             .nth(0)
-            .unwrap(); // the smallest grid with a single cell formatted into a map has 3 available positions for a goal
+            .unwrap(); // the smallest grid with a single cell formatted into a map has 3 available positions for a
+                       // goal
 
         let start_idx = srow * rows + scol;
         let goal_idx = grow * rows + gcol;
@@ -427,17 +430,19 @@ mod tests {
     #[test]
     fn possible_start_and_goal_positions() {
         let formatter = GameMap::new().with_start_goal();
+        #[cfg_attr(rustfmt, rustfmt_skip)]
         let map = vec![
-            '#', '#', '#', '#', '#', '#', '#', '#', '#', 
-            '#', '.', '.', '.', '#', '.', '.', '.', '#', 
+            '#', '#', '#', '#', '#', '#', '#', '#', '#',
+            '#', '.', '.', '.', '#', '.', '.', '.', '#',
             '#', '#', '#', '.', '#', '.', '#', '.', '#',
-            '#', '.', '.', '.', '#', '.', '#', '.', '#', 
-            '#', '.', '#', '#', '#', '.', '#', '.', '#', 
-            '#', '.', '.', '.', '.', '.', '#', '.', '#', 
-            '#', '#', '#', '#', '#', '#', '#', '.', '#', 
-            '#', '.', '.', '.', '.', '.', '.', '.', '#', 
+            '#', '.', '.', '.', '#', '.', '#', '.', '#',
+            '#', '.', '#', '#', '#', '.', '#', '.', '#',
+            '#', '.', '.', '.', '.', '.', '#', '.', '#',
+            '#', '#', '#', '#', '#', '#', '#', '.', '#',
+            '#', '.', '.', '.', '.', '.', '.', '.', '#',
             '#', '#', '#', '#', '#', '#', '#', '#', '#',
         ];
+        #[cfg_attr(rustfmt, rustfmt_skip)]
         let positions = vec![
             (0, 1), (0, 2), (0, 3), (0, 5), (0, 6),
             (0, 7), (1, 0), (1, 8), (2, 8), (3, 0),

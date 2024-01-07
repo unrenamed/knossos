@@ -8,7 +8,7 @@
 //! ```no_test
 //! cargo add knossos
 //! ```
-//! 
+//!
 //! Or add the following line to your `Cargo.toml`:
 //! ```no_test
 //! [dependencies]

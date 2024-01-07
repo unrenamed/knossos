@@ -29,6 +29,7 @@ pub trait Saveable {
     /// In case of success, returns the string with a success message.
     /// Otherwise, returns a [MazeSaveError] with a custom reason message.
     fn save(&self, path: &str) -> Result<String, MazeSaveError>;
+    fn format(&self) -> String;
 }
 
 /// A custom wrapper over [RgbImage] for converting a maze to an image
@@ -45,6 +46,9 @@ impl Saveable for ImageWrapper {
         }
 
         Ok(format!("Maze was successfully saved as an image: {}", path))
+    }
+    fn format(&self) -> String {
+        std::string::String::new()
     }
 }
 
@@ -75,15 +79,17 @@ impl Saveable for StringWrapper {
         };
 
         match file.write_all(self.0.as_bytes()) {
-            Err(why) => {
-                Err(MazeSaveError {
-                    reason: format!("Couldn't write to {}: {}", path.display(), why),
-                })
-            }
+            Err(why) => Err(MazeSaveError {
+                reason: format!("Couldn't write to {}: {}", path.display(), why),
+            }),
             Ok(_) => Ok(format!(
                 "Maze was successfully written to a file: {}",
                 path.display()
             )),
         }
+    }
+
+    fn format(&self) -> String {
+        self.0.clone()
     }
 }
