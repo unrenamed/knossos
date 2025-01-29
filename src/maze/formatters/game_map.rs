@@ -128,7 +128,7 @@ impl GameMap<WithStartGoal> {
 
     fn get_random_start_and_goal_positions(
         &self,
-        map: &Vec<char>,
+        map: &[char],
         cols: usize,
         rows: usize,
     ) -> (usize, usize) {
@@ -154,7 +154,7 @@ impl GameMap<WithStartGoal> {
 
     fn iter_possible_start_and_goal_positions(
         &self,
-        map: &Vec<char>,
+        map: &[char],
         cols: usize,
         rows: usize,
     ) -> impl Iterator<Item = Coords> {

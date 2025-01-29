@@ -97,15 +97,15 @@ impl RecursiveDivision {
 ///
 /// It works like this:
 ///
-/// 1. Begins with an original grid as a working field
+/// 1. Begins with an original grid as a working field.
 ///
 /// 2. Bisects the field either horizontally or vertically by carving a passage
-/// through the wall from a random cell
+///    through the wall from a random cell.
 ///
 /// 3. Repeats step #2 with the areas on either side of the wall where the passage
-/// was carved.
+///    was carved.
 ///
-/// 4. Continues, recursively, until the maze reaches the desired resolution
+/// 4. Continues, recursively, until the maze reaches the desired resolution.
 impl Algorithm for RecursiveDivision {
     fn generate(&mut self, grid: &mut Grid) {
         let width = grid.width();

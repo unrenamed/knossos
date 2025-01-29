@@ -3,7 +3,7 @@ use rand::prelude::*;
 use super::grid::{Grid, cell::Cell};
 
 /// A utility to validate if a given grid is valid, i.e. all the cells are reachable.
-
+///
 /// The recursive backtracker is one of the simplest and most efficient algorithms
 /// for this kind of work. If an algorithm does not visit all the cells, we make a
 /// conclusion that it's not valid.

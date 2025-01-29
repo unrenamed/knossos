@@ -19,17 +19,17 @@ pub struct Kruskal;
 ///
 /// The randomized variation of the Kruskal's algorithm looks as follows:
 ///
-/// 1. Throw all the edges in the graph into a set
+/// 1. Throw all the edges in the graph into a set.
 ///
 /// 2. Pull out the edge at random. If the edge connects two disjoint trees, join the trees.
-/// Otherwise, throw that edge away
+///    Otherwise, throw that edge away.
 ///
-/// 3. Repeat until there are no more edges left in the set
+/// 3. Repeat until there are no more edges left in the set.
 impl Algorithm for Kruskal {
     fn generate(&mut self, grid: &mut Grid) {
         let mut arena = populate_arena(grid);
         let mut edges: Edges = populate_edges(grid);
-        edges.shuffle(&mut rand::thread_rng());
+        edges.shuffle(&mut rand::rng());
 
         while !edges.is_empty() {
             let edge: Option<Edge> = edges.pop();
