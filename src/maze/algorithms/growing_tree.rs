@@ -63,35 +63,35 @@ impl GrowingTree {
     }
 
     fn choose_index(&self, ceil: usize) -> usize {
-        let mut rng = rand::thread_rng();
+        let mut rng = rand::rng();
 
         match self.method {
             Method::Oldest => 0,
             Method::Newest => ceil - 1,
             Method::Middle => ceil / 2,
-            Method::Random => rng.gen_range(0..ceil),
+            Method::Random => rng.random_range(0..ceil),
             Method::Newest50Random50 => {
-                let is_newest: bool = rng.gen();
+                let is_newest: bool = rng.random();
                 if is_newest {
                     ceil - 1
                 } else {
-                    rng.gen_range(0..ceil)
+                    rng.random_range(0..ceil)
                 }
             }
             Method::Newest75Random25 => {
-                let prob: f32 = rng.gen();
+                let prob: f32 = rng.random();
                 if prob < 0.75 {
                     ceil - 1
                 } else {
-                    rng.gen_range(0..ceil)
+                    rng.random_range(0..ceil)
                 }
             }
             Method::Newest25Random75 => {
-                let prob: f32 = rng.gen();
+                let prob: f32 = rng.random();
                 if prob < 0.25 {
                     ceil - 1
                 } else {
-                    rng.gen_range(0..ceil)
+                    rng.random_range(0..ceil)
                 }
             }
         }
@@ -103,15 +103,15 @@ impl GrowingTree {
 /// Despite the method you selected, the algorithm steps remain the same and pretty slick. Here is
 /// how it works:
 ///
-/// 1. Initializes an empty list of cells (hereinafter the C)
+/// 1. Initializes an empty list of cells (hereinafter the C).
 ///
-/// 2. Adds one cell to the C, at random
+/// 2. Adds one cell to the C, at random.
 ///
 /// 3. Chooses a cell from the C and carves a passage to any unvisited neighbor of that cell
-/// adding that neighbor to the C as well. If there are no unvisited neighbors, removes the cell
-/// from the C
+///    adding that neighbor to the C as well. If there are no unvisited neighbors, removes the cell
+///    from the C.
 ///
-/// 4. Repeats #3 until the C is empty
+/// 4. Repeats #3 until the C is empty.
 impl Algorithm for GrowingTree {
     fn generate(&mut self, grid: &mut Grid) {
         let mut directions = [Cell::NORTH, Cell::SOUTH, Cell::WEST, Cell::EAST];
@@ -122,7 +122,7 @@ impl Algorithm for GrowingTree {
             let mut index = Some(self.choose_index(cells.len()));
             let coords = cells[index.unwrap_or(0)];
 
-            directions.shuffle(&mut rand::thread_rng());
+            directions.shuffle(&mut rand::rng());
             for dir in directions {
                 let next = match grid.get_next_cell_coords(coords, dir) {
                     Ok(next) => next,
@@ -148,7 +148,8 @@ impl Algorithm for GrowingTree {
 }
 
 fn get_rand_coords(grid: &Grid) -> Coords {
-    let x = rand::thread_rng().gen_range(0..grid.width());
-    let y = rand::thread_rng().gen_range(0..grid.height());
+    let mut rng = rand::rng();
+    let x = rng.random_range(0..grid.width());
+    let y = rng.random_range(0..grid.height());
     (x, y)
 }

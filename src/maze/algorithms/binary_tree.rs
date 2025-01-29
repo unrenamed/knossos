@@ -99,7 +99,7 @@ impl Algorithm for BinaryTree {
         for y in 0..grid.height() {
             for x in 0..grid.width() {
                 let dirs = self.populate_dirs((x, y), grid);
-                if let Some(dir) = dirs.choose(&mut rand::thread_rng()) {
+                if let Some(dir) = dirs.choose(&mut rand::rng()) {
                     grid.carve_passage((x, y), *dir).ok();
                 }
             }

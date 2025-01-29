@@ -1,6 +1,6 @@
 [package]
 name = "knossos"
-version = "0.4.0"
+version = "0.4.1"
 authors = ["unrenamed <renkonazbka@gmail.com>"]
 description = "Rust library for generating and rendering mazes"
 edition = "2021"
@@ -23,3 +23,6 @@ bitflags = "2.8"
 assert_cmd = "2.0.16"
 assert_fs = "1.1"
 criterion = { version = "0.5", features = ["html_reports"] }
+
+ [lints.rust]
+ unexpected_cfgs = { level = "warn", check-cfg = ['cfg(tarpaulin_include)'] }
