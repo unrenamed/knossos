@@ -21,7 +21,7 @@ pub struct Prim {
 
 impl Prim {
     /// Create a new instance of the algorithm with an empty set of the frontier cells
-    pub fn new() -> Prim {
+    pub const fn new() -> Prim {
         Prim { frontiers: vec![] }
     }
 

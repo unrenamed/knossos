@@ -58,7 +58,7 @@ impl GrowingTree {
     ///
     /// let algorithm = GrowingTree::new(Method::Newest);
     /// ```
-    pub fn new(method: Method) -> GrowingTree {
+    pub const fn new(method: Method) -> GrowingTree {
         GrowingTree { method }
     }
 

@@ -11,7 +11,7 @@ struct Node {
 pub struct NodeId(pub usize);
 
 impl ArenaTree {
-    pub fn new() -> ArenaTree {
+    pub const fn new() -> ArenaTree {
         ArenaTree { nodes: vec![] }
     }
 
