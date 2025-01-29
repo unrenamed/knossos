@@ -29,4 +29,4 @@ criterion = { version = "0.5", features = ["html_reports"] }
  
  [lints.clippy]
  use_self = { level = "allow"}
- missing_const_for_fn = { level = "deny" }
+ missing_const_for_fn = { level = "warn" }
