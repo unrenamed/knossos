@@ -57,14 +57,14 @@ impl RecursiveDivision {
             return;
         }
 
-        let mut rng = rand::thread_rng();
+        let mut rng = rand::rng();
 
         // Which way a subfield with the given dimensions ought to be bisected
         let orientation = choose_orientation(w, h);
 
         // Get X and Y coordinates of a cell where a passage will be carved
-        let px = rng.gen_range(x..ax);
-        let py = rng.gen_range(y..ay);
+        let px = rng.random_range(x..ax);
+        let py = rng.random_range(y..ay);
 
         // Define what direction is corresponding to the wall orientation
         let dir = match orientation {
@@ -123,8 +123,8 @@ fn choose_orientation(width: usize, height: usize) -> Orientation {
         return Orientation::Vertical;
     }
 
-    let mut rng = thread_rng();
-    if !rng.gen::<bool>() {
+    let mut rng = rand::rng();
+    if !rng.random_bool(0.5) {
         Orientation::Horizontal
     } else {
         Orientation::Vertical
