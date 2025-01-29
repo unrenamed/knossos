@@ -3,6 +3,3 @@ reorder_modules = false
 
 use_field_init_shorthand = true
 use_try_shorthand = true
-
-wrap_comments = true
-comment_width = 120

@@ -16,7 +16,7 @@ pub fn validate(grid: &Grid) -> bool {
 
 fn visit(coords: Coords, grid: &Grid, visited: &mut Vec<Coords>) {
     let mut dirs = [Cell::NORTH, Cell::SOUTH, Cell::WEST, Cell::EAST];
-    dirs.shuffle(&mut rand::thread_rng());
+    dirs.shuffle(&mut rand::rng());
 
     for dir in dirs {
         let next = match grid.get_next_cell_coords(coords, dir) {
