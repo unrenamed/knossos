@@ -1,347 +1,398 @@
-#![feature(test)]
+use criterion::{criterion_group, criterion_main, Criterion};
 
-extern crate knossos;
-extern crate test;
+criterion_group!(
+    benches,
+    aldous_broder::generate_10_x_10,
+    aldous_broder::generate_100_x_100,
+    binary_tree::generate_10_x_10,
+    binary_tree::generate_100_x_100,
+    eller::generate_10_x_10,
+    eller::generate_100_x_100,
+    growing_tree_method_random::generate_10_x_10,
+    growing_tree_method_random::generate_100_x_100,
+    growing_tree_method_oldest::generate_10_x_10,
+    growing_tree_method_oldest::generate_100_x_100,
+    growing_tree_method_newest::generate_10_x_10,
+    growing_tree_method_newest::generate_100_x_100,
+    growing_tree_method_middle::generate_10_x_10,
+    growing_tree_method_middle::generate_100_x_100,
+    hunt_and_kill::generate_10_x_10,
+    hunt_and_kill::generate_100_x_100,
+    kruskal::generate_10_x_10,
+    kruskal::generate_100_x_100,
+    prim::generate_10_x_10,
+    prim::generate_100_x_100,
+    recursive_backtracking::generate_10_x_10,
+    recursive_backtracking::generate_100_x_100,
+    recursive_division::generate_10_x_10,
+    recursive_division::generate_100_x_100,
+    sidewinder::generate_10_x_10,
+    sidewinder::generate_100_x_100,
+);
+criterion_main!(benches);
 
-mod algorithms {
-    use test::Bencher;
-    use knossos::{maze::*};
+use knossos::maze::*;
 
-    mod aldous_broder {
-        use super::*;
+mod aldous_broder {
+    use super::*;
 
-        #[bench]
-        fn generate_10_x_10(b: &mut Bencher) {
+    pub fn generate_10_x_10(c: &mut Criterion) {
+        c.bench_function("aldous_broder/generate_10_x_10", |b| {
             b.iter(|| {
                 OrthogonalMazeBuilder::new()
                     .height(10)
                     .width(10)
                     .algorithm(Box::new(AldousBroder))
                     .build();
-            });
-        }
+            })
+        });
+    }
 
-        #[bench]
-        fn generate_100_x_100(b: &mut Bencher) {
+    pub fn generate_100_x_100(c: &mut Criterion) {
+        c.bench_function("aldous_broder/generate_100_x_100", |b| {
             b.iter(|| {
                 OrthogonalMazeBuilder::new()
                     .height(100)
                     .width(100)
                     .algorithm(Box::new(AldousBroder))
                     .build();
-            });
-        }
+            })
+        });
     }
+}
 
-    mod binary_tree {
-        use super::*;
+mod binary_tree {
+    use super::*;
 
-        #[bench]
-        fn generate_10_x_10(b: &mut Bencher) {
+    pub fn generate_10_x_10(c: &mut Criterion) {
+        c.bench_function("binary_tree/generate_10_x_10", |b| {
             b.iter(|| {
                 OrthogonalMazeBuilder::new()
                     .height(10)
                     .width(10)
                     .algorithm(Box::new(BinaryTree::new(Bias::NorthEast)))
                     .build();
-            });
-        }
+            })
+        });
+    }
 
-        #[bench]
-        fn generate_100_x_100(b: &mut Bencher) {
+    pub fn generate_100_x_100(c: &mut Criterion) {
+        c.bench_function("binary_tree/generate_100_x_100", |b| {
             b.iter(|| {
                 OrthogonalMazeBuilder::new()
                     .height(100)
                     .width(100)
                     .algorithm(Box::new(BinaryTree::new(Bias::NorthEast)))
                     .build();
-            });
-        }
+            })
+        });
     }
+}
 
-    mod eller {
-        use super::*;
+mod eller {
+    use super::*;
 
-        #[bench]
-        fn generate_10_x_10(b: &mut Bencher) {
+    pub fn generate_10_x_10(c: &mut Criterion) {
+        c.bench_function("eller//generate_10_x_10", |b| {
             b.iter(|| {
                 OrthogonalMazeBuilder::new()
                     .height(10)
                     .width(10)
                     .algorithm(Box::new(Eller))
                     .build();
-            });
-        }
+            })
+        });
+    }
 
-        #[bench]
-        fn generate_100_x_100(b: &mut Bencher) {
+    pub fn generate_100_x_100(c: &mut Criterion) {
+        c.bench_function("eller//generate_100_x_100", |b| {
             b.iter(|| {
                 OrthogonalMazeBuilder::new()
                     .height(100)
                     .width(100)
                     .algorithm(Box::new(Eller))
                     .build();
-            });
-        }
+            })
+        });
     }
+}
 
-    mod growing_tree_method_random {
-        use super::*;
+mod growing_tree_method_random {
+    use super::*;
 
-        #[bench]
-        fn generate_10_x_10(b: &mut Bencher) {
+    pub fn generate_10_x_10(c: &mut Criterion) {
+        c.bench_function("growing_tree_method_random/generate_10_x_10", |b| {
             b.iter(|| {
                 OrthogonalMazeBuilder::new()
                     .height(10)
                     .width(10)
                     .algorithm(Box::new(GrowingTree::new(Method::Random)))
                     .build();
-            });
-        }
+            })
+        });
+    }
 
-        #[bench]
-        fn generate_100_x_100(b: &mut Bencher) {
+    pub fn generate_100_x_100(c: &mut Criterion) {
+        c.bench_function("growing_tree_method_random/generate_100_x_100", |b| {
             b.iter(|| {
                 OrthogonalMazeBuilder::new()
                     .height(100)
                     .width(100)
                     .algorithm(Box::new(GrowingTree::new(Method::Random)))
                     .build();
-            });
-        }
+            })
+        });
     }
+}
 
-    mod growing_tree_method_oldest {
-        use super::*;
+mod growing_tree_method_oldest {
+    use super::*;
 
-        #[bench]
-        fn generate_10_x_10(b: &mut Bencher) {
+    pub fn generate_10_x_10(c: &mut Criterion) {
+        c.bench_function("growing_tree_method_oldest/generate_10_x_10", |b| {
             b.iter(|| {
                 OrthogonalMazeBuilder::new()
                     .height(10)
                     .width(10)
                     .algorithm(Box::new(GrowingTree::new(Method::Oldest)))
                     .build();
-            });
-        }
+            })
+        });
+    }
 
-        #[bench]
-        fn generate_100_x_100(b: &mut Bencher) {
+    pub fn generate_100_x_100(c: &mut Criterion) {
+        c.bench_function("growing_tree_method_oldest/generate_100_x_100", |b| {
             b.iter(|| {
                 OrthogonalMazeBuilder::new()
                     .height(100)
                     .width(100)
                     .algorithm(Box::new(GrowingTree::new(Method::Oldest)))
                     .build();
-            });
-        }
+            })
+        });
     }
+}
 
-    mod growing_tree_method_newest {
-        use super::*;
+mod growing_tree_method_newest {
+    use super::*;
 
-        #[bench]
-        fn generate_10_x_10(b: &mut Bencher) {
+    pub fn generate_10_x_10(c: &mut Criterion) {
+        c.bench_function("growing_tree_method_newest/generate_10_x_10", |b| {
             b.iter(|| {
                 OrthogonalMazeBuilder::new()
                     .height(10)
                     .width(10)
                     .algorithm(Box::new(GrowingTree::new(Method::Newest)))
                     .build();
-            });
-        }
+            })
+        });
+    }
 
-        #[bench]
-        fn generate_100_x_100(b: &mut Bencher) {
+    pub fn generate_100_x_100(c: &mut Criterion) {
+        c.bench_function("growing_tree_method_newest/generate_100_x_100", |b| {
             b.iter(|| {
                 OrthogonalMazeBuilder::new()
                     .height(100)
                     .width(100)
                     .algorithm(Box::new(GrowingTree::new(Method::Newest)))
                     .build();
-            });
-        }
+            })
+        });
     }
+}
 
-    mod growing_tree_method_middle {
-        use super::*;
+mod growing_tree_method_middle {
+    use super::*;
 
-        #[bench]
-        fn generate_10_x_10(b: &mut Bencher) {
+    pub fn generate_10_x_10(c: &mut Criterion) {
+        c.bench_function("growing_tree_method_middle/generate_10_x_10", |b| {
             b.iter(|| {
                 OrthogonalMazeBuilder::new()
                     .height(10)
                     .width(10)
                     .algorithm(Box::new(GrowingTree::new(Method::Middle)))
                     .build();
-            });
-        }
+            })
+        });
+    }
 
-        #[bench]
-        fn generate_100_x_100(b: &mut Bencher) {
+    pub fn generate_100_x_100(c: &mut Criterion) {
+        c.bench_function("growing_tree_method_middle/generate_100_x_100", |b| {
             b.iter(|| {
                 OrthogonalMazeBuilder::new()
                     .height(100)
                     .width(100)
                     .algorithm(Box::new(GrowingTree::new(Method::Middle)))
                     .build();
-            });
-        }
+            })
+        });
     }
+}
 
-    mod hunt_and_kill {
-        use super::*;
+mod hunt_and_kill {
+    use super::*;
 
-        #[bench]
-        fn generate_10_x_10(b: &mut Bencher) {
+    pub fn generate_10_x_10(c: &mut Criterion) {
+        c.bench_function("hunt_and_kill/generate_10_x_10", |b| {
             b.iter(|| {
                 OrthogonalMazeBuilder::new()
                     .height(10)
                     .width(10)
                     .algorithm(Box::new(HuntAndKill::new()))
                     .build();
-            });
-        }
+            })
+        });
+    }
 
-        #[bench]
-        fn generate_100_x_100(b: &mut Bencher) {
+    pub fn generate_100_x_100(c: &mut Criterion) {
+        c.bench_function("hunt_and_kill/generate_100_x_100", |b| {
             b.iter(|| {
                 OrthogonalMazeBuilder::new()
                     .height(100)
                     .width(100)
                     .algorithm(Box::new(HuntAndKill::new()))
                     .build();
-            });
-        }
+            })
+        });
     }
+}
 
-    mod kruskal {
-        use super::*;
+mod kruskal {
+    use super::*;
 
-        #[bench]
-        fn generate_10_x_10(b: &mut Bencher) {
+    pub fn generate_10_x_10(c: &mut Criterion) {
+        c.bench_function("kruskal/generate_10_x_10", |b| {
             b.iter(|| {
                 OrthogonalMazeBuilder::new()
                     .height(10)
                     .width(10)
                     .algorithm(Box::new(Kruskal))
                     .build();
-            });
-        }
+            })
+        });
+    }
 
-        #[bench]
-        fn generate_100_x_100(b: &mut Bencher) {
+    pub fn generate_100_x_100(c: &mut Criterion) {
+        c.bench_function("kruskal/generate_100_x_100", |b| {
             b.iter(|| {
                 OrthogonalMazeBuilder::new()
                     .height(100)
                     .width(100)
                     .algorithm(Box::new(Kruskal))
                     .build();
-            });
-        }
+            })
+        });
     }
+}
 
-    mod prim {
-        use super::*;
+mod prim {
+    use super::*;
 
-        #[bench]
-        fn generate_10_x_10(b: &mut Bencher) {
+    pub fn generate_10_x_10(c: &mut Criterion) {
+        c.bench_function("prim/generate_10_x_10", |b| {
             b.iter(|| {
                 OrthogonalMazeBuilder::new()
                     .height(10)
                     .width(10)
                     .algorithm(Box::new(Prim::new()))
                     .build();
-            });
-        }
+            })
+        });
+    }
 
-        #[bench]
-        fn generate_100_x_100(b: &mut Bencher) {
+    pub fn generate_100_x_100(c: &mut Criterion) {
+        c.bench_function("prim/generate_100_x_100", |b| {
             b.iter(|| {
                 OrthogonalMazeBuilder::new()
                     .height(100)
                     .width(100)
                     .algorithm(Box::new(Prim::new()))
                     .build();
-            });
-        }
+            })
+        });
     }
+}
 
-    mod recursive_backtracking {
-        use super::*;
+mod recursive_backtracking {
+    use super::*;
 
-        #[bench]
-        fn generate_10_x_10(b: &mut Bencher) {
+    pub fn generate_10_x_10(c: &mut Criterion) {
+        c.bench_function("recursive_backtracking/generate_10_x_10", |b| {
             b.iter(|| {
                 OrthogonalMazeBuilder::new()
                     .height(10)
                     .width(10)
                     .algorithm(Box::new(RecursiveBacktracking))
                     .build();
-            });
-        }
+            })
+        });
+    }
 
-        #[bench]
-        fn generate_100_x_100(b: &mut Bencher) {
+    pub fn generate_100_x_100(c: &mut Criterion) {
+        c.bench_function("recursive_backtracking/generate_100_x_100", |b| {
             b.iter(|| {
                 OrthogonalMazeBuilder::new()
                     .height(100)
                     .width(100)
                     .algorithm(Box::new(RecursiveBacktracking))
                     .build();
-            });
-        }
+            })
+        });
     }
+}
 
-    mod recursive_division {
-        use super::*;
+mod recursive_division {
+    use super::*;
 
-        #[bench]
-        fn generate_10_x_10(b: &mut Bencher) {
+    pub fn generate_10_x_10(c: &mut Criterion) {
+        c.bench_function("recursive_division/generate_10_x_10", |b| {
             b.iter(|| {
                 OrthogonalMazeBuilder::new()
                     .height(10)
                     .width(10)
                     .algorithm(Box::new(RecursiveDivision))
                     .build();
-            });
-        }
+            })
+        });
+    }
 
-        #[bench]
-        fn generate_100_x_100(b: &mut Bencher) {
+    pub fn generate_100_x_100(c: &mut Criterion) {
+        c.bench_function("recursive_division/generate_100_x_100", |b| {
             b.iter(|| {
                 OrthogonalMazeBuilder::new()
                     .height(100)
                     .width(100)
                     .algorithm(Box::new(RecursiveDivision))
                     .build();
-            });
-        }
+            })
+        });
     }
+}
 
-    mod sidewinder {
-        use super::*;
+mod sidewinder {
+    use super::*;
 
-        #[bench]
-        fn generate_10_x_10(b: &mut Bencher) {
+    pub fn generate_10_x_10(c: &mut Criterion) {
+        c.bench_function("sidewinder/generate_10_x_10", |b| {
             b.iter(|| {
                 OrthogonalMazeBuilder::new()
                     .height(10)
                     .width(10)
                     .algorithm(Box::new(Sidewinder))
                     .build();
-            });
-        }
+            })
+        });
+    }
 
-        #[bench]
-        fn generate_100_x_100(b: &mut Bencher) {
+    pub fn generate_100_x_100(c: &mut Criterion) {
+        c.bench_function("sidewinder/generate_100_x_100", |b| {
             b.iter(|| {
                 OrthogonalMazeBuilder::new()
                     .height(100)
                     .width(100)
                     .algorithm(Box::new(Sidewinder))
                     .build();
-            });
-        }
+            })
+        });
     }
 }

@@ -4,7 +4,7 @@ use self::cell::CellStatus;
 use super::errors::TransitError;
 use crate::utils::types::Coords;
 use cell::Cell;
-use std::{fmt};
+use std::fmt;
 
 type TransitResult<T> = Result<T, TransitError>;
 
@@ -85,11 +85,7 @@ impl Grid {
         Ok((nx, ny))
     }
 
-    pub fn get_next_cell_coords(
-        &self,
-        coords: Coords,
-        direction: Cell,
-    ) -> TransitResult<Coords> {
+    pub fn get_next_cell_coords(&self, coords: Coords, direction: Cell) -> TransitResult<Coords> {
         self.validate_transit(coords, direction)?;
 
         let (x, y) = coords;
