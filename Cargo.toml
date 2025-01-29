@@ -24,9 +24,17 @@ assert_cmd = "2.0.16"
 assert_fs = "1.1"
 criterion = { version = "0.5", features = ["html_reports"] }
 
- [lints.rust]
- unexpected_cfgs = { level = "warn", check-cfg = ['cfg(tarpaulin_include)'] }
- 
- [lints.clippy]
- use_self = { level = "allow"}
- missing_const_for_fn = { level = "warn" }
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(tarpaulin_include)'] }
+
+[lints.clippy]
+use_self = { level = "allow"}
+missing_const_for_fn = { level = "warn" }
+
+[[bench]]
+name = "algorithms"
+harness = false
+
+[[bench]]
+name = "formatters"
+harness = false
