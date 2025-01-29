@@ -19,10 +19,10 @@ impl AldousBroder {}
 /// The problem domain the algorithm was created for is finding unform spanning trees. Here is how
 /// it works:
 ///
-/// 1. Chooses any vertex
+/// 1. Chooses any vertex.
 ///
 /// 2. Chooses a connected neighbor of the vertex and travels to it. If the neighbor has not yet
-/// been visited, adds the traveled edge to the spanning tree.
+///    been visited, adds the traveled edge to the spanning tree.
 ///
 /// 3. Repeats step 2 until all vertexes have been visited.
 impl Algorithm for AldousBroder {
@@ -35,7 +35,7 @@ impl Algorithm for AldousBroder {
 
         while remaining > 0 {
             let mut directions = [Cell::NORTH, Cell::SOUTH, Cell::WEST, Cell::EAST];
-            directions.shuffle(&mut rand::thread_rng());
+            directions.shuffle(&mut rand::rng());
 
             for dir in directions {
                 let next_cell = grid.get_next_cell_coords((x, y), dir);
@@ -58,8 +58,8 @@ impl Algorithm for AldousBroder {
 }
 
 fn get_start_coords(grid: &Grid) -> Coords {
-    let mut rng = rand::thread_rng();
-    let y = rng.gen_range(0..grid.height());
-    let x = rng.gen_range(0..grid.width());
+    let mut rng = rand::rng();
+    let y = rng.random_range(0..grid.height());
+    let x = rng.random_range(0..grid.width());
     (x, y)
 }

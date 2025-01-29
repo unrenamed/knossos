@@ -43,7 +43,7 @@ impl State {
     fn populate(mut self) -> Self {
         for n in 1..=self.width {
             let cell_id = CellId(n);
-            if self.cells.get(&cell_id).is_some() {
+            if self.cells.contains_key(&cell_id) {
                 continue;
             }
 
@@ -109,13 +109,13 @@ pub struct Eller;
 impl Eller {
     /// Randomly joins adjacent cells, but only if they are not in the same set
     fn connect_disjoint_sets(&self, state: &mut State, grid: &mut Grid, is_last_row: bool) {
-        let mut rng = rand::thread_rng();
+        let mut rng = rand::rng();
 
         for c in 1..state.width {
             let cell_id = CellId(c);
             let next_cell_id = CellId(c + 1);
 
-            if state.connected(cell_id, next_cell_id) || (!is_last_row && rng.gen::<bool>()) {
+            if state.connected(cell_id, next_cell_id) || (!is_last_row && rng.random_bool(0.5)) {
                 continue;
             }
 
@@ -151,13 +151,13 @@ impl Eller {
 
     /// Selects random cells to carve vertical passages from
     fn cells_to_connect(&self, cells: Vec<CellId>) -> Vec<CellId> {
-        let mut rng = rand::thread_rng();
+        let mut rng = rand::rng();
 
         let mut cells = cells;
         cells.shuffle(&mut rng);
 
         let connect_count = if cells.len() >= 2 {
-            rng.gen_range(1..cells.len())
+            rng.random_range(1..cells.len())
         } else {
             1
         };
@@ -174,22 +174,22 @@ impl Eller {
 ///
 /// Generates maze following the algorithm below:
 ///
-/// 1. Initializes the cells of the first row to each exist in their own set
+/// 1. Initializes the cells of the first row to each exist in their own set.
 ///
 /// 2. Randomly joins adjacent cells, but only if they are not in the same set. When joining
-/// adjacent cells, merges the cells of both sets into a single set, indicating that all cells in
-/// both sets are now connected.
+///    adjacent cells, merges the cells of both sets into a single set, indicating that all cells in
+///    both sets are now connected.
 ///
 /// 3. For each set, randomly creates vertical connections downward to the next row. Each
-/// remaining set must have at least one vertical connection. The cells in the next row thus
-/// connected must share the set of the cell above them
+///    remaining set must have at least one vertical connection. The cells in the next row thus
+///    connected must share the set of the cell above them.
 ///
-/// 4. Fleshes out the next row by putting any remaining cells into their own sets
+/// 4. Fleshes out the next row by putting any remaining cells into their own sets.
 ///
-/// 5. Repeats until the last row is reached
+/// 5. Repeats until the last row is reached.
 ///
 /// 6. For the last row, joins all adjacent cells that do not share a set, and omit the vertical
-/// connections
+///    connections.
 impl Algorithm for Eller {
     fn generate(&mut self, grid: &mut Grid) {
         let mut state = State::new(0, None, grid.width()).populate();

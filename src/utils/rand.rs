@@ -7,7 +7,7 @@ impl RandPositions {
     #[cfg(not(tarpaulin_include))]
     pub fn rand(positions: &mut Vec<Coords>) -> &mut Vec<Coords> {
         use rand::seq::SliceRandom;
-        let mut rng = rand::thread_rng();
+        let mut rng = rand::rng();
         positions.shuffle(&mut rng);
         positions
     }

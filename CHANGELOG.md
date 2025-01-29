@@ -7,6 +7,12 @@ and this project adheres to [Conventional Commits](https://www.conventionalcommi
 
 ## [Unreleased]
 
+## [0.4.1] - 2025-01-29
+- Applied more modern rust code styling, rustfmt and cargo clippy.
+- Replaced test bencher with criterion.
+- Moved non release dependencies to `dev-dependencies`.
+- `cargo update`
+
 ## [0.4.0] - 2023-11-01
 
 ### Added
