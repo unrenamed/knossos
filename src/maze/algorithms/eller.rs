@@ -1,4 +1,4 @@
-use super::Algorithm;
+use super::{Algorithm, BOOL_TRUE_PROBABILITY};
 use crate::{
     maze::grid::{Grid, cell::Cell as GridCell},
     utils::types::Coords,
@@ -115,7 +115,9 @@ impl Eller {
             let cell_id = CellId(c);
             let next_cell_id = CellId(c + 1);
 
-            if state.connected(cell_id, next_cell_id) || (!is_last_row && rng.random_bool(0.5)) {
+            if state.connected(cell_id, next_cell_id)
+                || (!is_last_row && rng.random_bool(BOOL_TRUE_PROBABILITY))
+            {
                 continue;
             }
 
