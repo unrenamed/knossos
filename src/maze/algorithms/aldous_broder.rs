@@ -24,7 +24,7 @@ impl AldousBroder {}
 /// 2. Chooses a connected neighbor of the vertex and travels to it. If the neighbor has not yet
 ///    been visited, adds the traveled edge to the spanning tree.
 ///
-/// 3. Repeats step 2 until all vertexes have been visited.
+/// 3. Repeats step 2 until all vertices have been visited.
 impl Algorithm for AldousBroder {
     fn generate(&mut self, grid: &mut Grid) {
         let start_coords = get_start_coords(grid);
