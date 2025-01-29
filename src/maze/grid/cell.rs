@@ -17,11 +17,11 @@ pub struct CellStatus {
 }
 
 impl CellStatus {
-    pub fn visited(&self) -> bool {
+    pub const fn visited(&self) -> bool {
         self.visited
     }
 
-    pub fn marked(&self) -> bool {
+    pub const fn marked(&self) -> bool {
         self.marked
     }
 
