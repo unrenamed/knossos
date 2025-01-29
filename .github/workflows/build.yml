@@ -10,6 +10,43 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
+  typos:
+    name: Spell Check with Typos
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Actions Repository
+      uses: actions/checkout@v4
+    - name: Check spelling
+      uses: crate-ci/typos@master
+      
+  fmt:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: format
+      run: cargo fmt -- --check
+
+  clippy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Configure Cargo cache
+      uses: actions/cache@v3
+      with:
+        path: |
+          ./target
+          ~/.cargo                        
+        key: debug-${{ runner.os }}-${{ hashFiles('rust-toolchain.toml') }}-${{ hashFiles('Cargo.lock') }}
+        restore-keys: |
+          debug-${{ runner.os }}-${{ hashFiles('rust-toolchain.toml') }}-
+          debug-${{ runner.os }}-
+    - name: install-clippy
+      run: rustup component add clippy
+    - name: clippy
+      run: cargo clippy
+
   build:
     runs-on: ubuntu-latest
     steps:

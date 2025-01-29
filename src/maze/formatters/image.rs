@@ -101,8 +101,8 @@ impl Image {
             for x in start_x..=start_x + self.cell_width() {
                 // A cell consists of two main zones: its walls and some empty space between them
                 // called "a passage". To draw a cell, the following code checks some particular
-                // zones and skips filling pixes with color in case a wall should not display or
-                // it's a cell passage. In all other cases, we fill pixes with a given color
+                // zones and skips filling pixels with color in case a wall should not display or
+                // it's a cell passage. In all other cases, we fill pixels with a given color
 
                 // Top left corner must display only if either Northern or Western wall exists
                 if x >= start_x
