@@ -43,7 +43,7 @@ impl BinaryTree {
     ///
     /// let algorithm = BinaryTree::new(Bias::NorthWest);
     /// ```
-    pub fn new(bias: Bias) -> BinaryTree {
+    pub const fn new(bias: Bias) -> BinaryTree {
         BinaryTree { bias }
     }
 

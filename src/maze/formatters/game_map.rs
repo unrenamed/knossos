@@ -115,13 +115,13 @@ impl GameMap<NoStartGoal> {
 /// An implementation of a formatter with the predefined start and goal points randomly placed along the map borders
 impl GameMap<WithStartGoal> {
     /// Sets a goal charachter and returns itself
-    pub fn goal(mut self, goal: char) -> Self {
+    pub const fn goal(mut self, goal: char) -> Self {
         self.extra.goal = goal;
         self
     }
 
     /// Sets a start charachter and returns itself
-    pub fn start(mut self, start: char) -> Self {
+    pub const fn start(mut self, start: char) -> Self {
         self.extra.start = start;
         self
     }

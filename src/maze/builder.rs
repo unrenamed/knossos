@@ -19,13 +19,13 @@ impl OrthogonalMazeBuilder {
     }
 
     /// Sets a maze width and returns itself
-    pub fn width(mut self, width: usize) -> Self {
+    pub const fn width(mut self, width: usize) -> Self {
         self.width = width;
         self
     }
 
     /// Sets a maze height and returns itself
-    pub fn height(mut self, height: usize) -> Self {
+    pub const fn height(mut self, height: usize) -> Self {
         self.height = height;
         self
     }
