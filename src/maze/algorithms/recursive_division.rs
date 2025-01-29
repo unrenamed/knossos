@@ -1,4 +1,4 @@
-use super::Algorithm;
+use super::{Algorithm, BOOL_TRUE_PROBABILITY};
 use crate::maze::grid::{cell::Cell, Grid};
 use rand::prelude::*;
 
@@ -124,7 +124,7 @@ fn choose_orientation(width: usize, height: usize) -> Orientation {
     }
 
     let mut rng = rand::rng();
-    if !rng.random_bool(0.5) {
+    if !rng.random_bool(BOOL_TRUE_PROBABILITY) {
         Orientation::Horizontal
     } else {
         Orientation::Vertical
