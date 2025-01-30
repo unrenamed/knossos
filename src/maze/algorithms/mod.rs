@@ -26,6 +26,8 @@ use crate::{maze::grid::Grid, utils::types::Coords};
 
 pub(super) const BOOL_TRUE_PROBABILITY: f64 = 0.5;
 
+pub(super) const BOOL_TRUE_PROBABILITY: f64 = 0.5;
+
 /// A trait for generating a maze using a selected algorithm
 pub trait Algorithm {
     /// Runs algorithm through the given Grid object, thus mutating the grid and generating a new
