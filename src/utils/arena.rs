@@ -54,7 +54,9 @@ impl ArenaTree {
         let node = self.nodes.get(id.0);
         node?;
 
-        node.unwrap().parent.map_or(Some(id), |parent| self.root(parent))
+        node.unwrap()
+            .parent
+            .map_or(Some(id), |parent| self.root(parent))
     }
 }
 

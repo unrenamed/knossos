@@ -130,6 +130,18 @@ impl Grid {
     }
 }
 
+impl std::ops::Index<Coords> for Grid {
+    type Output = Cell;
+
+    fn index(&self, index: Coords) -> &Self::Output {
+        let width = self.width();
+        let idx = index.1 * width + index.0;
+        self.cells
+            .get(idx)
+            .unwrap_or_else(|| panic!("Cell at {:?} doesn't exist.", &index))
+    }
+}
+
 impl fmt::Display for Grid {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let top_border = "_".repeat(self.width * 2 - 1);

@@ -18,3 +18,4 @@ pub use builder::OrthogonalMazeBuilder;
 pub use formatters::{AsciiNarrow, AsciiBroad, GameMap, Image};
 pub use errors::MazeSaveError;
 pub use maze::OrthogonalMaze;
+pub use grid::cell::Cell;
