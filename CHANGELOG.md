@@ -7,6 +7,14 @@ and this project adheres to [Conventional Commits](https://www.conventionalcommi
 
 ## [Unreleased]
 
+## [0.5.0] - 2025-01-30
+
+### Breaking Change
+- Add start coords for algorithms that support inital coords. Trait function changed from `Algorithm::generate(&mut self, grid: &mut Grid)` to `Algorithm::generate(&mut self, grid: &mut Grid, start_coords: Option<Coords>)`. **None** preserves previous behaviour.
+
+### Added
+- Add `Index` trait to `OrthogonalMaze` and `Grid` returning, now public, `Cell`.
+
 ## [0.4.1] - 2025-01-29
 
 ### Changed
