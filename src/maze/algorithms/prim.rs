@@ -21,7 +21,7 @@ pub struct Prim {
 
 impl Prim {
     /// Create a new instance of the algorithm with an empty set of the frontier cells
-    pub fn new() -> Prim {
+    pub const fn new() -> Prim {
         Prim { frontiers: vec![] }
     }
 
@@ -82,34 +82,34 @@ impl Default for Prim {
 ///
 /// For efficiency, let’s define a legend for the following algorithm steps:
 /// - "F" or "frontier”: the set of all cells that are not yet in the maze, but are adjacent to a
-/// cell that is in the maze
+///   cell that is in the maze.
 ///
 /// The standard version of the algorithm generates a minimal spanning tree in a graph. With a
 /// slight change of adding some random, it works something like this:
 ///
-/// 1. Chooses an arbitrary cell and adds it to the maze
+/// 1. Chooses an arbitrary cell and adds it to the maze.
 ///
-/// 2. Adds all neighbor cells that are not in the F yet to F
+/// 2. Adds all neighbor cells that are not in the F yet to F.
 ///
 /// 3. Removes one of the F cells at random and carves a passage from that to whichever adjacent
-/// cell is already part of the maze
+///    cell is already part of the maze.
 ///
-/// 4. Adds the neighbours of the formerly frontier cell to the F
+/// 4. Adds the neighbours of the formerly frontier cell to the F.
 ///
-/// 5. Repeats steps 3 and 4 until the F is empty
+/// 5. Repeats steps 3 and 4 until the F is empty.
 impl Algorithm for Prim {
     fn generate(&mut self, grid: &mut Grid) {
-        let mut rng = rand::thread_rng();
+        let mut rng = rand::rng();
 
         self.mark(get_rand_coords(grid), grid);
 
         while !self.frontiers.is_empty() {
-            let index = rng.gen_range(0..self.frontiers.len());
+            let index = rng.random_range(0..self.frontiers.len());
             let coords = self.frontiers.remove(index);
 
             let neighbours = self.neighbours(coords, grid);
 
-            let index = rng.gen_range(0..neighbours.len());
+            let index = rng.random_range(0..neighbours.len());
             let (nx, ny) = neighbours[index];
 
             let (x, y) = coords;
@@ -123,9 +123,9 @@ impl Algorithm for Prim {
 }
 
 fn get_rand_coords(grid: &Grid) -> Coords {
-    let mut rng = rand::thread_rng();
-    let x = rng.gen_range(0..grid.width());
-    let y = rng.gen_range(0..grid.height());
+    let mut rng = rand::rng();
+    let x = rng.random_range(0..grid.width());
+    let y = rng.random_range(0..grid.height());
     (x, y)
 }
 

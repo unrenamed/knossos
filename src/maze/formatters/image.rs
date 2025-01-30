@@ -17,7 +17,7 @@ pub struct Image {
 
 impl Image {
     /// Returns a new instance of an [Image] formatter with a default settings
-    pub fn new() -> Image {
+    pub const fn new() -> Image {
         Image {
             wall_width: 40,
             passage_width: 40,
@@ -28,40 +28,40 @@ impl Image {
     }
 
     /// Sets a wall width and returns itself
-    pub fn wall(mut self, width: usize) -> Self {
+    pub const fn wall(mut self, width: usize) -> Self {
         self.wall_width = width;
         self
     }
 
     /// Sets a passage width and returns itself
-    pub fn passage(mut self, width: usize) -> Self {
+    pub const fn passage(mut self, width: usize) -> Self {
         self.passage_width = width;
         self
     }
 
     /// Sets a background color and returns itself
-    pub fn background(mut self, color: Color) -> Self {
+    pub const fn background(mut self, color: Color) -> Self {
         self.background_color = color;
         self
     }
 
     /// Sets a maze (foreground) color and returns itself
-    pub fn foreground(mut self, color: Color) -> Self {
+    pub const fn foreground(mut self, color: Color) -> Self {
         self.foreground_color = color;
         self
     }
 
     /// Sets a margin (a distance between a maze and the image borders) and returns itself
-    pub fn margin(mut self, value: usize) -> Self {
+    pub const fn margin(mut self, value: usize) -> Self {
         self.margin = value;
         self
     }
 
-    fn cell_width(&self) -> usize {
+    const fn cell_width(&self) -> usize {
         self.wall_width * 2 + self.passage_width
     }
 
-    fn sizes(&self, grid: &Grid) -> (usize, usize) {
+    const fn sizes(&self, grid: &Grid) -> (usize, usize) {
         // To calculate maze's width and height we use a simple formula that multiplies a single
         // cell width and a number of cells (in a row or column). However, since two cells
         // have a single joint wall, we do the subtraction of the joint walls from the
@@ -101,8 +101,8 @@ impl Image {
             for x in start_x..=start_x + self.cell_width() {
                 // A cell consists of two main zones: its walls and some empty space between them
                 // called "a passage". To draw a cell, the following code checks some particular
-                // zones and skips filling pixes with color in case a wall should not display or
-                // it's a cell passage. In all other cases, we fill pixes with a given color
+                // zones and skips filling pixels with color in case a wall should not display or
+                // it's a cell passage. In all other cases, we fill pixels with a given color
 
                 // Top left corner must display only if either Northern or Western wall exists
                 if x >= start_x

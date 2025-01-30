@@ -14,33 +14,33 @@ pub struct Sidewinder;
 /// The steps are as follows:
 ///
 /// 1. Works through the grid row-wise, starting with the cell at 0,0. Initializes the “run” set to
-/// be empty
+///    be empty.
 ///
-/// 2. Adds the current cell to the “run” set
+/// 2. Adds the current cell to the “run” set.
 ///
-/// 3. For the current cell, randomly decides whether to carve east or not
+/// 3. For the current cell, randomly decides whether to carve east or not.
 ///
-/// 4. If a passage was carved, makes the new cell the current cell and repeats steps 2-4
+/// 4. If a passage was carved, makes the new cell the current cell and repeats steps 2-4.
 ///
 /// 5. If a passage was not carved, chooses any one of the cells in the run set and carves a passage
-/// north. Then empties the run set, sets the next cell in the row to be the current cell, and
-/// repeats steps 2-5
+///    north. Then empties the run set, sets the next cell in the row to be the current cell, and
+///    repeats steps 2-5.
 ///
-/// 6. Continues until all rows have been processed
+/// 6. Continues until all rows have been processed.
 impl Algorithm for Sidewinder {
     fn generate(&mut self, grid: &mut Grid) {
-        let mut rng = rand::thread_rng();
+        let mut rng = rand::rng();
 
         for y in 0..grid.height() {
             let mut run_start = 0;
 
             for x in 0..grid.width() {
-                let carve_east: bool = rng.gen();
+                let carve_east: bool = rng.random();
 
                 if y == 0 || (carve_east && x + 1 < grid.width()) {
                     grid.carve_passage((x, y), Cell::EAST).ok();
                 } else {
-                    let rand_x = rng.gen_range(run_start..=x);
+                    let rand_x = rng.random_range(run_start..=x);
                     grid.carve_passage((rand_x, y), Cell::NORTH).ok();
                     run_start = x + 1;
                 }

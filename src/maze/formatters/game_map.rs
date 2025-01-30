@@ -114,21 +114,21 @@ impl GameMap<NoStartGoal> {
 
 /// An implementation of a formatter with the predefined start and goal points randomly placed along the map borders
 impl GameMap<WithStartGoal> {
-    /// Sets a goal charachter and returns itself
-    pub fn goal(mut self, goal: char) -> Self {
+    /// Sets a goal character and returns itself
+    pub const fn goal(mut self, goal: char) -> Self {
         self.extra.goal = goal;
         self
     }
 
-    /// Sets a start charachter and returns itself
-    pub fn start(mut self, start: char) -> Self {
+    /// Sets a start character and returns itself
+    pub const fn start(mut self, start: char) -> Self {
         self.extra.start = start;
         self
     }
 
     fn get_random_start_and_goal_positions(
         &self,
-        map: &Vec<char>,
+        map: &[char],
         cols: usize,
         rows: usize,
     ) -> (usize, usize) {
@@ -154,7 +154,7 @@ impl GameMap<WithStartGoal> {
 
     fn iter_possible_start_and_goal_positions(
         &self,
-        map: &Vec<char>,
+        map: &[char],
         cols: usize,
         rows: usize,
     ) -> impl Iterator<Item = Coords> {
@@ -427,6 +427,7 @@ mod tests {
     #[test]
     fn possible_start_and_goal_positions() {
         let formatter = GameMap::new().with_start_goal();
+        #[rustfmt::skip]
         let map = vec![
             '#', '#', '#', '#', '#', '#', '#', '#', '#', 
             '#', '.', '.', '.', '#', '.', '.', '.', '#', 
@@ -438,6 +439,7 @@ mod tests {
             '#', '.', '.', '.', '.', '.', '.', '.', '#', 
             '#', '#', '#', '#', '#', '#', '#', '#', '#',
         ];
+        #[rustfmt::skip]
         let positions = vec![
             (0, 1), (0, 2), (0, 3), (0, 5), (0, 6),
             (0, 7), (1, 0), (1, 8), (2, 8), (3, 0),

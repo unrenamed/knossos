@@ -16,7 +16,7 @@ pub struct HuntAndKill {
 
 impl HuntAndKill {
     /// Create a new instance of the algorithm with a default settings for the "hunt" phase
-    pub fn new() -> HuntAndKill {
+    pub const fn new() -> HuntAndKill {
         HuntAndKill {
             hunt_start_index: 0,
         }
@@ -24,7 +24,7 @@ impl HuntAndKill {
 
     fn walk(&self, coords: Coords, grid: &mut Grid) -> Option<Coords> {
         let mut directions = [Cell::NORTH, Cell::SOUTH, Cell::WEST, Cell::EAST];
-        directions.shuffle(&mut rand::thread_rng());
+        directions.shuffle(&mut rand::rng());
 
         for dir in directions {
             if let Ok(next_coords) = grid.get_next_cell_coords(coords, dir) {
@@ -83,14 +83,14 @@ impl Default for HuntAndKill {
 /// 1. Chooses a starting location
 ///
 /// 2. Performs a random walk, carving passages to unvisited neighbors, until the current cell has
-/// no unvisited neighbors
+///    no unvisited neighbors.
 ///
 /// 3. Enters the “hunt” mode, where you scan the grid looking for an
-/// unvisited cell that is adjacent to a visited cell. If found, carves a passage between the two
-/// and lets the formerly unvisited cell be the new starting location
+///    unvisited cell that is adjacent to a visited cell. If found, carves a passage between the two
+///    and lets the formerly unvisited cell be the new starting location.
 ///
 /// 4. Repeats steps 2 and 3 until the "hunt" mode scans the entire grid and finds no unvisited
-/// cells
+///    cells.
 ///
 /// # Optimization
 ///
@@ -119,8 +119,8 @@ impl Algorithm for HuntAndKill {
 }
 
 fn get_start_coords(grid: &Grid) -> Coords {
-    let mut rng = rand::thread_rng();
-    let y = rng.gen_range(0..grid.height());
-    let x = rng.gen_range(0..grid.width());
+    let mut rng = rand::rng();
+    let y = rng.random_range(0..grid.height());
+    let x = rng.random_range(0..grid.width());
     (x, y)
 }

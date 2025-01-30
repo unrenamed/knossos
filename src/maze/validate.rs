@@ -3,7 +3,7 @@ use rand::prelude::*;
 use super::grid::{Grid, cell::Cell};
 
 /// A utility to validate if a given grid is valid, i.e. all the cells are reachable.
-
+///
 /// The recursive backtracker is one of the simplest and most efficient algorithms
 /// for this kind of work. If an algorithm does not visit all the cells, we make a
 /// conclusion that it's not valid.
@@ -16,7 +16,7 @@ pub fn validate(grid: &Grid) -> bool {
 
 fn visit(coords: Coords, grid: &Grid, visited: &mut Vec<Coords>) {
     let mut dirs = [Cell::NORTH, Cell::SOUTH, Cell::WEST, Cell::EAST];
-    dirs.shuffle(&mut rand::thread_rng());
+    dirs.shuffle(&mut rand::rng());
 
     for dir in dirs {
         let next = match grid.get_next_cell_coords(coords, dir) {

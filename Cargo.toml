@@ -1,6 +1,6 @@
 [package]
 name = "knossos"
-version = "0.4.0"
+version = "0.4.1"
 authors = ["unrenamed <renkonazbka@gmail.com>"]
 description = "Rust library for generating and rendering mazes"
 edition = "2021"
@@ -14,10 +14,27 @@ categories = ["algorithms"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-lazy_static = "1.4.0"
-rand = "0.8.4"
-image = "0.24.1"
-clap = { version = "4.1.4", features = ["derive"] }
-assert_cmd = "2.0.8"
-assert_fs = "1.0.10"
-bitflags = "1.3.2"
+rand = "0.9.0"
+image = "0.25"
+clap = { version = "4.5.27", features = ["derive"] }
+bitflags = "2.8"
+
+[dev-dependencies]
+assert_cmd = "2.0.16"
+assert_fs = "1.1"
+criterion = { version = "0.5", features = ["html_reports"] }
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(tarpaulin_include)'] }
+
+[lints.clippy]
+use_self = { level = "allow"}
+missing_const_for_fn = { level = "warn" }
+
+[[bench]]
+name = "algorithms"
+harness = false
+
+[[bench]]
+name = "formatters"
+harness = false

@@ -1,4 +1,4 @@
-use super::Algorithm;
+use super::{Algorithm, BOOL_TRUE_PROBABILITY};
 use crate::maze::grid::{cell::Cell, Grid};
 use rand::prelude::*;
 
@@ -57,14 +57,14 @@ impl RecursiveDivision {
             return;
         }
 
-        let mut rng = rand::thread_rng();
+        let mut rng = rand::rng();
 
         // Which way a subfield with the given dimensions ought to be bisected
         let orientation = choose_orientation(w, h);
 
         // Get X and Y coordinates of a cell where a passage will be carved
-        let px = rng.gen_range(x..ax);
-        let py = rng.gen_range(y..ay);
+        let px = rng.random_range(x..ax);
+        let py = rng.random_range(y..ay);
 
         // Define what direction is corresponding to the wall orientation
         let dir = match orientation {
@@ -97,15 +97,15 @@ impl RecursiveDivision {
 ///
 /// It works like this:
 ///
-/// 1. Begins with an original grid as a working field
+/// 1. Begins with an original grid as a working field.
 ///
 /// 2. Bisects the field either horizontally or vertically by carving a passage
-/// through the wall from a random cell
+///    through the wall from a random cell.
 ///
 /// 3. Repeats step #2 with the areas on either side of the wall where the passage
-/// was carved.
+///    was carved.
 ///
-/// 4. Continues, recursively, until the maze reaches the desired resolution
+/// 4. Continues, recursively, until the maze reaches the desired resolution.
 impl Algorithm for RecursiveDivision {
     fn generate(&mut self, grid: &mut Grid) {
         let width = grid.width();
@@ -123,8 +123,8 @@ fn choose_orientation(width: usize, height: usize) -> Orientation {
         return Orientation::Vertical;
     }
 
-    let mut rng = thread_rng();
-    if !rng.gen::<bool>() {
+    let mut rng = rand::rng();
+    if !rng.random_bool(BOOL_TRUE_PROBABILITY) {
         Orientation::Horizontal
     } else {
         Orientation::Vertical

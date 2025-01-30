@@ -17,16 +17,16 @@ pub struct RecursiveBacktracking;
 ///
 /// Here is how it works:
 ///
-/// 1. Chooses a starting point in the field
+/// 1. Chooses a starting point in the field.
 ///
 /// 2. Randomly chooses a wall at that point and carves a passage through to the adjacent cell,
-/// but only if the adjacent cell has not been visited yet. This becomes the new current cell.
+///    but only if the adjacent cell has not been visited yet. This becomes the new current cell.
 ///
 /// 3. If all adjacent cells have been visited, backs up to the last cell that has uncarved walls
-/// and repeats
+///    and repeats.
 ///
 /// 4. The algorithm ends when the process has backed all the way up to the starting
-/// point
+///    point.
 impl Algorithm for RecursiveBacktracking {
     fn generate(&mut self, grid: &mut Grid) {
         let start_coords = (0, 0);
@@ -36,7 +36,7 @@ impl Algorithm for RecursiveBacktracking {
 
 fn carve_passages_from(coords: Coords, grid: &mut Grid) {
     let mut dirs = [Cell::NORTH, Cell::SOUTH, Cell::WEST, Cell::EAST];
-    dirs.shuffle(&mut rand::thread_rng());
+    dirs.shuffle(&mut rand::rng());
 
     for dir in dirs {
         let next = match grid.get_next_cell_coords(coords, dir) {
