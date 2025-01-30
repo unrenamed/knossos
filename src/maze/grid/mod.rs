@@ -8,6 +8,7 @@ use std::fmt;
 
 type TransitResult<T> = Result<T, TransitError>;
 
+#[derive(Debug)]
 pub struct Grid {
     width: usize,
     height: usize,

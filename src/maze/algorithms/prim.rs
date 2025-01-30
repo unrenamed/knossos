@@ -78,7 +78,7 @@ impl Default for Prim {
     }
 }
 
-/// An implementation of the Prim's algorithm for generating mazes
+/// An implementation of the Prim's algorithm for generating mazes.
 ///
 /// For efficiency, let’s define a legend for the following algorithm steps:
 /// - "F" or "frontier”: the set of all cells that are not yet in the maze, but are adjacent to a
@@ -98,10 +98,11 @@ impl Default for Prim {
 ///
 /// 5. Repeats steps 3 and 4 until the F is empty.
 impl Algorithm for Prim {
-    fn generate(&mut self, grid: &mut Grid) {
+    fn generate(&mut self, grid: &mut Grid, start_coords: Option<Coords>) {
         let mut rng = rand::rng();
+        let start_coords = start_coords.unwrap_or_else(|| get_rand_coords(grid));
 
-        self.mark(get_rand_coords(grid), grid);
+        self.mark(start_coords, grid);
 
         while !self.frontiers.is_empty() {
             let index = rng.random_range(0..self.frontiers.len());
@@ -119,6 +120,14 @@ impl Algorithm for Prim {
                 self.mark(coords, grid);
             }
         }
+    }
+
+    fn has_start_coords(&self) -> bool {
+        true
+    }
+
+    fn name(&self) -> &'static str {
+        "Prim"
     }
 }
 

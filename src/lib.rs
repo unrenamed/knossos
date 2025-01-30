@@ -44,7 +44,7 @@
 //! ```rust,no_run
 //! use knossos::maze::*;
 //!
-//! let maze = OrthogonalMazeBuilder::new().build();
+//! let maze = OrthogonalMazeBuilder::new().build().unwrap();
 //! println!("{}", &maze);
 //! ```
 //!
@@ -52,7 +52,7 @@
 //! ```rust,no_run
 //! use knossos::maze::*;
 //!
-//! let maze = OrthogonalMazeBuilder::new().build();
+//! let maze = OrthogonalMazeBuilder::new().build().unwrap();
 //!
 //! // Save as ascii
 //! maze.save("output/maze.txt", AsciiNarrow).unwrap();

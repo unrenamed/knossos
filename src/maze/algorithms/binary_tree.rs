@@ -90,12 +90,20 @@ impl BinaryTree {
     }
 }
 
-/// An implementation of the "Binary Tree" algorithm for generating mazes
+/// An implementation of the "Binary Tree" algorithm for generating mazes.
+/// Does not support start coords.
 ///
 /// The algorithm is pretty simple: for every cell in the grid, randomly carve a passage either
 /// north, or west.
+///  
+/// # Warn
+///
+/// The `generate` function will warn in case a start_coords is passed.
 impl Algorithm for BinaryTree {
-    fn generate(&mut self, grid: &mut Grid) {
+    fn generate(&mut self, grid: &mut Grid, _c: Option<Coords>) {
+        if _c.is_some() {
+            eprintln!("Algorithm `{}` doesn't suppoer `start_coords`", self.name())
+        }
         for y in 0..grid.height() {
             for x in 0..grid.width() {
                 let dirs = self.populate_dirs((x, y), grid);
@@ -104,5 +112,13 @@ impl Algorithm for BinaryTree {
                 }
             }
         }
+    }
+
+    fn has_start_coords(&self) -> bool {
+        false
+    }
+
+    fn name(&self) -> &'static str {
+        "BinaryTree"
     }
 }

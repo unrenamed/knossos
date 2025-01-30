@@ -98,7 +98,7 @@ impl GrowingTree {
     }
 }
 
-/// An implementation of the "Growing Tree" algorithm for generating mazes
+/// An implementation of the "Growing Tree" algorithm for generating mazes.
 ///
 /// Despite the method you selected, the algorithm steps remain the same and pretty slick. Here is
 /// how it works:
@@ -113,10 +113,11 @@ impl GrowingTree {
 ///
 /// 4. Repeats #3 until the C is empty.
 impl Algorithm for GrowingTree {
-    fn generate(&mut self, grid: &mut Grid) {
+    fn generate(&mut self, grid: &mut Grid, start_coords: Option<Coords>) {
         let mut directions = [Cell::NORTH, Cell::SOUTH, Cell::WEST, Cell::EAST];
         let mut cells = vec![];
-        cells.push(get_rand_coords(grid));
+        let start_coords = start_coords.unwrap_or_else(|| get_rand_coords(grid));
+        cells.push(start_coords);
 
         while !cells.is_empty() {
             let mut index = Some(self.choose_index(cells.len()));
@@ -144,6 +145,14 @@ impl Algorithm for GrowingTree {
                 cells.remove(index);
             }
         }
+    }
+
+    fn has_start_coords(&self) -> bool {
+        true
+    }
+
+    fn name(&self) -> &'static str {
+        "GrowingTree"
     }
 }
 

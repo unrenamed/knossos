@@ -10,6 +10,7 @@ use std::fmt;
 ///
 /// Represents a standard orthogonal maze where each cell is a square containing zero or maximum
 /// three walls
+#[derive(Debug)]
 pub struct OrthogonalMaze {
     grid: Grid,
 }

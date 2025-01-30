@@ -1,6 +1,9 @@
+use std::fmt;
+use std::str::FromStr;
+
 use clap::{Parser, Subcommand, ValueEnum};
 use knossos::Color;
-use knossos::maze::{self, formatters};
+use knossos::maze::{self, formatters, MazeSaveError};
 
 #[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum)]
 enum Algorithm {
@@ -20,6 +23,34 @@ enum Algorithm {
 enum AsciiOutputType {
     Narrow,
     Broad,
+}
+
+#[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord)]
+pub struct Coords(usize, usize);
+
+impl fmt::Display for Coords {
+    /// Writes a formatted maze into a buffer
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "({},{})", self.0, self.1)?;
+        Ok(())
+    }
+}
+
+impl FromStr for Coords {
+    type Err = String;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let s = s.trim();
+        let s = s.trim_end_matches(')').trim_start_matches('(');
+        let Some((x, y)) = s.split_once(',') else {
+            return Err("Start coord should follow the pattern `(0, 0)`".to_string());
+        };
+
+        Ok(Coords(
+            x.parse::<usize>().map_err(|err| err.to_string())?,
+            y.parse::<usize>().map_err(|err| err.to_string())?,
+        ))
+    }
 }
 
 #[derive(Parser, Debug)]
@@ -47,6 +78,10 @@ enum Commands {
         #[arg(short = 'W', long, default_value_t = 10)]
         /// Grid width in a number of cells
         width: usize,
+
+        #[arg(short = 'C', long, default_value = None)]
+        /// Start coordinate for maze algorithm
+        start_coords: Option<Coords>,
 
         /// Bias to use for the "Binary Tree" algorithm
         #[arg(
@@ -154,6 +189,7 @@ fn main() -> Result<(), maze::MazeSaveError> {
             width,
             bias,
             growing_method,
+            start_coords,
         } => {
             let algorithm: Box<dyn maze::Algorithm> = match algorithm {
                 Algorithm::AldousBroder => Box::new(maze::AldousBroder),
@@ -168,11 +204,15 @@ fn main() -> Result<(), maze::MazeSaveError> {
                 Algorithm::Sidewinder => Box::new(maze::Sidewinder),
             };
 
-            let maze = maze::OrthogonalMazeBuilder::new()
+            let maze = start_coords
+                .map_or_else(maze::OrthogonalMazeBuilder::new, |coords| {
+                    maze::OrthogonalMazeBuilder::new().start_coords((coords.0, coords.1))
+                })
                 .height(height)
                 .width(width)
                 .algorithm(algorithm)
-                .build();
+                .build()
+                .map_err(|err| MazeSaveError::reason(err.to_string()))?;
 
             let result;
 
@@ -244,11 +284,7 @@ fn main() -> Result<(), maze::MazeSaveError> {
 }
 
 fn hex_to_rgb(s: &str) -> Result<Color, ParseHexError> {
-    let s = if let Some(hex) = s.strip_prefix('#') {
-        hex
-    } else {
-        s
-    };
+    let s = s.strip_prefix('#').map_or(s, |hex| hex);
 
     if s.len() != 6 {
         return Err(ParseHexError::Length(s.to_string()));

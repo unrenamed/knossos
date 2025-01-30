@@ -1,5 +1,8 @@
 use super::{Algorithm, BOOL_TRUE_PROBABILITY};
-use crate::maze::grid::{cell::Cell, Grid};
+use crate::{
+    maze::grid::{cell::Cell, Grid},
+    utils::types::Coords,
+};
 use rand::prelude::*;
 
 enum Orientation {
@@ -93,7 +96,8 @@ impl RecursiveDivision {
     }
 }
 
-/// An implementation of the "Recursive Division" algorithm for generating mazes
+/// An implementation of the "Recursive Division" algorithm for generating mazes.
+/// Does not support start position.
 ///
 /// It works like this:
 ///
@@ -106,11 +110,26 @@ impl RecursiveDivision {
 ///    was carved.
 ///
 /// 4. Continues, recursively, until the maze reaches the desired resolution.
+///  
+/// # Warn
+///
+/// The `generate` function will warn in case a start_coords is passed.
 impl Algorithm for RecursiveDivision {
-    fn generate(&mut self, grid: &mut Grid) {
+    fn generate(&mut self, grid: &mut Grid, _c: Option<Coords>) {
+        if _c.is_some() {
+            eprintln!("Algorithm `{}` doesn't suppoer `start_coords`", self.name())
+        }
         let width = grid.width();
         let height = grid.height();
         RecursiveDivision::divide(grid, 0, 0, width - 1, height - 1);
+    }
+
+    fn has_start_coords(&self) -> bool {
+        false
+    }
+
+    fn name(&self) -> &'static str {
+        "RecursiveDivision"
     }
 }
 
