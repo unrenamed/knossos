@@ -1,7 +1,9 @@
+use crate::utils::types::Coords;
+
 use super::{
     errors::MazeSaveError,
     formatters::{Formatter, Saveable},
-    grid::Grid,
+    grid::{cell::Cell, Grid},
     validate::validate,
 };
 use std::fmt;
@@ -10,6 +12,7 @@ use std::fmt;
 ///
 /// Represents a standard orthogonal maze where each cell is a square containing zero or maximum
 /// three walls
+#[derive(Debug)]
 pub struct OrthogonalMaze {
     grid: Grid,
 }
@@ -40,6 +43,14 @@ impl OrthogonalMaze {
     {
         let data = formatter.format(&self.grid);
         Saveable::save(&data, path)
+    }
+}
+
+impl std::ops::Index<Coords> for OrthogonalMaze {
+    type Output = Cell;
+
+    fn index(&self, index: Coords) -> &Self::Output {
+        &self.grid[index]
     }
 }
 
@@ -85,6 +96,15 @@ mod tests {
         let grid = generate_invalid_maze();
         let maze = OrthogonalMaze { grid };
         assert!(!maze.is_valid());
+    }
+
+    #[test]
+    fn access_by_index_maze() {
+        let grid = generate_valid_maze();
+        let maze = OrthogonalMaze { grid };
+
+        let cell = maze[(3, 1)];
+        assert_eq!(cell, Cell::from_bits(0b0011).unwrap());
     }
 
     fn generate_valid_maze() -> Grid {

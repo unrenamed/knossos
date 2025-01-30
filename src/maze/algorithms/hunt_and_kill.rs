@@ -99,10 +99,8 @@ impl Default for HuntAndKill {
 /// candidate cell, this implementation has a simple optimization that speeds up the later stages of
 /// the algorithm. Thus, this algorithm is still pretty fast
 impl Algorithm for HuntAndKill {
-    fn generate(&mut self, grid: &mut Grid) {
-        let start_coords = get_start_coords(grid);
-        let mut x = start_coords.0;
-        let mut y = start_coords.1;
+    fn generate(&mut self, grid: &mut Grid, start_coords: Option<Coords>) {
+        let (mut x, mut y) = start_coords.unwrap_or_else(|| get_start_coords(grid));
 
         loop {
             if let Some((nx, ny)) = self.walk((x, y), grid) {
@@ -115,6 +113,14 @@ impl Algorithm for HuntAndKill {
                 break;
             }
         }
+    }
+
+    fn has_start_coords(&self) -> bool {
+        true
+    }
+
+    fn name(&self) -> &'static str {
+        "HuntAndKill"
     }
 }
 

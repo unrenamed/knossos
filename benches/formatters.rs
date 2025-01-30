@@ -34,7 +34,7 @@ mod image {
             b.iter(|| {
                 let output_dir = TempDir::new().unwrap();
                 let file_path = format!("{}/maze.png", output_dir.path().display());
-                let maze = maze!(10, 10);
+                let maze = maze!(10, 10).unwrap();
                 maze.save(&file_path, Image::new())
             })
         });
@@ -45,7 +45,7 @@ mod image {
             b.iter(|| {
                 let output_dir = TempDir::new().unwrap();
                 let file_path = format!("{}/maze.png", output_dir.path().display());
-                let maze = maze!(50, 50);
+                let maze = maze!(50, 50).unwrap();
                 maze.save(&file_path, Image::new())
             })
         });
@@ -60,7 +60,7 @@ mod ascii_narrow {
             b.iter(|| {
                 let output_dir = TempDir::new().unwrap();
                 let file_path = format!("{}/maze.txt", output_dir.path().display());
-                let maze = maze!(10, 10);
+                let maze = maze!(10, 10).unwrap();
                 maze.save(&file_path, AsciiNarrow)
             })
         });
@@ -71,7 +71,7 @@ mod ascii_narrow {
             b.iter(|| {
                 let output_dir = TempDir::new().unwrap();
                 let file_path = format!("{}/maze.txt", output_dir.path().display());
-                let maze = maze!(100, 100);
+                let maze = maze!(100, 100).unwrap();
                 maze.save(&file_path, AsciiNarrow)
             })
         });
@@ -86,7 +86,7 @@ mod ascii_broad {
             b.iter(|| {
                 let output_dir = TempDir::new().unwrap();
                 let file_path = format!("{}/maze.txt", output_dir.path().display());
-                let maze = maze!(10, 10);
+                let maze = maze!(10, 10).unwrap();
                 maze.save(&file_path, AsciiBroad)
             })
         });
@@ -97,7 +97,7 @@ mod ascii_broad {
             b.iter(|| {
                 let output_dir = TempDir::new().unwrap();
                 let file_path = format!("{}/maze.txt", output_dir.path().display());
-                let maze = maze!(100, 100);
+                let maze = maze!(100, 100).unwrap();
                 maze.save(&file_path, AsciiBroad)
             })
         });
@@ -112,7 +112,7 @@ mod game_map {
             b.iter(|| {
                 let output_dir = TempDir::new().unwrap();
                 let file_path = format!("{}/maze.txt", output_dir.path().display());
-                let maze = maze!(10, 10);
+                let maze = maze!(10, 10).unwrap();
                 maze.save(&file_path, GameMap::new().span(5))
             })
         });
@@ -123,7 +123,7 @@ mod game_map {
             b.iter(|| {
                 let output_dir = TempDir::new().unwrap();
                 let file_path = format!("{}/maze.txt", output_dir.path().display());
-                let maze = maze!(100, 100);
+                let maze = maze!(100, 100).unwrap();
                 maze.save(&file_path, GameMap::new().span(5))
             })
         });

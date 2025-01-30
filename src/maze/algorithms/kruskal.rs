@@ -4,18 +4,20 @@ use super::Algorithm;
 use crate::maze::grid::cell::Cell;
 use crate::maze::grid::Grid;
 use crate::utils::arena::{ArenaTree, NodeId};
+use crate::utils::types::Coords;
 
 type Edge = (usize, usize, Cell);
 type Edges = Vec<Edge>;
 
-/// The Kruskal's algorithm for generating mazes
+/// The Kruskal's algorithm for generating mazes.
 ///
 /// Kruskal’s algorithm is a method for producing a minimal spanning tree from a weighted graph.
 /// The randomized version of it can be used for generating a rather convincing maze very
 /// effectively.
 pub struct Kruskal;
 
-/// An implementation of the Kruskal's algorithm for generating mazes
+/// An implementation of the Kruskal's algorithm for generating mazes.
+/// Does not support start coords.
 ///
 /// The randomized variation of the Kruskal's algorithm looks as follows:
 ///
@@ -25,8 +27,15 @@ pub struct Kruskal;
 ///    Otherwise, throw that edge away.
 ///
 /// 3. Repeat until there are no more edges left in the set.
+///  
+/// # Warn
+///
+/// The `generate` function will warn in case a start_coords is passed.
 impl Algorithm for Kruskal {
-    fn generate(&mut self, grid: &mut Grid) {
+    fn generate(&mut self, grid: &mut Grid, _c: Option<Coords>) {
+        if _c.is_some() {
+            eprintln!("Algorithm `{}` doesn't suppoer `start_coords`", self.name())
+        }
         let mut arena = populate_arena(grid);
         let mut edges: Edges = populate_edges(grid);
         edges.shuffle(&mut rand::rng());
@@ -47,6 +56,14 @@ impl Algorithm for Kruskal {
                 grid.carve_passage((x, y), direction).unwrap();
             }
         }
+    }
+
+    fn has_start_coords(&self) -> bool {
+        false
+    }
+
+    fn name(&self) -> &'static str {
+        "Kruscal"
     }
 }
 

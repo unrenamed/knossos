@@ -172,7 +172,8 @@ impl Eller {
     }
 }
 
-/// An implementation of Eller's algorithm for generating mazes
+/// An implementation of Eller's algorithm for generating mazes.
+/// Does not support start coords.
 ///
 /// Generates maze following the algorithm below:
 ///
@@ -192,8 +193,15 @@ impl Eller {
 ///
 /// 6. For the last row, joins all adjacent cells that do not share a set, and omit the vertical
 ///    connections.
+///  
+/// # Warn
+///
+/// The `generate` function will warn in case a start_coords is passed.
 impl Algorithm for Eller {
-    fn generate(&mut self, grid: &mut Grid) {
+    fn generate(&mut self, grid: &mut Grid, _c: Option<Coords>) {
+        if _c.is_some() {
+            eprintln!("Algorithm `{}` doesn't suppoer `start_coords`", self.name())
+        }
         let mut state = State::new(0, None, grid.width()).populate();
 
         for row in 0..grid.height() {
@@ -201,5 +209,13 @@ impl Algorithm for Eller {
             self.connect_disjoint_sets(&mut state, grid, is_last_row);
             state = self.add_vertical_connections(&mut state, grid, is_last_row);
         }
+    }
+
+    fn has_start_coords(&self) -> bool {
+        false
+    }
+
+    fn name(&self) -> &'static str {
+        "Eller"
     }
 }

@@ -1,5 +1,8 @@
 use super::Algorithm;
-use crate::maze::grid::{Grid, cell::Cell};
+use crate::{
+    maze::grid::{cell::Cell, Grid},
+    utils::types::Coords,
+};
 use rand::prelude::*;
 
 /// The "Sidewinder" algorithm for generating mazes
@@ -9,7 +12,8 @@ use rand::prelude::*;
 /// the algorithm is quite efficient since it looks at one row at a time.
 pub struct Sidewinder;
 
-/// An implementation of the "Sidewinder" algorithm for generating mazes
+/// An implementation of the "Sidewinder" algorithm for generating mazes.
+/// Does not support start coords.
 ///
 /// The steps are as follows:
 ///
@@ -27,8 +31,15 @@ pub struct Sidewinder;
 ///    repeats steps 2-5.
 ///
 /// 6. Continues until all rows have been processed.
+///
+/// # Warn
+///
+/// The `generate` function will warn in case a start_coords is passed.
 impl Algorithm for Sidewinder {
-    fn generate(&mut self, grid: &mut Grid) {
+    fn generate(&mut self, grid: &mut Grid, _c: Option<Coords>) {
+        if _c.is_some() {
+            eprintln!("Algorithm `{}` doesn't suppoer `start_coords`", self.name())
+        }
         let mut rng = rand::rng();
 
         for y in 0..grid.height() {
@@ -46,5 +57,13 @@ impl Algorithm for Sidewinder {
                 }
             }
         }
+    }
+
+    fn has_start_coords(&self) -> bool {
+        false
+    }
+
+    fn name(&self) -> &'static str {
+        "Sidewinder"
     }
 }

@@ -7,6 +7,15 @@ pub struct TransitError {
     pub reason: String,
 }
 
+impl TransitError {
+    pub fn reason(reason: impl Into<String>, coords: Coords) -> Self {
+        Self {
+            reason: reason.into(),
+            coords,
+        }
+    }
+}
+
 impl fmt::Display for TransitError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         let (x, y) = self.coords;

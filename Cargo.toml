@@ -30,6 +30,8 @@ unexpected_cfgs = { level = "warn", check-cfg = ['cfg(tarpaulin_include)'] }
 [lints.clippy]
 use_self = { level = "allow"}
 missing_const_for_fn = { level = "warn" }
+option_if_let_else = { level = "warn" }
+or_fun_call = { level = "warn" }
 
 [[bench]]
 name = "algorithms"

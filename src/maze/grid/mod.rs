@@ -8,6 +8,7 @@ use std::fmt;
 
 type TransitResult<T> = Result<T, TransitError>;
 
+#[derive(Debug)]
 pub struct Grid {
     width: usize,
     height: usize,
@@ -126,6 +127,18 @@ impl Grid {
             coords: (x, y),
             reason: reason.unwrap().to_string(),
         })
+    }
+}
+
+impl std::ops::Index<Coords> for Grid {
+    type Output = Cell;
+
+    fn index(&self, index: Coords) -> &Self::Output {
+        let width = self.width();
+        let idx = index.1 * width + index.0;
+        self.cells
+            .get(idx)
+            .unwrap_or_else(|| panic!("Cell at {:?} doesn't exist.", &index))
     }
 }
 

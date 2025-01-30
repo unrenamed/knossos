@@ -13,7 +13,7 @@ use rand::prelude::*;
 /// for exceptionally large mazes this algorithm can be fairly inefficient.
 pub struct RecursiveBacktracking;
 
-/// An implementation of the "Recursive Backtracking" algorithm for generating mazes
+/// An implementation of the "Recursive Backtracking" algorithm for generating mazes.
 ///
 /// Here is how it works:
 ///
@@ -28,9 +28,17 @@ pub struct RecursiveBacktracking;
 /// 4. The algorithm ends when the process has backed all the way up to the starting
 ///    point.
 impl Algorithm for RecursiveBacktracking {
-    fn generate(&mut self, grid: &mut Grid) {
-        let start_coords = (0, 0);
+    fn generate(&mut self, grid: &mut Grid, start_coords: Option<Coords>) {
+        let start_coords = start_coords.unwrap_or((0, 0));
         carve_passages_from(start_coords, grid);
+    }
+
+    fn has_start_coords(&self) -> bool {
+        true
+    }
+
+    fn name(&self) -> &'static str {
+        "RecursiveBacktracking"
     }
 }
 

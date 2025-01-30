@@ -5,11 +5,11 @@ use crate::{
 };
 use rand::prelude::*;
 
-/// The Aldous-Broder's algorithm for generating mazes
+/// The Aldous-Broder's algorithm for generating mazes.
 ///
 /// This is an easy one to implement. And yet, it is also one of the least intelligent algorithms,
 /// since the latest steps may take so much time that you may not want to wait until it's finished.
-/// It is not even guaranteed to finish if you get really unlucky with the random
+/// It is not even guaranteed to finish if you get really unlucky with the random.
 pub struct AldousBroder;
 
 impl AldousBroder {}
@@ -26,10 +26,8 @@ impl AldousBroder {}
 ///
 /// 3. Repeats step 2 until all vertices have been visited.
 impl Algorithm for AldousBroder {
-    fn generate(&mut self, grid: &mut Grid) {
-        let start_coords = get_start_coords(grid);
-        let mut x = start_coords.0;
-        let mut y = start_coords.1;
+    fn generate(&mut self, grid: &mut Grid, start_coords: Option<Coords>) {
+        let (mut x, mut y) = start_coords.unwrap_or_else(|| get_start_coords(grid));
 
         let mut remaining = grid.width() * grid.height() - 1; // the number of remaining unvisited cells
 
@@ -54,6 +52,14 @@ impl Algorithm for AldousBroder {
                 break;
             }
         }
+    }
+
+    fn has_start_coords(&self) -> bool {
+        true
+    }
+
+    fn name(&self) -> &'static str {
+        "AldousBroder"
     }
 }
 

@@ -1,7 +1,7 @@
 use bitflags::bitflags;
 
 bitflags! {
-    #[derive(Default, Copy, Clone, PartialEq, Eq, PartialOrd, Ord)]
+    #[derive(Default, Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord)]
     pub struct Cell: u8 {
         const NORTH = 0b0001;
         const SOUTH = 0b0010;
@@ -10,7 +10,7 @@ bitflags! {
     }
 }
 
-#[derive(Default, Copy, Clone)]
+#[derive(Default, Debug, Copy, Clone)]
 pub struct CellStatus {
     visited: bool,
     marked: bool,
