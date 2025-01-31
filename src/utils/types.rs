@@ -8,7 +8,7 @@ use bevy::{
 pub type Coords = (usize, usize);
 
 /// Auxiliary Bevy component to hold Coords
-#[derive(Clone, Debug, Reflect, Component)]
+#[derive(Clone, Debug, PartialEq, Eq, Reflect, Component)]
 pub struct CoordsComponent {
     coord: Coords,
 }
@@ -38,5 +38,42 @@ impl From<U64Vec2> for CoordsComponent {
         Self {
             coord: (value.x as usize, value.y as usize),
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn from_coords() {
+        let component: CoordsComponent = (42, 42).into();
+        let expected = CoordsComponent { coord: (42, 42) };
+
+        assert_eq!(component, expected);
+    }
+
+    #[test]
+    fn from_coords_component() {
+        let component = CoordsComponent { coord: (42, 42) };
+        let component: Coords = component.into();
+
+        assert_eq!(component, (42, 42));
+    }
+
+    #[test]
+    fn from_u8vec() {
+        let component: CoordsComponent = U8Vec2::from_array([42, 42]).into();
+        let expected = CoordsComponent { coord: (42, 42) };
+
+        assert_eq!(component, expected);
+    }
+
+    #[test]
+    fn from_u64vec() {
+        let component: CoordsComponent = U64Vec2::from_array([42, 42]).into();
+        let expected = CoordsComponent { coord: (42, 42) };
+
+        assert_eq!(component, expected);
     }
 }
