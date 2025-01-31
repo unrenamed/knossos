@@ -32,34 +32,31 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: Configure Cargo cache
-      uses: actions/cache@v3
+    - name: Install stable@stable toolchain
+      uses: dtolnay/rust-toolchain@stable
       with:
-        path: |
-          ./target
-          ~/.cargo                        
-        key: debug-${{ runner.os }}-${{ hashFiles('rust-toolchain.toml') }}-${{ hashFiles('Cargo.lock') }}
-        restore-keys: |
-          debug-${{ runner.os }}-${{ hashFiles('rust-toolchain.toml') }}-
-          debug-${{ runner.os }}-
-    - name: install-clippy
-      run: rustup component add clippy
+        components: clippy
+    - uses: Swatinem/rust-cache@v2
+    - name: Install Dependencies
+      run: sudo apt-get update; sudo apt-get install --no-install-recommends libasound2-dev libudev-dev libwayland-dev
     - name: clippy
-      run: cargo clippy
+      run: cargo clippy --locked
 
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: Swatinem/rust-cache@v2
       - name: check
-        run: cargo check
+        run: cargo check --locked
 
   test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: Swatinem/rust-cache@v2
       - name: Test
-        run: cargo test --verbose
+        run: cargo test --locked
 
   coverage:
     runs-on: ubuntu-latest
