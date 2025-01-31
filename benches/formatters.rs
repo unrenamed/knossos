@@ -24,7 +24,7 @@ criterion_group!(
 criterion_main!(benches);
 
 use assert_fs::fixture::TempDir;
-use knossos::maze::*;
+use bevy_knossos::maze::*;
 
 mod image {
     use super::*;

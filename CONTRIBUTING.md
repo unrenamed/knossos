@@ -4,15 +4,15 @@ The contribution guideline is derived from the SlimPHP, Istanbul Code Coverage a
 
 ## Contributor Behavior
 
-Be kind to one another. We're striving to make Knossos an inclusive environment that's great for first time open-source contributors.
+Be kind to one another. We're striving to make Bevy_knossos an inclusive environment that's great for first time open-source contributors.
 
 tldr; we value constructive community interaction, over technical acumen.
 
 ## Pull Requests
 
-Knossos use the [GitHub flow](https://guides.github.com/introduction/flow/) as main versioning workflow
+Bevy_knossos use the [GitHub flow](https://guides.github.com/introduction/flow/) as main versioning workflow
 
-1. Fork the Knossos repository
+1. Fork the Bevy_knossos repository
 2. Create a new branch for each feature, fix or improvement
 3. Send a pull request from each feature branch to the **main** branch
 

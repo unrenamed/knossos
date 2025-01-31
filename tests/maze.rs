@@ -1,4 +1,4 @@
-use knossos::maze::*;
+use bevy_knossos::maze::*;
 use assert_fs::fixture::TempDir;
 
 macro_rules! maze {

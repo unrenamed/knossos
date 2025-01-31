@@ -8,11 +8,11 @@ use std::fmt;
 
 type TransitResult<T> = Result<T, TransitError>;
 
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Grid {
     width: usize,
     height: usize,
-    cells: Vec<Cell>,
+    pub(crate) cells: Vec<Cell>,
     cell_statuses: Vec<CellStatus>,
 }
 

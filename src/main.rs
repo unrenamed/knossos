@@ -2,8 +2,8 @@ use std::fmt;
 use std::str::FromStr;
 
 use clap::{Parser, Subcommand, ValueEnum};
-use knossos::Color;
-use knossos::maze::{self, formatters, MazeSaveError};
+use bevy_knossos::Color;
+use bevy_knossos::maze::{self, formatters, MazeSaveError};
 
 #[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum)]
 enum Algorithm {

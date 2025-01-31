@@ -41,6 +41,7 @@ impl OrthogonalMazeBuilder {
         self
     }
 
+    /// Sets start coords for arguments that allow start coords
     pub fn start_coords(mut self, coord: impl Into<Coords>) -> Self {
         self.start_coords = Some(coord.into());
         self

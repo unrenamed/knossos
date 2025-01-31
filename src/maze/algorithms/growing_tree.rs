@@ -54,7 +54,7 @@ impl GrowingTree {
     ///
     /// # Example
     /// ```
-    /// use knossos::maze::{GrowingTree, Method};
+    /// use bevy_knossos::maze::{GrowingTree, Method};
     ///
     /// let algorithm = GrowingTree::new(Method::Newest);
     /// ```

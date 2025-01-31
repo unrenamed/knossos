@@ -1,3 +1,4 @@
+#![deny(missing_docs)]
 //! # Overview
 //!
 //! A simple library for generating mazes with some basic routines for rendering and saving mazes to
@@ -22,14 +23,14 @@
 //!
 //! ## Generate with default parameters
 //! ```rust,no_run
-//! use knossos::maze::*;
+//! use bevy_knossos::maze::*;
 //!
 //! let maze = OrthogonalMazeBuilder::new().build();
 //! ```
 //!
 //! ## Generate with custom parameters
 //! ```rust,no_run
-//! use knossos::maze::*;
+//! use bevy_knossos::maze::*;
 //!
 //! let maze = OrthogonalMazeBuilder::new()
 //!  .height(10)
@@ -42,7 +43,7 @@
 //!
 //! ## Display
 //! ```rust,no_run
-//! use knossos::maze::*;
+//! use bevy_knossos::maze::*;
 //!
 //! let maze = OrthogonalMazeBuilder::new().build().unwrap();
 //! println!("{}", &maze);
@@ -50,7 +51,7 @@
 //!
 //! ## Save to file
 //! ```rust,no_run
-//! use knossos::maze::*;
+//! use bevy_knossos::maze::*;
 //!
 //! let maze = OrthogonalMazeBuilder::new().build().unwrap();
 //!
@@ -86,3 +87,4 @@ mod utils;
 
 pub mod maze;
 pub use utils::color::Color;
+pub use utils::types::{Coords, CoordsComponent};

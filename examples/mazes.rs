@@ -1,5 +1,5 @@
 /// Extensive set of examples on how to use the lib to generate mazes and save them to files
-use knossos::maze::*;
+use bevy_knossos::maze::*;
 
 fn main() {
     let maze = OrthogonalMazeBuilder::new()

@@ -10,6 +10,7 @@ pub struct MazeSaveError {
 }
 
 impl MazeSaveError {
+    /// Defines reason why was not able to save maze
     pub fn reason(reason: impl Into<String>) -> Self {
         Self {
             reason: reason.into(),

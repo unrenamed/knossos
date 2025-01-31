@@ -1,3 +1,5 @@
+use bevy::ecs::system::Resource;
+
 use crate::utils::types::Coords;
 
 use super::{
@@ -12,7 +14,7 @@ use std::fmt;
 ///
 /// Represents a standard orthogonal maze where each cell is a square containing zero or maximum
 /// three walls
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq, Eq, Resource)]
 pub struct OrthogonalMaze {
     grid: Grid,
 }
@@ -35,7 +37,7 @@ impl OrthogonalMaze {
         validate(&self.grid)
     }
 
-    // Saves a maze into a file to a given path using a given formatter
+    /// Saves a maze into a file to a given path using a given formatter
     pub fn save<F, T>(&self, path: &str, formatter: F) -> Result<String, MazeSaveError>
     where
         F: Formatter<T>,
@@ -43,6 +45,16 @@ impl OrthogonalMaze {
     {
         let data = formatter.format(&self.grid);
         Saveable::save(&data, path)
+    }
+
+    /// Returns an iterator over the maze where `index == y * Maze::width + x`.
+    ///
+    /// The iterator yields all items, `(Coords, Cell)`, from start to end.
+    pub const fn iter(&self) -> OrthogonalMazeIterator {
+        OrthogonalMazeIterator {
+            maze: self,
+            index: 0,
+        }
     }
 }
 
@@ -62,11 +74,96 @@ impl fmt::Display for OrthogonalMaze {
     }
 }
 
+pub struct OrthogonalMazeIterator<'a> {
+    maze: &'a OrthogonalMaze,
+    index: usize,
+}
+
+impl<'a> Iterator for OrthogonalMazeIterator<'a> {
+    type Item = (Coords, &'a Cell);
+    fn next(&mut self) -> Option<Self::Item> {
+        let width = self.maze.grid.width();
+        if self.index < self.maze.grid.cells.len() {
+            let result = Some((
+                (self.index % width, self.index / width),
+                &self.maze.grid.cells[self.index],
+            ));
+            self.index += 1;
+            result
+        } else {
+            None
+        }
+    }
+}
+
+pub struct OrthogonalMazeIntoIterator {
+    maze: OrthogonalMaze,
+    index: usize,
+    width: usize,
+}
+
+impl IntoIterator for OrthogonalMaze {
+    type Item = (Coords, Cell);
+    type IntoIter = OrthogonalMazeIntoIterator;
+
+    fn into_iter(self) -> OrthogonalMazeIntoIterator {
+        OrthogonalMazeIntoIterator {
+            width: self.grid.width(),
+            maze: self,
+            index: 0,
+        }
+    }
+}
+
+impl Iterator for OrthogonalMazeIntoIterator {
+    type Item = (Coords, Cell);
+
+    fn next(&mut self) -> Option<Self::Item> {
+        let width = self.width;
+        if self.maze.grid.cells.is_empty() {
+            return None;
+        }
+        let cell = self.maze.get_grid_mut().cells.remove(0);
+        let coords = (self.index % width, self.index / width);
+        self.index += 1;
+
+        Some((coords, cell))
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use crate::maze::grid::cell::Cell;
 
     use super::*;
+
+    #[test]
+    fn iterators_have_size() {
+        let grid = generate_valid_maze();
+        let maze = OrthogonalMaze { grid };
+
+        let iter_count = maze.iter().count();
+
+        assert_eq!(iter_count, 16);
+        assert_eq!(
+            maze.iter().nth(5).unwrap(),
+            ((1usize, 1usize), &(Cell::SOUTH | Cell::EAST | Cell::WEST))
+        );
+    }
+
+    #[test]
+    fn into_iterators_have_size() {
+        let grid = generate_valid_maze();
+        let maze = OrthogonalMaze { grid };
+
+        let iter_count = maze.clone().into_iter().count();
+
+        assert_eq!(iter_count, 16);
+        assert_eq!(
+            maze.into_iter().nth(5).unwrap(),
+            ((1usize, 1usize), (Cell::SOUTH | Cell::EAST | Cell::WEST))
+        );
+    }
 
     #[test]
     fn display_orthogonal_maze() {
@@ -105,6 +202,32 @@ mod tests {
 
         let cell = maze[(3, 1)];
         assert_eq!(cell, Cell::from_bits(0b0011).unwrap());
+    }
+
+    #[test]
+    fn into_iterators_correct_index() {
+        let grid = generate_valid_maze();
+        let maze = OrthogonalMaze { grid };
+        let width = maze.grid.width();
+
+        maze.into_iter()
+            .enumerate()
+            .for_each(|(idx, (coord, cell))| {
+                assert_eq!(idx, coord.1 * width + coord.0);
+                assert!(!cell.is_empty())
+            });
+    }
+
+    #[test]
+    fn iterators_correct_index() {
+        let grid = generate_valid_maze();
+        let maze = OrthogonalMaze { grid };
+        let width = maze.grid.width();
+
+        maze.iter().enumerate().for_each(|(idx, (coord, cell))| {
+            assert_eq!(idx, coord.1 * width + coord.0);
+            assert!(!cell.is_empty())
+        });
     }
 
     fn generate_valid_maze() -> Grid {

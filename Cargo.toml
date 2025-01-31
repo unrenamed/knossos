@@ -1,14 +1,14 @@
 [package]
-name = "knossos"
-version = "0.4.1"
-authors = ["unrenamed <renkonazbka@gmail.com>"]
+name = "bevy_knossos"
+version = "0.5.0"
+authors = ["Julia Naomi <jnboeira@outlook.com>", "unrenamed <renkonazbka@gmail.com>"]
 description = "Rust library for generating and rendering mazes"
 edition = "2021"
 readme = "README.md"
 license = "Apache-2.0"
-homepage = "https://github.com/unrenamed/knossos"
-repository = "https://github.com/unrenamed/knossos"
-keywords = ["maze", "labyrinth", "procedural", "algorithm"]
+homepage = "https://github.com/naomijub/bevy_knossos"
+repository = "https://github.com/naomijub/bevy_knossos"
+keywords = ["maze", "bevy", "procedural", "algorithm"]
 categories = ["algorithms"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -18,11 +18,14 @@ rand = "0.9.0"
 image = "0.25"
 clap = { version = "4.5.27", features = ["derive"] }
 bitflags = "2.8"
+bevy = { version = "0.15", default-features = false}
 
 [dev-dependencies]
+bevy = "0.15"
 assert_cmd = "2.0.16"
 assert_fs = "1.1"
 criterion = { version = "0.5", features = ["html_reports"] }
+bevy-inspector-egui = "0.29.1"
 
 [lints.rust]
 unexpected_cfgs = { level = "warn", check-cfg = ['cfg(tarpaulin_include)'] }

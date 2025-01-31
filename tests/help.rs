@@ -2,7 +2,7 @@ use assert_cmd::Command;
 
 const CLI_HELP_STR: &str = "Rust library for generating and rendering mazes
 
-Usage: knossos <COMMAND>
+Usage: bevy_knossos <COMMAND>
 
 Commands:
   generate  Generates a maze
@@ -15,7 +15,7 @@ Options:
 
 const GENERATE_SHORT_HELP_STR: &str = "Generates a maze
 
-Usage: knossos generate [OPTIONS] <COMMAND>
+Usage: bevy_knossos generate [OPTIONS] <COMMAND>
 
 Commands:
   ascii     Save to a text file with an ASCII representation of a maze
@@ -42,7 +42,7 @@ Options:
 
 const GENERATE_LONG_HELP_STR: &str = "Generates a maze
 
-Usage: knossos generate [OPTIONS] <COMMAND>
+Usage: bevy_knossos generate [OPTIONS] <COMMAND>
 
 Commands:
   ascii     Save to a text file with an ASCII representation of a maze
@@ -101,7 +101,7 @@ Options:
 
 const GENERATE_IMAGE_HELP_STR: &str = "Save to PNG or JPG file
 
-Usage: knossos generate image [OPTIONS] --output-path <OUTPUT_PATH>
+Usage: bevy_knossos generate image [OPTIONS] --output-path <OUTPUT_PATH>
 
 Options:
   -O, --output-path <OUTPUT_PATH>      Output path
@@ -115,7 +115,7 @@ Options:
 
 const GENERATE_ASCII_HELP_STR: &str = "Save to a text file with an ASCII representation of a maze
 
-Usage: knossos generate ascii [OPTIONS] --output-path <OUTPUT_PATH>
+Usage: bevy_knossos generate ascii [OPTIONS] --output-path <OUTPUT_PATH>
 
 Options:
   -O, --output-path <OUTPUT_PATH>    Output path
@@ -125,7 +125,7 @@ Options:
 
 const GENERATE_GAME_MAP_HELP_STR: &str = "Save to a text file as an ASCII game map for pseudo 3D games that use ray casting for modeling and rendering the map
 
-Usage: knossos generate game-map [OPTIONS] --output-path <OUTPUT_PATH>
+Usage: bevy_knossos generate game-map [OPTIONS] --output-path <OUTPUT_PATH>
 
 Options:
   -O, --output-path <OUTPUT_PATH>  Output path

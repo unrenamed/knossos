@@ -39,7 +39,7 @@ impl BinaryTree {
     ///
     /// # Example
     /// ```
-    /// use knossos::maze::{BinaryTree, Bias};
+    /// use bevy_knossos::maze::{BinaryTree, Bias};
     ///
     /// let algorithm = BinaryTree::new(Bias::NorthWest);
     /// ```

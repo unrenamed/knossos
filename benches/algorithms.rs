@@ -31,7 +31,7 @@ criterion_group!(
 );
 criterion_main!(benches);
 
-use knossos::maze::*;
+use bevy_knossos::maze::*;
 
 mod aldous_broder {
     use super::*;

@@ -7,13 +7,18 @@ and this project adheres to [Conventional Commits](https://www.conventionalcommi
 
 ## [Unreleased]
 
-## [0.5.0] - 2025-01-30
+## [0.5.0] - 2025-01-31
 
 ### Breaking Change
-- Add start coords for algorithms that support inital coords. Trait function changed from `Algorithm::generate(&mut self, grid: &mut Grid)` to `Algorithm::generate(&mut self, grid: &mut Grid, start_coords: Option<Coords>)`. **None** preserves previous behaviour.
+- Forked to focus on Bevy Compatibility
+- Add start coords for algorithms that support initial coords. Trait function changed from `Algorithm::generate(&mut self, grid: &mut Grid)` to `Algorithm::generate(&mut self, grid: &mut Grid, start_coords: Option<Coords>)`. **None** preserves previous behaviour.
 
 ### Added
 - Add `Index` trait to `OrthogonalMaze` and `Grid` returning, now public, `Cell`.
+- `OrthogonalMaze` can be a Bevy Resource
+- `Cell` can be a Bevy Component
+- `Cell` auxiliary methods (`iter, into_inter, to_bits_str`).
+- `CoordsComponent` to map `Coords` as Bevy Component. Multiple `From` trait implemented for `CoordsComponent`.
 
 ## [0.4.1] - 2025-01-29
 

@@ -4,7 +4,7 @@
 /// # Usage
 ///
 /// ```
-/// use knossos::{maze::*, Color};
+/// use bevy_knossos::{maze::*, Color};
 ///
 /// let formatter = Image::new().background(Color::RGB(0, 0, 0));
 /// ```

@@ -10,6 +10,7 @@ pub struct BuildError {
 }
 
 impl BuildError {
+    /// Defines reason why was not able to build maze
     pub fn reason(reason: impl Into<String>) -> Self {
         Self {
             reason: reason.into(),
