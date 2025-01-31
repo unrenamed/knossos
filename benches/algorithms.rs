@@ -93,7 +93,7 @@ mod eller {
     use super::*;
 
     pub fn generate_10_x_10(c: &mut Criterion) {
-        c.bench_function("eller//generate_10_x_10", |b| {
+        c.bench_function("eller/generate_10_x_10", |b| {
             b.iter(|| {
                 OrthogonalMazeBuilder::new()
                     .height(10)
@@ -105,7 +105,7 @@ mod eller {
     }
 
     pub fn generate_100_x_100(c: &mut Criterion) {
-        c.bench_function("eller//generate_100_x_100", |b| {
+        c.bench_function("eller/generate_100_x_100", |b| {
             b.iter(|| {
                 OrthogonalMazeBuilder::new()
                     .height(100)
