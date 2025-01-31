@@ -87,7 +87,7 @@ Options:
           [default: newest]
 
           Possible values:
-          - newest:            Selects the most recently added cell, thus imitating the recurive backtracker
+          - newest:            Selects the most recently added cell, thus imitating the recursive backtracker
           - oldest:            Selects the oldest added cell, thus generating an unchallenging maze with lots of long corridors
           - random:            Selects cells at random, thus getting Prim's algorithm behaviour
           - middle:            Selects a middle cell from the list of already added, but produces mazes similar to the ones created by the [Oldest](Method::Oldest) method

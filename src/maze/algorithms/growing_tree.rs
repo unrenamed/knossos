@@ -10,7 +10,7 @@ use rand::prelude::*;
 /// to imitate other algorithms or theirs combinations
 #[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum)]
 pub enum Method {
-    /// Selects the most recently added cell, thus imitating the recurive backtracker
+    /// Selects the most recently added cell, thus imitating the recursive backtracker
     Newest,
 
     /// Selects the oldest added cell, thus generating an unchallenging maze with lots of long
