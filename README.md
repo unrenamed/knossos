@@ -51,7 +51,7 @@ cargo add bevy_knossos
 Or add the following line to your `Cargo.toml`:
 ```no_test
 [dependencies]
-bevy_knossos = "0.5.0"
+bevy_knossos = "0.5"
 ```
 
 ## Usage
@@ -75,7 +75,7 @@ For information on knossos CLI usage, check the original repository [#Cli](https
 
 ```rust
 use bevy::{prelude::*, utils::HashMap};
-use bevy_knossos::{maze::*, Coords, CoordsComponent};
+use bevy_knossos::{maze::*, Coords, CoordsComponent, KnossosPlugin};
 
 fn main() {
     let maze = OrthogonalMazeBuilder::new()
@@ -87,7 +87,7 @@ fn main() {
 
     App::new()
         .insert_resource(maze)
-        .add_plugins(DefaultPlugins)
+        .add_plugins((DefaultPlugins, KnossosPlugin))
         .add_systems(Startup, load_assets)
         .add_systems(PostStartup, setup.after(load_assets))
         .run();

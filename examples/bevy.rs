@@ -1,5 +1,5 @@
 use bevy::{prelude::*, utils::HashMap};
-use bevy_knossos::{maze::*, Coords, CoordsComponent};
+use bevy_knossos::{maze::*, Coords, CoordsComponent, KnossosPlugin};
 use bevy_inspector_egui::quick::WorldInspectorPlugin;
 
 fn main() {
@@ -13,7 +13,7 @@ fn main() {
     App::new()
         .insert_resource(maze)
         .add_plugins(DefaultPlugins)
-        .add_plugins(WorldInspectorPlugin::new())
+        .add_plugins((KnossosPlugin, WorldInspectorPlugin::new()))
         .add_systems(Startup, load_assets)
         .add_systems(PostStartup, setup.after(load_assets))
         .run();
