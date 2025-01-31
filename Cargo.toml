@@ -1,6 +1,6 @@
 [package]
 name = "bevy_knossos"
-version = "0.5.0"
+version = "0.5.1"
 authors = ["Julia Naomi <jnboeira@outlook.com>", "unrenamed <renkonazbka@gmail.com>"]
 description = "Rust library for generating and rendering mazes"
 edition = "2021"

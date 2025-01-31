@@ -60,9 +60,13 @@ For information on knossos CLI usage, check the original repository [#Cli](https
 
 > Crates may have diverged
 
-### Bevy Usage
+# Bevy Usage
 
+## Bevy support table
 
+| bevy | bevy_knossos |
+| ---- | ------------ |
+| 0.15 | 0.5          |
 
 ## Bevy Mini-maze under Kenney.nl license and APACHE:
 

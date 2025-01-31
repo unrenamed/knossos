@@ -86,5 +86,15 @@
 mod utils;
 
 pub mod maze;
+use bevy::app::Plugin;
 pub use utils::color::Color;
 pub use utils::types::{Coords, CoordsComponent};
+
+/// Plugin registering Knossos `Reflect` Components and Resources
+pub struct KnossosPlugin;
+
+impl Plugin for KnossosPlugin {
+    fn build(&self, app: &mut bevy::app::App) {
+        app.register_type::<CoordsComponent>();
+    }
+}
