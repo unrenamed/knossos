@@ -38,7 +38,6 @@ fn setup(mut commands: Commands, maze: Res<maze::OrthogonalMaze>, asset_server: 
 
     let texture_handle: Handle<Image> = asset_server.load("kenney_topdown_shooter.png");
 
-    // secondary half-tile map size
     let map_size = TilemapSize {
         x: MAZE_SIZE,
         y: MAZE_SIZE,
