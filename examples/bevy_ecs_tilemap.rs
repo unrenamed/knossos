@@ -95,6 +95,12 @@ fn setup(mut commands: Commands, maze: Res<maze::OrthogonalMaze>, asset_server: 
     });
 }
 
+// given a corner direction like 1,1,
+// move on each axis and check the direction of the opposite
+// axis. (ex: move on x, then check the y direction) to see
+// if there's a wall, which is then used to determine if there
+// should be a wall piece in the corner of the tile
+// ex: a left wall with a top-right corner block.
 fn check_corner(
     pos: (usize, usize),
     corner: IVec2,
