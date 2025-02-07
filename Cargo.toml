@@ -1,7 +1,10 @@
 [package]
 name = "bevy_knossos"
 version = "0.5.1"
-authors = ["Julia Naomi <jnboeira@outlook.com>", "unrenamed <renkonazbka@gmail.com>"]
+authors = [
+    "Julia Naomi <jnboeira@outlook.com>",
+    "unrenamed <renkonazbka@gmail.com>",
+]
 description = "Rust library for generating and rendering mazes"
 edition = "2021"
 readme = "README.md"
@@ -18,7 +21,7 @@ rand = "0.9.0"
 image = "0.25"
 clap = { version = "4.5.27", features = ["derive"] }
 bitflags = "2.8"
-bevy = { version = "0.15", default-features = false}
+bevy = { version = "0.15", default-features = false }
 
 [dev-dependencies]
 bevy = "0.15"
@@ -26,12 +29,13 @@ assert_cmd = "2.0.16"
 assert_fs = "1.1"
 criterion = { version = "0.5", features = ["html_reports"] }
 bevy-inspector-egui = "0.29.1"
+bevy_ecs_tilemap = "0.15"
 
 [lints.rust]
 unexpected_cfgs = { level = "warn", check-cfg = ['cfg(tarpaulin_include)'] }
 
 [lints.clippy]
-use_self = { level = "allow"}
+use_self = { level = "allow" }
 missing_const_for_fn = { level = "warn" }
 option_if_let_else = { level = "warn" }
 or_fun_call = { level = "warn" }
