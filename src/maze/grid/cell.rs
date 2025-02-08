@@ -1,11 +1,12 @@
 use std::fmt;
 
-use bevy::ecs::component::Component;
+use bevy::{ecs::component::Component, reflect::Reflect};
 use bitflags::bitflags;
 
 bitflags! {
     /// Maze Cell defining open passages
-    #[derive(Default, Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Component)]
+    #[derive(Default, Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Component, Reflect)]
+    #[reflect(opaque)]
     pub struct Cell: u8 {
         /// Has passage to NORTH
         const NORTH = 0b0001;

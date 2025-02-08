@@ -87,6 +87,7 @@ mod utils;
 
 pub mod maze;
 use bevy::app::Plugin;
+use maze::Cell;
 pub use utils::color::Color;
 pub use utils::types::{Coords, CoordsComponent};
 
@@ -95,6 +96,7 @@ pub struct KnossosPlugin;
 
 impl Plugin for KnossosPlugin {
     fn build(&self, app: &mut bevy::app::App) {
-        app.register_type::<CoordsComponent>();
+        app.register_type::<CoordsComponent>()
+            .register_type::<Cell>();
     }
 }

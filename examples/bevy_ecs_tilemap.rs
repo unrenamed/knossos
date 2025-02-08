@@ -73,7 +73,7 @@ fn setup(mut commands: Commands, maze: Res<maze::OrthogonalMaze>, asset_server: 
                     texture_index: index,
                     ..default()
                 },
-                cell.clone(),
+                *cell,
             ))
             .id();
         tile_storage.set(&tile_pos, tile_entity);
@@ -137,7 +137,8 @@ fn cell_to_index(
     cache: &HashMap<(usize, usize), &maze::Cell>,
 ) -> TileTextureIndex {
     // wesn
-    let index = TileTextureIndex(
+
+    TileTextureIndex(
         match cell {
             "0000" => 358,
             "0001" => 286,
@@ -145,7 +146,7 @@ fn cell_to_index(
             "0011" => 309,
             "0100" => 313,
             "0101" => {
-                let has_ne_corner = check_corner(position, IVec2::new(1, -1), &cache);
+                let has_ne_corner = check_corner(position, IVec2::new(1, -1), cache);
                 if has_ne_corner {
                     307
                 } else {
@@ -153,7 +154,7 @@ fn cell_to_index(
                 }
             }
             "0110" => {
-                let has_se_corner = check_corner(position, IVec2::new(1, 1), &cache);
+                let has_se_corner = check_corner(position, IVec2::new(1, 1), cache);
                 if has_se_corner {
                     280
                 } else {
@@ -161,8 +162,8 @@ fn cell_to_index(
                 }
             }
             "0111" => {
-                let has_ne_corner = check_corner(position, IVec2::new(1, -1), &cache);
-                let has_se_corner = check_corner(position, IVec2::new(1, 1), &cache);
+                let has_ne_corner = check_corner(position, IVec2::new(1, -1), cache);
+                let has_se_corner = check_corner(position, IVec2::new(1, 1), cache);
                 match (has_ne_corner, has_se_corner) {
                     (true, true) => 310,
                     (true, false) => 390,
@@ -172,7 +173,7 @@ fn cell_to_index(
             }
             "1000" => 285,
             "1001" => {
-                let has_nw_corner = check_corner(position, IVec2::new(-1, -1), &cache);
+                let has_nw_corner = check_corner(position, IVec2::new(-1, -1), cache);
                 if has_nw_corner {
                     308
                 } else {
@@ -180,7 +181,7 @@ fn cell_to_index(
                 }
             }
             "1010" => {
-                let has_sw_corner = check_corner(position, IVec2::new(-1, 1), &cache);
+                let has_sw_corner = check_corner(position, IVec2::new(-1, 1), cache);
                 if has_sw_corner {
                     281
                 } else {
@@ -188,8 +189,8 @@ fn cell_to_index(
                 }
             }
             "1011" => {
-                let has_nw_corner = check_corner(position, IVec2::new(-1, -1), &cache);
-                let has_sw_corner = check_corner(position, IVec2::new(-1, 1), &cache);
+                let has_nw_corner = check_corner(position, IVec2::new(-1, -1), cache);
+                let has_sw_corner = check_corner(position, IVec2::new(-1, 1), cache);
                 match (has_nw_corner, has_sw_corner) {
                     (true, true) => 311,
                     (true, false) => 391,
@@ -199,8 +200,8 @@ fn cell_to_index(
             }
             "1100" => 282,
             "1101" => {
-                let has_ne_corner = check_corner(position, IVec2::new(1, -1), &cache);
-                let has_nw_corner = check_corner(position, IVec2::new(-1, -1), &cache);
+                let has_ne_corner = check_corner(position, IVec2::new(1, -1), cache);
+                let has_nw_corner = check_corner(position, IVec2::new(-1, -1), cache);
                 match (has_ne_corner, has_nw_corner) {
                     (true, true) => 284,
                     (true, false) => 420,
@@ -209,8 +210,8 @@ fn cell_to_index(
                 }
             }
             "1110" => {
-                let has_se_corner = check_corner(position, IVec2::new(1, 1), &cache);
-                let has_sw_corner = check_corner(position, IVec2::new(-1, 1), &cache);
+                let has_se_corner = check_corner(position, IVec2::new(1, 1), cache);
+                let has_sw_corner = check_corner(position, IVec2::new(-1, 1), cache);
                 match (has_se_corner, has_sw_corner) {
                     (true, true) => 283,
                     (true, false) => 393,
@@ -219,10 +220,10 @@ fn cell_to_index(
                 }
             }
             "1111" => {
-                let has_ne_corner = check_corner(position, IVec2::new(1, -1), &cache);
-                let has_nw_corner = check_corner(position, IVec2::new(-1, -1), &cache);
-                let has_se_corner = check_corner(position, IVec2::new(1, 1), &cache);
-                let has_sw_corner = check_corner(position, IVec2::new(-1, 1), &cache);
+                let has_ne_corner = check_corner(position, IVec2::new(1, -1), cache);
+                let has_nw_corner = check_corner(position, IVec2::new(-1, -1), cache);
+                let has_se_corner = check_corner(position, IVec2::new(1, 1), cache);
+                let has_sw_corner = check_corner(position, IVec2::new(-1, 1), cache);
 
                 match (has_ne_corner, has_nw_corner, has_se_corner, has_sw_corner) {
                     (true, true, true, true) => 341,
@@ -245,7 +246,5 @@ fn cell_to_index(
             } // check all corners
             _ => unreachable!("cell can only be 4 bits"),
         } - 1,
-    );
-
-    index
+    )
 }
