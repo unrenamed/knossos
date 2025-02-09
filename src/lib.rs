@@ -98,6 +98,7 @@ pub mod pathfind;
 /// Plugin registering Knossos `Reflect` Components and Resources
 pub struct KnossosPlugin;
 
+#[cfg(not(tarpaulin_include))]
 impl Plugin for KnossosPlugin {
     fn build(&self, app: &mut bevy::app::App) {
         app.register_type::<CoordsComponent>()
