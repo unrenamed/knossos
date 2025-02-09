@@ -132,4 +132,30 @@ mod tests {
         assert_eq!(successor[0], ((12, 13).into(), 1));
         assert_eq!(successor[1], ((13, 12).into(), 1));
     }
+
+    #[test]
+    fn successors_with_cost() {
+        let start: CoordsComponent = (10, 10).into();
+        let cell = Cell::from_bits(0b1010).unwrap();
+        let key = CoordsComponent::new(10, 10);
+        let cells = [(&key, (&cell, Some(&Cost(2))))].into_iter().collect();
+
+        let successor = MazePath::successors(&start, &cells);
+
+        assert_eq!(successor.len(), 2);
+        assert_eq!(successor[0], ((10, 9).into(), 2));
+        assert_eq!(successor[1], ((9, 10).into(), 2));
+    }
+
+    #[test]
+    fn empty_successors() {
+        let goal: CoordsComponent = (0, 0).into();
+        let cell = Cell::from_bits(0b0101).unwrap();
+        let key = CoordsComponent::new(12, 12);
+        let cells = [(&key, (&cell, None::<&Cost>))].into_iter().collect();
+
+        let successor = MazePath::successors(&goal, &cells);
+
+        assert_eq!(successor.len(), 0);
+    }
 }

@@ -87,6 +87,7 @@ mod tests {
         assert_eq!(component, expected);
 
         assert_eq!(component.xy(), (42, 42));
+        assert_eq!(component.to_string(), "(42,42)")
     }
 
     #[test]
