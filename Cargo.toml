@@ -1,6 +1,6 @@
 [package]
 name = "bevy_knossos"
-version = "0.5.2"
+version = "0.6.0"
 authors = [
     "Julia Naomi <jnboeira@outlook.com>",
     "unrenamed <renkonazbka@gmail.com>",
@@ -16,12 +16,17 @@ categories = ["algorithms"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[features]
+pathfinding = ["dep:pathfinding"]
+default = ["pathfinding"]
+
 [dependencies]
 rand = "0.9.0"
 image = "0.25"
 clap = { version = "4.5.27", features = ["derive"] }
 bitflags = "2.8"
 bevy = { version = "0.15", default-features = false }
+pathfinding = { version = "4.14", optional = true }
 
 [dev-dependencies]
 bevy = "0.15"
@@ -36,6 +41,7 @@ unexpected_cfgs = { level = "warn", check-cfg = ['cfg(tarpaulin_include)'] }
 
 [lints.clippy]
 use_self = { level = "allow" }
+type_complexity = { level = "allow" }
 missing_const_for_fn = { level = "warn" }
 option_if_let_else = { level = "warn" }
 or_fun_call = { level = "warn" }
@@ -47,3 +53,8 @@ harness = false
 [[bench]]
 name = "formatters"
 harness = false
+
+[[example]]
+name = "bevy_pathfinding"
+features = ["pathfinding"]
+required-features = ["pathfinding"]

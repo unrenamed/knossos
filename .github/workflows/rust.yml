@@ -1,4 +1,4 @@
-name: Build
+name: CI
 
 on:
   push:
@@ -40,7 +40,7 @@ jobs:
     - name: Install Dependencies
       run: sudo apt-get update; sudo apt-get install --no-install-recommends libasound2-dev libudev-dev libwayland-dev
     - name: clippy
-      run: cargo clippy --locked
+      run: cargo clippy --locked --all-features
 
   build:
     runs-on: ubuntu-latest
@@ -58,7 +58,7 @@ jobs:
       - name: Install Dependencies
         run: sudo apt-get update; sudo apt-get install --no-install-recommends libasound2-dev libudev-dev libwayland-dev
       - name: Test
-        run: cargo test --locked
+        run: cargo test --locked --all-features
 
   coverage:
     runs-on: ubuntu-latest

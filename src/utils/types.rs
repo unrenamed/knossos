@@ -1,5 +1,7 @@
+use std::fmt;
+
 use bevy::{
-    ecs::component::Component,
+    ecs::{component::Component, system::Resource},
     math::{U64Vec2, U8Vec2},
     reflect::Reflect,
 };
@@ -8,10 +10,34 @@ use bevy::{
 pub type Coords = (usize, usize);
 
 /// Auxiliary Bevy component to hold Coords
-#[derive(Clone, Debug, PartialEq, Eq, Reflect, Component)]
+#[derive(Clone, Debug, PartialEq, Eq, Reflect, Component, Hash)]
 pub struct CoordsComponent {
-    coord: Coords,
+    pub(crate) coord: Coords,
 }
+
+impl fmt::Display for CoordsComponent {
+    /// Writes a formatted maze into a buffer
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "({},{})", self.coord.0, self.coord.1)?;
+        Ok(())
+    }
+}
+
+impl CoordsComponent {
+    /// Creates new [`CoordsComponent`]
+    pub const fn new(x: usize, y: usize) -> Self {
+        Self { coord: (x, y) }
+    }
+
+    /// Returns `x` and `y` values for [`CoordsComponent`]
+    pub const fn xy(&self) -> (usize, usize) {
+        (self.coord.0, self.coord.1)
+    }
+}
+
+/// Maze cell size
+#[derive(Clone, Debug, Reflect, Resource)]
+pub struct CellSize(pub f32);
 
 impl From<Coords> for CoordsComponent {
     fn from(value: Coords) -> Self {
@@ -41,6 +67,14 @@ impl From<U64Vec2> for CoordsComponent {
     }
 }
 
+/// Auxiliary Bevy component that holds the Start Coords of Pathfinding
+#[derive(Clone, Debug, PartialEq, Eq, Reflect, Component)]
+pub struct Start;
+
+/// Auxiliary Bevy component that holds the Goal Coords of Pathfinding
+#[derive(Clone, Debug, PartialEq, Eq, Reflect, Component)]
+pub struct Goal;
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -48,9 +82,12 @@ mod tests {
     #[test]
     fn from_coords() {
         let component: CoordsComponent = (42, 42).into();
-        let expected = CoordsComponent { coord: (42, 42) };
+        let expected = CoordsComponent::new(42, 42);
 
         assert_eq!(component, expected);
+
+        assert_eq!(component.xy(), (42, 42));
+        assert_eq!(component.to_string(), "(42,42)")
     }
 
     #[test]
