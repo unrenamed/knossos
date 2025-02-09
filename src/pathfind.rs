@@ -126,10 +126,10 @@ mod tests {
         let key = CoordsComponent::new(12, 12);
         let cells = [(&key, (&cell, None::<&Cost>))].into_iter().collect();
 
-        let sucessor = MazePath::successors(&start, &cells);
+        let successor = MazePath::successors(&start, &cells);
 
-        assert_eq!(sucessor.len(), 2);
-        assert_eq!(sucessor[0], ((12, 13).into(), 1));
-        assert_eq!(sucessor[1], ((13, 12).into(), 1));
+        assert_eq!(successor.len(), 2);
+        assert_eq!(successor[0], ((12, 13).into(), 1));
+        assert_eq!(successor[1], ((13, 12).into(), 1));
     }
 }
