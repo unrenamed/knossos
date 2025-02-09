@@ -3,10 +3,12 @@ use bevy_ecs_tilemap::prelude::*;
 use bevy_inspector_egui::quick::WorldInspectorPlugin;
 use bevy_knossos::{
     maze::{self, Cell},
-    KnossosPlugin,
+    pathfind::MazePath,
+    CellSize, CoordsComponent, Goal, KnossosPlugin, Start,
 };
 
-const MAZE_SIZE: u32 = 32;
+const MAZE_SIZE: u32 = 16;
+const CELL_SIZE: f32 = 64.;
 fn main() {
     let maze = maze::OrthogonalMazeBuilder::new()
         .algorithm(Box::new(maze::RecursiveBacktracking))
@@ -20,6 +22,7 @@ fn main() {
         .add_plugins((DefaultPlugins, TilemapPlugin))
         .add_plugins((KnossosPlugin, WorldInspectorPlugin::new()))
         .add_systems(Startup, setup)
+        .add_systems(Update, draw_path)
         .run();
 }
 
@@ -28,8 +31,8 @@ fn setup(mut commands: Commands, maze: Res<maze::OrthogonalMaze>, asset_server: 
         Camera2d,
         OrthographicProjection {
             scaling_mode: bevy::render::camera::ScalingMode::AutoMin {
-                min_width: 64. * MAZE_SIZE as f32,
-                min_height: 64. * MAZE_SIZE as f32,
+                min_width: CELL_SIZE * MAZE_SIZE as f32,
+                min_height: CELL_SIZE * MAZE_SIZE as f32,
             },
             ..OrthographicProjection::default_2d()
         },
@@ -65,6 +68,8 @@ fn setup(mut commands: Commands, maze: Res<maze::OrthogonalMaze>, asset_server: 
             x: x as u32,
             y: map_size.y - (y as u32) - 1,
         };
+
+        let coords = CoordsComponent::new(tile_pos.x as usize, tile_pos.y as usize);
         let tile_entity = commands
             .spawn((
                 TileBundle {
@@ -75,13 +80,26 @@ fn setup(mut commands: Commands, maze: Res<maze::OrthogonalMaze>, asset_server: 
                 },
                 *cell,
             ))
+            .insert_if((Start, Name::new("Start")), || coords.xy() == (0, 0))
+            .insert_if((Goal, Name::new("Goal")), || {
+                coords.xy() == (MAZE_SIZE as usize - 2, MAZE_SIZE as usize - 1)
+            })
+            .insert_if(Name::new(coords.to_string()), || {
+                coords.xy() != (MAZE_SIZE as usize - 2, MAZE_SIZE as usize - 1)
+                    && coords.xy() != (0, 0)
+            })
+            .insert(coords)
             .id();
         tile_storage.set(&tile_pos, tile_entity);
     }
 
-    let tile_size = TilemapTileSize { x: 64.0, y: 64.0 };
+    let tile_size = TilemapTileSize {
+        x: CELL_SIZE,
+        y: CELL_SIZE,
+    };
     let grid_size = tile_size.into();
     let map_type = TilemapType::default();
+    commands.insert_resource(CellSize(CELL_SIZE));
 
     commands.entity(tilemap_entity).insert(TilemapBundle {
         grid_size,
@@ -246,4 +264,26 @@ fn cell_to_index(
             _ => unreachable!("cell can only be 4 bits"),
         } - 1,
     )
+}
+
+pub(crate) fn draw_path(
+    start: Query<&CoordsComponent, (With<Cell>, With<Start>)>,
+    goal: Query<&CoordsComponent, (With<Cell>, With<Goal>)>,
+    mut cells: Query<(&CoordsComponent, &mut TileTextureIndex), With<Cell>>,
+    path: Res<MazePath>,
+) {
+    let Ok(_start) = start.get_single().cloned() else {
+        return;
+    };
+    let Ok(_goal) = goal.get_single().cloned() else {
+        return;
+    };
+
+    if let (true, Some((path, _cost))) = (path.is_changed() || path.is_added(), &path.path) {
+        for (cell, mut index) in cells.iter_mut() {
+            if path.contains(cell) {
+                index.0 -= 162;
+            }
+        }
+    }
 }

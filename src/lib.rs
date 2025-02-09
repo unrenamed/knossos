@@ -89,7 +89,11 @@ pub mod maze;
 use bevy::app::Plugin;
 use maze::Cell;
 pub use utils::color::Color;
-pub use utils::types::{Coords, CoordsComponent};
+pub use utils::types::{Coords, CellSize, CoordsComponent, Goal, Start};
+
+#[cfg(feature = "pathfinding")]
+/// Module containing all necessary tooling to pathfind between [`Start`] and [`Goal`]
+pub mod pathfind;
 
 /// Plugin registering Knossos `Reflect` Components and Resources
 pub struct KnossosPlugin;
@@ -97,6 +101,20 @@ pub struct KnossosPlugin;
 impl Plugin for KnossosPlugin {
     fn build(&self, app: &mut bevy::app::App) {
         app.register_type::<CoordsComponent>()
-            .register_type::<Cell>();
+            .register_type::<Cell>()
+            .register_type::<Start>()
+            .register_type::<Goal>()
+            .register_type::<CellSize>();
+
+        #[cfg(feature = "pathfinding")]
+        {
+            use bevy::app::Update;
+
+            app.register_type::<pathfind::MazePath>()
+                .register_type::<pathfind::Algorithm>()
+                .init_resource::<pathfind::Algorithm>()
+                .init_resource::<pathfind::MazePath>()
+                .add_systems(Update, pathfind::find_path);
+        }
     }
 }

@@ -4,12 +4,14 @@
 [![Coverage Status](https://coveralls.io/repos/github/naomijub/bevy_knossos/badge.svg)](https://coveralls.io/github/naomijub/bevy_knossos)
 
 <p align="center">
-  <img src="assets/daedalus.png?raw=true" width="400" height="400">
+  <img src="assets/banner.png?raw=true" width="400" height="400">
 </p>
 
 # Bevy_Knossos
 
 Bevy_Knossos is a fork from [knossos](https://github.com/unrenamed/knossos) Rust library and CLI for maze generation, but with focus on Bevy development. It is complete with fundamental functions for rendering and saving mazes to files.
+
+> Bevy_Knossos treats Maze Cells as Components.
 
 ## Reference for [Knossos Library](https://github.com/unrenamed/knossos)
 
@@ -51,7 +53,7 @@ cargo add bevy_knossos
 Or add the following line to your `Cargo.toml`:
 ```no_test
 [dependencies]
-bevy_knossos = "0.5"
+bevy_knossos = "0.6"
 ```
 
 ## Usage
@@ -66,7 +68,18 @@ For information on knossos CLI usage, check the original repository [#Cli](https
 
 | bevy | bevy_knossos |
 | ---- | ------------ |
-| 0.15 | 0.5          |
+| 0.15 | 0.5 - 0.6    |
+
+## Features
+
+| name          | descriotion | default|
+| ------------- | ----------- | ------ |
+| `pathfinding` | Enables bevy to pathfind in the Maze (banner image is a demo) | false |
+
+### Examples:
+
+- `Bevy_ecs_tilemap`, by @ChristopherBiscardi, uses [`bevy_ecs_tilemap` crate](https://crates.io/crates/bevy_ecs_tilemap) to handle tilemap from tiles spritesheets.
+- `Bevy_pathfinding`, uses [`pathfinding` crate](https://crates.io/crates/pathfinding) to pathfind between [`Start`] and [`Goal`] components Coords in the Maze.
 
 ## Bevy Mini-maze under Kenney.nl license and APACHE:
 
