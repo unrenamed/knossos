@@ -93,22 +93,22 @@ impl Image {
 
     fn draw_cell(&self, coords: Coords, grid: &Grid, image: &mut RgbImage) {
         let (x, y) = coords;
-        let cell_width_without_joint_wall = self.cell_width() - self.wall_width;
-        let start_x = x * cell_width_without_joint_wall + self.margin;
-        let start_y = y * cell_width_without_joint_wall + self.margin;
+        let inner_cell_width = self.cell_width() - self.wall_width;
+        let cell_x = x * inner_cell_width + self.margin;
+        let cell_y = y * inner_cell_width + self.margin;
 
-        for y in start_y..=start_y + self.cell_width() {
-            for x in start_x..=start_x + self.cell_width() {
+        for py in cell_y..cell_y + self.cell_width() {
+            for px in cell_x..cell_x + self.cell_width() {
                 // A cell consists of two main zones: its walls and some empty space between them
                 // called "a passage". To draw a cell, the following code checks some particular
                 // zones and skips filling pixels with color in case a wall should not display or
                 // it's a cell passage. In all other cases, we fill pixels with a given color
 
                 // Top left corner must display only if either Northern or Western wall exists
-                if x >= start_x
-                    && x <= start_x + self.wall_width
-                    && y >= start_y
-                    && y <= start_y + self.wall_width
+                if px >= cell_x
+                    && px <= cell_x + self.wall_width
+                    && py >= cell_y
+                    && py <= cell_y + self.wall_width
                     && grid.is_carved(coords, Cell::NORTH)
                     && grid.is_carved(coords, Cell::WEST)
                 {
@@ -116,20 +116,20 @@ impl Image {
                 }
 
                 // Northern wall must display only if there is no passage carved to North
-                if x >= start_x + self.wall_width
-                    && x <= start_x + cell_width_without_joint_wall
-                    && y >= start_y
-                    && y <= start_y + self.wall_width
+                if px >= cell_x + self.wall_width
+                    && px <= cell_x + inner_cell_width
+                    && py >= cell_y
+                    && py <= cell_y + self.wall_width
                     && grid.is_carved(coords, Cell::NORTH)
                 {
                     continue;
                 }
 
                 // Top right corner must display only if either Northern or Eastern wall exists
-                if x >= start_x + cell_width_without_joint_wall
-                    && x <= start_x + self.cell_width()
-                    && y >= start_y
-                    && y <= start_y + self.wall_width
+                if px >= cell_x + inner_cell_width
+                    && px <= cell_x + self.cell_width()
+                    && py >= cell_y
+                    && py <= cell_y + self.wall_width
                     && grid.is_carved(coords, Cell::NORTH)
                     && grid.is_carved(coords, Cell::EAST)
                 {
@@ -137,39 +137,39 @@ impl Image {
                 }
 
                 // Western wall must display only if there is no passage carved to West
-                if x >= start_x
-                    && x <= start_x + self.wall_width
-                    && y >= start_y + self.wall_width
-                    && y <= start_y + cell_width_without_joint_wall
+                if px >= cell_x
+                    && px <= cell_x + self.wall_width
+                    && py >= cell_y + self.wall_width
+                    && py <= cell_y + inner_cell_width
                     && grid.is_carved(coords, Cell::WEST)
                 {
                     continue;
                 }
 
                 // Cell's passage must not be colored, i.e. it remains same as an image background
-                if x >= start_x + self.wall_width
-                    && x <= start_x + cell_width_without_joint_wall
-                    && y >= start_y + self.wall_width
-                    && y <= start_y + cell_width_without_joint_wall
+                if px >= cell_x + self.wall_width
+                    && px <= cell_x + inner_cell_width
+                    && py >= cell_y + self.wall_width
+                    && py <= cell_y + inner_cell_width
                 {
                     continue;
                 }
 
                 // Eastern wall must display only if there is no passage carved to East
-                if x >= start_x + cell_width_without_joint_wall
-                    && x <= start_x + self.cell_width()
-                    && y >= start_y + self.wall_width
-                    && y <= start_y + cell_width_without_joint_wall
+                if px >= cell_x + inner_cell_width
+                    && px <= cell_x + self.cell_width()
+                    && py >= cell_y + self.wall_width
+                    && py <= cell_y + inner_cell_width
                     && grid.is_carved(coords, Cell::EAST)
                 {
                     continue;
                 }
 
                 // Bottom left corner must display only if either Southern or Western wall exists
-                if x >= start_x
-                    && x <= start_x + self.wall_width
-                    && y >= start_y + cell_width_without_joint_wall
-                    && y <= start_y + self.cell_width()
+                if px >= cell_x
+                    && px <= cell_x + self.wall_width
+                    && py >= cell_y + inner_cell_width
+                    && py <= cell_y + self.cell_width()
                     && grid.is_carved(coords, Cell::SOUTH)
                     && grid.is_carved(coords, Cell::WEST)
                 {
@@ -177,20 +177,20 @@ impl Image {
                 }
 
                 // Southern wall must display only if there is no passage carved to South
-                if x >= start_x + self.wall_width
-                    && x <= start_x + cell_width_without_joint_wall
-                    && y >= start_y + cell_width_without_joint_wall
-                    && y <= start_y + self.cell_width()
+                if px >= cell_x + self.wall_width
+                    && px <= cell_x + inner_cell_width
+                    && py >= cell_y + inner_cell_width
+                    && py <= cell_y + self.cell_width()
                     && grid.is_carved(coords, Cell::SOUTH)
                 {
                     continue;
                 }
 
                 // Bottom right corner must display only if either Southern or Eastern wall exists
-                if x >= start_x + cell_width_without_joint_wall
-                    && x <= start_x + self.cell_width()
-                    && y >= start_y + cell_width_without_joint_wall
-                    && y <= start_y + self.cell_width()
+                if px >= cell_x + inner_cell_width
+                    && px <= cell_x + self.cell_width()
+                    && py >= cell_y + inner_cell_width
+                    && py <= cell_y + self.cell_width()
                     && grid.is_carved(coords, Cell::SOUTH)
                     && grid.is_carved(coords, Cell::EAST)
                 {
@@ -198,8 +198,30 @@ impl Image {
                 }
 
                 // Fill the remaining pixels with a given color
-                *image.get_pixel_mut(x as u32, y as u32) = match self.foreground_color {
+                *image.get_pixel_mut(px as u32, py as u32) = match self.foreground_color {
                     Color::RGB(r, g, b) => image::Rgb([r, g, b]),
+                }
+            }
+        }
+
+        let is_rightmost_cell = x == grid.width() - 1;
+        let is_bottommost_cell = y == grid.height() - 1;
+
+        // Ensure the rightmost and bottommost walls are fully drawn to prevent missing edges
+        // at the outer boundary of the grid. This guarantees a closed maze structure.
+        if is_rightmost_cell || is_bottommost_cell {
+            let cell_right_x = cell_x + self.cell_width() - 1;
+            let cell_bottom_y = cell_y + self.cell_width() - 1;
+
+            for py in cell_y..=cell_bottom_y {
+                for px in cell_x..=cell_right_x {
+                    if (is_rightmost_cell && px >= cell_right_x - self.wall_width + 1)
+                        || (is_bottommost_cell && py >= cell_bottom_y - self.wall_width + 1)
+                    {
+                        *image.get_pixel_mut(px as u32, py as u32) = match self.foreground_color {
+                            Color::RGB(r, g, b) => image::Rgb([r, g, b]),
+                        }
+                    }
                 }
             }
         }
@@ -262,7 +284,7 @@ mod tests {
 
     #[test]
     fn format() {
-        let formatter = Image::new();
+        let formatter = Image::new().wall(1).passage(1).margin(1);
         let grid = generate_maze();
 
         let actual = formatter.format(&grid).0;
