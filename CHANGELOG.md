@@ -7,6 +7,40 @@ and this project adheres to [Conventional Commits](https://www.conventionalcommi
 
 ## [Unreleased]
 
+## [0.6.1] - 2025-02-11
+
+### Added
+- Added `Cell::to_bits` helper API for developer experience returns the `Cell::bits` representation.
+
+### Updated
+- Improved examples `bevy_pathfinding` and `bevy_ecs_tilemap` to use `Cell::to_bits` instead of `to_bits_str`.
+- Cargo update
+
+### Breaking
+- `to_bits_str` now returns `&'static str` whereas `to_bits_string` now returns a `String`.
+
+## [0.6.0] - 2025-02-8
+
+### Added 
+- Introduced feature `pathfinding` as default feature.
+- Added A*Pathfinding for `OrthogonalMaze`. 
+- Added `Start` and `Goal` components for `OrthogonalMaze`. Support for Pathfinding.
+- Added extra functions to `CoordsComponent`:
+    - `new` creates new `CoordsComponent` from `x` and `y` type usize
+    - `xy` returns `(usize, usize)` of `CoordsComponent`. Where `(x, y)`
+- Added maze `CellSize` Resource as type f32.
+- Added examples:
+    - bevy_ecs_tilemap
+    - bevy_pathfinding 
+
+### Updated
+- Implemented `fmt::Display` for `CoordsComponent`.
+
+## [0.5.2] - 2025-02-7
+
+### Updated
+- Cargo update
+
 ## [0.5.1] - 2025-01-31
 
 ### Added
