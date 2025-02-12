@@ -1,6 +1,6 @@
 [package]
 name = "bevy_knossos"
-version = "0.6.0"
+version = "0.6.1"
 authors = [
     "Julia Naomi <jnboeira@outlook.com>",
     "unrenamed <renkonazbka@gmail.com>",

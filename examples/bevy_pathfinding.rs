@@ -62,7 +62,7 @@ fn setup(mut commands: Commands, maze: Res<maze::OrthogonalMaze>, asset_server: 
     let maze_cache: HashMap<(usize, usize), &maze::Cell> = maze.iter().collect();
 
     for ((x, y), cell) in maze.iter() {
-        let index = cell_to_index(cell.to_bits_str().as_str(), (x, y), &maze_cache);
+        let index = cell_to_index(cell.to_bits(), (x, y), &maze_cache);
 
         let tile_pos = TilePos {
             x: x as u32,
@@ -150,19 +150,19 @@ fn check_corner(
 }
 
 fn cell_to_index(
-    cell: &str,
+    cell: u8,
     position: (usize, usize),
     cache: &HashMap<(usize, usize), &maze::Cell>,
 ) -> TileTextureIndex {
     TileTextureIndex(
         // wesn
         match cell {
-            "0000" => 358,
-            "0001" => 286,
-            "0010" => 312,
-            "0011" => 309,
-            "0100" => 313,
-            "0101" => {
+            0b0000 => 358,
+            0b0001 => 286,
+            0b0010 => 312,
+            0b0011 => 309,
+            0b0100 => 313,
+            0b0101 => {
                 let has_ne_corner = check_corner(position, IVec2::new(1, -1), cache);
                 if has_ne_corner {
                     307
@@ -170,7 +170,7 @@ fn cell_to_index(
                     314
                 }
             }
-            "0110" => {
+            0b0110 => {
                 let has_se_corner = check_corner(position, IVec2::new(1, 1), cache);
                 if has_se_corner {
                     280
@@ -178,7 +178,7 @@ fn cell_to_index(
                     287
                 }
             }
-            "0111" => {
+            0b0111 => {
                 let has_ne_corner = check_corner(position, IVec2::new(1, -1), cache);
                 let has_se_corner = check_corner(position, IVec2::new(1, 1), cache);
                 match (has_ne_corner, has_se_corner) {
@@ -188,8 +188,8 @@ fn cell_to_index(
                     (false, false) => 338,
                 }
             }
-            "1000" => 285,
-            "1001" => {
+            0b1000 => 285,
+            0b1001 => {
                 let has_nw_corner = check_corner(position, IVec2::new(-1, -1), cache);
                 if has_nw_corner {
                     308
@@ -197,7 +197,7 @@ fn cell_to_index(
                     315
                 }
             }
-            "1010" => {
+            0b1010 => {
                 let has_sw_corner = check_corner(position, IVec2::new(-1, 1), cache);
                 if has_sw_corner {
                     281
@@ -205,7 +205,7 @@ fn cell_to_index(
                     288
                 }
             }
-            "1011" => {
+            0b1011 => {
                 let has_nw_corner = check_corner(position, IVec2::new(-1, -1), cache);
                 let has_sw_corner = check_corner(position, IVec2::new(-1, 1), cache);
                 match (has_nw_corner, has_sw_corner) {
@@ -215,8 +215,8 @@ fn cell_to_index(
                     (false, false) => 339,
                 }
             }
-            "1100" => 282,
-            "1101" => {
+            0b1100 => 282,
+            0b1101 => {
                 let has_ne_corner = check_corner(position, IVec2::new(1, -1), cache);
                 let has_nw_corner = check_corner(position, IVec2::new(-1, -1), cache);
                 match (has_ne_corner, has_nw_corner) {
@@ -226,7 +226,7 @@ fn cell_to_index(
                     (false, false) => 366,
                 }
             }
-            "1110" => {
+            0b1110 => {
                 let has_se_corner = check_corner(position, IVec2::new(1, 1), cache);
                 let has_sw_corner = check_corner(position, IVec2::new(-1, 1), cache);
                 match (has_se_corner, has_sw_corner) {
@@ -236,7 +236,7 @@ fn cell_to_index(
                     (false, false) => 365,
                 }
             }
-            "1111" => {
+            0b1111 => {
                 let has_ne_corner = check_corner(position, IVec2::new(1, -1), cache);
                 let has_nw_corner = check_corner(position, IVec2::new(-1, -1), cache);
                 let has_se_corner = check_corner(position, IVec2::new(1, 1), cache);

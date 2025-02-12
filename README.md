@@ -72,9 +72,9 @@ For information on knossos CLI usage, check the original repository [#Cli](https
 
 ## Features
 
-| name          | description | default|
-| ------------- | ----------- | ------ |
-| `pathfinding` | Enables bevy to pathfind in the Maze (banner image is a demo) | false |
+| name          | description | default| dependencies |
+| ------------- | ----------- | ------ | ------------ |
+| `pathfinding` | Enables bevy to pathfind in the Maze (banner image is a demo) | true | `pathfinding = "4.14"` |
 
 ### Examples:
 

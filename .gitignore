@@ -6,3 +6,5 @@ coverage
 
 # VSCode
 .vscode
+.DS_Store
+**/.DS_Store
