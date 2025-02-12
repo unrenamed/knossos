@@ -4,10 +4,12 @@ use crate::{
     utils::types::{Goal, Start},
     Cell, CoordsComponent,
 };
-use std::{
-    // hash::{Hash, Hasher},
-    collections::HashMap,
-};
+use std::collections::HashMap;
+
+pub(crate) mod all_ends;
+
+pub use all_ends::{MazeEndsPaths, find_maze_ends_paths, MazeEnd};
+
 /// Associated cost to the path [`Cell`]. Default is 1
 #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Component, Reflect)]
 pub struct Cost(pub u32);

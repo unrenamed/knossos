@@ -37,6 +37,11 @@ impl Cell {
     pub const fn to_bits(&self) -> u8 {
         self.bits()
     }
+
+    /// Amount of walls present: [0..=4].
+    pub const fn walls_count(&self) -> u8 {
+        self.bits().count_zeros().saturating_sub(4) as u8
+    }
 }
 
 impl fmt::Display for Cell {
@@ -228,5 +233,19 @@ mod tests {
         let cell = Cell::SOUTH | Cell::WEST;
 
         assert_eq!(cell.to_string(), "SW");
+    }
+
+    #[test]
+    fn get_all_walls_count() {
+        assert_eq!(Cell::empty().walls_count(), 4);
+        assert_eq!(Cell::SOUTH.walls_count(), 3);
+        assert_eq!(Cell::NORTH.walls_count(), 3);
+        assert_eq!(Cell::WEST.walls_count(), 3);
+        assert_eq!(Cell::EAST.walls_count(), 3);
+        assert_eq!((Cell::SOUTH | Cell::NORTH).walls_count(), 2);
+        assert_eq!((Cell::EAST | Cell::WEST).walls_count(), 2);
+        assert_eq!((Cell::SOUTH | Cell::NORTH | Cell::WEST).walls_count(), 1);
+        assert_eq!((Cell::EAST | Cell::NORTH | Cell::WEST).walls_count(), 1);
+        assert_eq!(Cell::all().walls_count(), 0);
     }
 }

@@ -7,6 +7,14 @@ and this project adheres to [Conventional Commits](https://www.conventionalcommi
 
 ## [Unreleased]
 
+## [0.6.2] - 2025-02-12
+
+### Added
+- Added `Cell::walls_count`, a way to know how many walls a `Cell` has. 
+- Added `OrthogonalMaze::ends`, a way to get all maze ends.
+- Added `MazeEndsPaths` resource and `find_maze_ends_paths` in `pathfinding` feature so that you can pathfind all Maze Ends by cost. **WARNING: This is not optimized yet**.
+- Added `MazeEnd` component for Maze cells that have 3 walls.
+
 ## [0.6.1] - 2025-02-11
 
 ### Added
