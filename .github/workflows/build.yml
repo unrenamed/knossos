@@ -11,41 +11,40 @@ env:
 
 jobs:
   typos:
-    name: Spell Check with Typos
+    name: spell-check
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout Actions Repository
-      uses: actions/checkout@v4
-    - name: Check spelling
-      uses: crate-ci/typos@master
-      
+      - uses: actions/checkout@v4
+      - name: Check spelling
+        uses: crate-ci/typos@master
+
   fmt:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: format
-      run: cargo fmt -- --check
+      - uses: actions/checkout@v4
+      - name: Format
+        run: cargo fmt -- --check
 
   clippy:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Configure Cargo cache
-      uses: actions/cache@v3
-      with:
-        path: |
-          ./target
-          ~/.cargo                        
-        key: debug-${{ runner.os }}-${{ hashFiles('rust-toolchain.toml') }}-${{ hashFiles('Cargo.lock') }}
-        restore-keys: |
-          debug-${{ runner.os }}-${{ hashFiles('rust-toolchain.toml') }}-
-          debug-${{ runner.os }}-
-    - name: install-clippy
-      run: rustup component add clippy
-    - name: clippy
-      run: cargo clippy
+      - uses: actions/checkout@v4
+      - name: Configure Cargo cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ./target
+            ~/.cargo
+          key: debug-${{ runner.os }}-${{ hashFiles('rust-toolchain.toml') }}-${{ hashFiles('Cargo.lock') }}
+          restore-keys: |
+            debug-${{ runner.os }}-${{ hashFiles('rust-toolchain.toml') }}-
+            debug-${{ runner.os }}-
+      - name: Install clippy
+        run: rustup component add clippy
+      - name: Run clippy
+        run: cargo clippy
 
   build:
     runs-on: ubuntu-latest
@@ -58,7 +57,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Test
+      - name: Run tests
         run: cargo test --verbose
 
   coverage:
@@ -67,8 +66,7 @@ jobs:
       image: xd009642/tarpaulin:develop-nightly
       options: --security-opt seccomp=unconfined
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
       - name: Generate code coverage
         run: |
           cargo +nightly tarpaulin --verbose --all-features --workspace --timeout 120 --out Lcov --output-dir ./coverage
