@@ -99,3 +99,26 @@ impl Saveable for StringWrapper {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use ::image::Rgb;
+    use super::*;
+
+    #[test]
+    fn into_inner_returns_inner_string() {
+        let wrapper = StringWrapper(String::from("Hello, Rust!"));
+        let inner = wrapper.into_inner();
+        assert_eq!(inner, "Hello, Rust!");
+    }
+
+    #[test]
+    fn into_inner_returns_inner_image() {
+        let img = RgbImage::from_pixel(2, 2, Rgb([255, 0, 0])); // 2x2 red image
+        let wrapper = ImageWrapper(img.clone());
+        let inner = wrapper.into_inner();
+
+        assert_eq!(inner.dimensions(), (2, 2));
+        assert_eq!(inner.get_pixel(0, 0), &Rgb([255, 0, 0]));
+    }
+}
