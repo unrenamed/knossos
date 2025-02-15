@@ -215,8 +215,8 @@ impl Image {
 
             for py in cell_y..=cell_bottom_y {
                 for px in cell_x..=cell_right_x {
-                    if (is_rightmost_cell && px >= cell_right_x - self.wall_width + 1)
-                        || (is_bottommost_cell && py >= cell_bottom_y - self.wall_width + 1)
+                    if (is_rightmost_cell && px > cell_right_x - self.wall_width)
+                        || (is_bottommost_cell && py > cell_bottom_y - self.wall_width)
                     {
                         *image.get_pixel_mut(px as u32, py as u32) = match self.foreground_color {
                             Color::RGB(r, g, b) => image::Rgb([r, g, b]),
