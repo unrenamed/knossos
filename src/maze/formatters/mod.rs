@@ -48,7 +48,7 @@ impl Saveable for ImageWrapper {
     }
 }
 
-/// A custom wrapper over [std::string::String](std::string::String) for converting a maze into
+/// A custom wrapper over [std::string::String] for converting a maze into
 /// string characters
 pub struct StringWrapper(pub String);
 
