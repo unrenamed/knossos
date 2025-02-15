@@ -32,7 +32,14 @@ pub trait Saveable {
 }
 
 /// A custom wrapper over [RgbImage] for converting a maze to an image
-pub struct ImageWrapper(pub RgbImage);
+pub struct ImageWrapper(RgbImage);
+
+impl ImageWrapper {
+    /// Consumes `self` and returns the inner `RgbImage`.
+    pub fn into_inner(self) -> RgbImage {
+        self.0
+    }
+}
 
 /// An implementation of [Saveable] for saving a maze image into a file
 impl Saveable for ImageWrapper {
@@ -50,7 +57,14 @@ impl Saveable for ImageWrapper {
 
 /// A custom wrapper over [std::string::String] for converting a maze into
 /// string characters
-pub struct StringWrapper(pub String);
+pub struct StringWrapper(String);
+
+impl StringWrapper {
+    /// Consumes `self` and returns the inner `String`.
+    pub fn into_inner(self) -> String {
+        self.0
+    }
+}
 
 /// An implementation of [Saveable] for saving a maze string into a text file
 impl Saveable for StringWrapper {

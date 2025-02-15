@@ -41,6 +41,15 @@ impl OrthogonalMaze {
         let data = formatter.format(&self.grid);
         Saveable::save(&data, path)
     }
+
+    // Returns a formatted maze
+    pub fn format<F, T>(&self, formatter: F) -> T
+    where
+        F: Formatter<T>,
+        T: Saveable,
+    {
+        formatter.format(&self.grid)
+    }
 }
 
 impl fmt::Display for OrthogonalMaze {

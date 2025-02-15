@@ -136,6 +136,9 @@ fn main() {
     println!("\nEller");
     println!("{}", &maze);
 
+    println!("\nMaze Formatted as GameMap");
+    println!("{}", &maze.format(GameMap::new().span(1)).into_inner());
+
     maze.save("maze.txt", AsciiBroad).unwrap();
     maze.save(
         "maze_game_map.txt",
