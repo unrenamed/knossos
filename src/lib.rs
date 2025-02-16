@@ -62,6 +62,20 @@
 //! maze.save("output/maze.png", Image::new().wall(10).passage(30)).unwrap();
 //! ```
 //!
+//! ## Get a formatted maze
+//! ```rust,no_run
+//! use knossos::maze::*;
+//!
+//! let maze = OrthogonalMazeBuilder::new().build();
+//!
+//! // Format as ascii
+//! let ascii = maze.format(AsciiNarrow).into_inner();
+//! // Format as a game map
+//! let game_map = maze.format(GameMap::new()).into_inner();
+//! // Format as a PNG image
+//! let rgb_image = maze.format(Image::new().wall(10).passage(30)).into_inner();
+//! ```
+//!
 //! Read more about [maze formatters](maze::formatters)
 //!
 //! # Algorithms
