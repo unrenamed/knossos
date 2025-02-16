@@ -32,7 +32,22 @@ impl OrthogonalMaze {
         validate(&self.grid)
     }
 
-    // Saves a maze into a file to a given path using a given formatter
+    /// Saves the maze data to a file at the specified path using the provided formatter.
+    ///
+    /// This method converts the internal grid representation of the maze into a format
+    /// defined by the `Formatter` and `Saveable` trait implementations, and then saves it
+    /// to the specified file path.
+    ///
+    /// # Example
+    /// ```rust
+    /// use knossos::maze::*;
+    ///
+    /// let maze = OrthogonalMaze::new(5, 5);
+    /// maze.save("output/maze.txt", AsciiNarrow);
+    /// ```
+    ///
+    /// # Errors
+    /// This function can return a `MazeSaveError` if the file could not be written.
     pub fn save<F, T>(&self, path: &str, formatter: F) -> Result<String, MazeSaveError>
     where
         F: Formatter<T>,
@@ -42,7 +57,24 @@ impl OrthogonalMaze {
         Saveable::save(&data, path)
     }
 
-    // Returns a formatted maze
+    /// Returns a formatted maze using the provided formatter.
+    ///
+    /// This method generates a formatted representation of the maze grid by applying
+    /// the specified formatter, which converts the internal maze structure into the
+    /// desired format `T`. This formatted result can then be further processed or saved
+    /// elsewhere.
+    ///
+    /// # Example
+    /// ```rust
+    /// use knossos::maze::*;
+    ///
+    /// let maze = OrthogonalMaze::new(5, 5);
+    /// let formatted_maze = maze.format(GameMap::new());
+    /// ```
+    ///
+    /// # Note
+    /// This function can be useful when the formatted maze needs to be used for further processing,
+    /// logging, or display.
     pub fn format<F, T>(&self, formatter: F) -> T
     where
         F: Formatter<T>,
