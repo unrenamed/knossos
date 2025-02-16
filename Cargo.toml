@@ -1,6 +1,6 @@
 [package]
 name = "knossos"
-version = "0.4.1"
+version = "1.0.0"
 authors = ["unrenamed <renkonazbka@gmail.com>"]
 description = "Rust library for generating and rendering mazes"
 edition = "2021"
@@ -28,7 +28,7 @@ criterion = { version = "0.5", features = ["html_reports"] }
 unexpected_cfgs = { level = "warn", check-cfg = ['cfg(tarpaulin_include)'] }
 
 [lints.clippy]
-use_self = { level = "allow"}
+use_self = { level = "allow" }
 missing_const_for_fn = { level = "warn" }
 
 [[bench]]

@@ -54,7 +54,7 @@ Or add the following line to your `Cargo.toml`:
 
 ```no_test
 [dependencies]
-knossos = "0.4.0"
+knossos = "1.0.0"
 ```
 
 ## Usage
@@ -435,7 +435,7 @@ $ git clone git@github.com:unrenamed/knossos.git
 $ cd knossos
 $ cargo build --release
 $ ./target/release/knossos --version
-knossos 0.1.2
+knossos 1.0.0
 ```
 
 ### Usage

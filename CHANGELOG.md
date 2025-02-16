@@ -7,15 +7,33 @@ and this project adheres to [Conventional Commits](https://www.conventionalcommi
 
 ## [Unreleased]
 
-## [0.4.1] - 2025-01-29
+## [1.0.0] - 2025-02-16
+
+### Breaking Changes
+
+- `get_grid_mut` is removed from the library's public interface.
+- Maze builder now enforces positive width and height values.
+- Image formatter now enforces positive passage and wall values.
+
+### Added
+
+- New method to format maze without saving to file.
+- Example for maze formatting to the crate docs.
+
+### Fixed
+
+- Resolve margin(0) and right shift bugs in maze rendering.
+- Correct typos.
 
 ### Changed
-- Apply more modern Rust code styling, including `rustfmt` and `cargo clippy`.
-- Replace test bencher with `criterion`.
-- Move non-release dependencies to `dev-dependencies`.
 
-### Updated
-- Run `cargo update` to update dependencies.
+- Apply aggressive `rustfmt` and `clippy` suggestions for improved code quality by [@naomijub](https://github.com/naomijub).
+- Replace test bencher with `criterion` by [@naomijub](https://github.com/naomijub).
+- Update all crate dependencies to the latest versions by [@naomijub](https://github.com/naomijub).
+
+### Refactored
+
+- Benchmark code into modular files.
 
 ## [0.4.0] - 2023-11-01
 
@@ -58,7 +76,8 @@ and this project adheres to [Conventional Commits](https://www.conventionalcommi
 - Orthogonal maze builder with 10 optional generation algorithms
 - Ascii, game map and image formatters to save the generated maze to files
 
-[unreleased]: https://github.com/unrenamed/knossos/compare/v0.4.0...HEAD
+[unreleased]: https://github.com/unrenamed/knossos/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/unrenamed/knossos/compare/v0.4.0...v1.0.0
 [0.4.0]: https://github.com/unrenamed/knossos/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/unrenamed/knossos/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/unrenamed/knossos/compare/v0.1.2...v0.2.0
