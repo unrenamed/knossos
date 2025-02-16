@@ -283,12 +283,22 @@ mod tests {
     }
 
     #[test]
-    fn format() {
+    fn format_zero_margin() {
+        let formatter = Image::new().wall(1).passage(1).margin(0);
+        let grid = generate_maze();
+
+        let actual = formatter.format(&grid).into_inner();
+        let expected = image::open("tests/fixtures/zero_margin_maze.png").unwrap();
+        assert_eq!(actual.as_bytes(), expected.as_bytes());
+    }
+
+    #[test]
+    fn format_nonzero_margin() {
         let formatter = Image::new().wall(1).passage(1).margin(1);
         let grid = generate_maze();
 
-        let actual = formatter.format(&grid).0;
-        let expected = image::open("tests/fixtures/maze.png").unwrap();
+        let actual = formatter.format(&grid).into_inner();
+        let expected = image::open("tests/fixtures/nonzero_margin_maze.png").unwrap();
 
         assert_eq!(actual.as_bytes(), expected.as_bytes());
     }
