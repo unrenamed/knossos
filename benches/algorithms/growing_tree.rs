@@ -118,8 +118,8 @@ mod growing_tree_method_random {
 criterion_group! {
     name = benches;
     config = Criterion::default()
-        .warm_up_time(Duration::from_secs(10))
-        .measurement_time(Duration::from_secs(15));
+        .warm_up_time(Duration::from_secs(5))
+        .measurement_time(Duration::from_secs(10));
     targets =
         growing_tree_method_oldest::generate_10_x_10,
         growing_tree_method_oldest::generate_100_x_100,
