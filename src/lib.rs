@@ -62,7 +62,7 @@
 //! maze.save("output/maze.png", Image::new().wall(10).passage(30)).unwrap();
 //! ```
 //!
-//! ## Get a formatted maze
+//! ## Format a maze for further processing, or logging
 //! ```rust,no_run
 //! use knossos::maze::*;
 //!
