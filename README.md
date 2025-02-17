@@ -117,7 +117,7 @@ let ascii = maze.format(AsciiNarrow).into_inner();
 // Format as a game map
 let game_map = maze.format(GameMap::new()).into_inner();
 // Format as a PNG image
-let rgb_image = maze.format(Image::new().wall(10).passage(30)).
+let rgb_image = maze.format(Image::new().wall(10).passage(30)).into_inner();
 ```
 
 You can find more examples in the [examples](examples) directory. To run the example:
