@@ -128,245 +128,204 @@ cargo run --example mazes
 
 ## Benchmarks
 
+Knossos uses [Criterion.rs](https://github.com/bheisler/criterion.rs) for statistical benchmarking.
+
+### Running Benchmarks
+
+To run benchmarks locally:
+
 ```bash
 cargo bench
-    Finished `bench` profile [optimized] target(s) in 0.06s
-     Running unittests src/lib.rs (target/release/deps/knossos-7534cc8725e7cb1e)
+```
 
-running 31 tests
-test maze::algorithms::prim::tests::default_call ... ignored
-test maze::builder::tests::build ... ignored
-test maze::errors::save_error::tests::display ... ignored
-test maze::errors::transit_error::tests::display ... ignored
-test maze::formatters::ascii::tests::format_broad ... ignored
-test maze::formatters::ascii::tests::format_narrow ... ignored
-test maze::formatters::game_map::tests::default_call ... ignored
-test maze::formatters::game_map::tests::format_with_no_start_and_goal ... ignored
-test maze::formatters::game_map::tests::format_with_start_and_goal ... ignored
-test maze::formatters::game_map::tests::goal_change ... ignored
-test maze::formatters::game_map::tests::new_call ... ignored
-test maze::formatters::game_map::tests::passage_change ... ignored
-test maze::formatters::game_map::tests::possible_start_and_goal_positions ... ignored
-test maze::formatters::game_map::tests::possible_start_and_goal_positions_when_map_is_empty ... ignored
-test maze::formatters::game_map::tests::span_change ... ignored
-test maze::formatters::game_map::tests::start_change ... ignored
-test maze::formatters::game_map::tests::wall_change ... ignored
-test maze::formatters::image::tests::format ... ignored
-test maze::formatters::image::tests::new_call_default_params ... ignored
-test maze::formatters::image::tests::params_change ... ignored
-test maze::formatters::tests::into_inner_returns_inner_image ... ignored
-test maze::formatters::tests::into_inner_returns_inner_string ... ignored
-test maze::maze::tests::display_orthogonal_maze ... ignored
-test maze::maze::tests::invalid_maze ... ignored
-test maze::maze::tests::valid_maze ... ignored
-test utils::arena::tests::connect_one_none_node ... ignored
-test utils::arena::tests::connect_three_nodes ... ignored
-test utils::arena::tests::connect_two_nodes ... ignored
-test utils::arena::tests::connect_two_none_node ... ignored
-test utils::arena::tests::unconnected_nodes ... ignored
-test utils::color::tests::display_color ... ignored
+This generates both terminal output and an HTML report in:
 
-test result: ok. 0 passed; 0 failed; 31 ignored; 0 measured; 0 filtered out; finished in 0.00s
+📂 `target/criterion/report/index.html` (Open in a browser for graphs and analysis)
 
+### Summary of Recent Benchmarks
 
-running 1 test
-test tests::verify_cli ... ignored
-
-test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
-
-aldous_broder/generate_10_x_10
-                        time:   [45.147 µs 45.694 µs 46.427 µs]
-Found 10 outliers among 100 measurements (10.00%)
-  1 (1.00%) low mild
-  1 (1.00%) high mild
-  8 (8.00%) high severe
-
-aldous_broder/generate_100_x_100
-                        time:   [13.535 ms 13.789 ms 14.049 ms]
-Found 1 outliers among 100 measurements (1.00%)
-  1 (1.00%) high mild
-
-binary_tree/generate_10_x_10
-                        time:   [4.0307 µs 4.0387 µs 4.0526 µs]
-Found 5 outliers among 100 measurements (5.00%)
-  1 (1.00%) high mild
+```bash
+sidewinder/generate_10_x_10
+                        time:   [1.6065 µs 1.6117 µs 1.6207 µs]
+Found 9 outliers among 100 measurements (9.00%)
+  5 (5.00%) high mild
   4 (4.00%) high severe
 
-binary_tree/generate_100_x_100
-                        time:   [398.05 µs 398.12 µs 398.21 µs]
-Found 11 outliers among 100 measurements (11.00%)
-  5 (5.00%) high mild
-  6 (6.00%) high severe
-
-eller/generate_10_x_10  time:   [23.606 µs 23.707 µs 23.807 µs]
-
-eller/generate_100_x_100
-                        time:   [2.2672 ms 2.2689 ms 2.2706 ms]
-Found 3 outliers among 100 measurements (3.00%)
-  1 (1.00%) high mild
-  2 (2.00%) high severe
-
-growing_tree_method_random/generate_10_x_10
-                        time:   [12.795 µs 12.805 µs 12.819 µs]
-Found 7 outliers among 100 measurements (7.00%)
-  2 (2.00%) high mild
-  5 (5.00%) high severe
-
-growing_tree_method_random/generate_100_x_100
-                        time:   [1.5472 ms 1.5485 ms 1.5499 ms]
-Found 6 outliers among 100 measurements (6.00%)
-  1 (1.00%) high mild
-  5 (5.00%) high severe
-
-growing_tree_method_oldest/generate_10_x_10
-                        time:   [11.401 µs 11.410 µs 11.427 µs]
-Found 8 outliers among 100 measurements (8.00%)
-  1 (1.00%) high mild
+sidewinder/generate_100_x_100
+                        time:   [143.83 µs 143.90 µs 144.01 µs]
+Found 10 outliers among 100 measurements (10.00%)
+  3 (3.00%) high mild
   7 (7.00%) high severe
 
+binary_tree/generate_10_x_10
+                        time:   [4.0141 µs 4.0169 µs 4.0201 µs]
+Found 8 outliers among 100 measurements (8.00%)
+  1 (1.00%) low mild
+  4 (4.00%) high mild
+  3 (3.00%) high severe
+
+binary_tree/generate_100_x_100
+                        time:   [395.34 µs 396.81 µs 399.11 µs]
+Found 33 outliers among 100 measurements (33.00%)
+  18 (18.00%) low severe
+  3 (3.00%) low mild
+  3 (3.00%) high mild
+  9 (9.00%) high severe
+
+recursive_division/generate_10_x_10
+                        time:   [1.7687 µs 1.7706 µs 1.7725 µs]
+Found 5 outliers among 100 measurements (5.00%)
+  3 (3.00%) high mild
+  2 (2.00%) high severe
+
+recursive_division/generate_100_x_100
+                        time:   [168.74 µs 168.88 µs 169.04 µs]
+Found 8 outliers among 100 measurements (8.00%)
+  1 (1.00%) low mild
+  3 (3.00%) high mild
+  4 (4.00%) high severe
+
+growing_tree_method_oldest/generate_10_x_10
+                        time:   [11.104 µs 11.111 µs 11.118 µs]
+Found 8 outliers among 100 measurements (8.00%)
+  7 (7.00%) high mild
+  1 (1.00%) high severe
+
 growing_tree_method_oldest/generate_100_x_100
-                        time:   [1.1748 ms 1.1757 ms 1.1765 ms]
+                        time:   [1.1520 ms 1.1548 ms 1.1596 ms]
 Found 3 outliers among 100 measurements (3.00%)
   1 (1.00%) high mild
   2 (2.00%) high severe
 
 growing_tree_method_newest/generate_10_x_10
-                        time:   [10.606 µs 10.612 µs 10.620 µs]
-Found 9 outliers among 100 measurements (9.00%)
-  4 (4.00%) high mild
-  5 (5.00%) high severe
-
-growing_tree_method_newest/generate_100_x_100
-                        time:   [989.21 µs 989.49 µs 989.81 µs]
-Found 13 outliers among 100 measurements (13.00%)
-  1 (1.00%) low mild
-  4 (4.00%) high mild
-  8 (8.00%) high severe
-
-growing_tree_method_middle/generate_10_x_10
-                        time:   [11.400 µs 11.409 µs 11.418 µs]
+                        time:   [10.563 µs 10.569 µs 10.576 µs]
 Found 1 outliers among 100 measurements (1.00%)
-  1 (1.00%) high mild
-
-growing_tree_method_middle/generate_100_x_100
-                        time:   [1.2195 ms 1.2302 ms 1.2390 ms]
-
-hunt_and_kill/generate_10_x_10
-                        time:   [5.1945 µs 5.2087 µs 5.2217 µs]
-
-hunt_and_kill/generate_100_x_100
-                        time:   [533.06 µs 533.83 µs 534.64 µs]
-Found 3 outliers among 100 measurements (3.00%)
-  1 (1.00%) low severe
-  1 (1.00%) low mild
-  1 (1.00%) high mild
-
-kruskal/generate_10_x_10
-                        time:   [10.249 µs 10.275 µs 10.305 µs]
-Found 7 outliers among 100 measurements (7.00%)
-  5 (5.00%) high mild
-  2 (2.00%) high severe
-
-kruskal/generate_100_x_100
-                        time:   [46.120 ms 46.429 ms 46.738 ms]
-
-prim/generate_10_x_10   time:   [9.9880 µs 9.9983 µs 10.009 µs]
-Found 13 outliers among 100 measurements (13.00%)
-  4 (4.00%) low mild
-  4 (4.00%) high mild
-  5 (5.00%) high severe
-
-prim/generate_100_x_100 time:   [2.6866 ms 2.6930 ms 2.6995 ms]
-Found 7 outliers among 100 measurements (7.00%)
-  2 (2.00%) low mild
-  3 (3.00%) high mild
-  2 (2.00%) high severe
-
-recursive_backtracking/generate_10_x_10
-                        time:   [6.0566 µs 6.0581 µs 6.0598 µs]
-Found 8 outliers among 100 measurements (8.00%)
-  3 (3.00%) high mild
-  5 (5.00%) high severe
-
-recursive_backtracking/generate_100_x_100
-                        time:   [605.06 µs 610.69 µs 622.53 µs]
-Found 13 outliers among 100 measurements (13.00%)
-  5 (5.00%) high mild
-  8 (8.00%) high severe
-
-recursive_division/generate_10_x_10
-                        time:   [1.7657 µs 1.7678 µs 1.7698 µs]
-Found 1 outliers among 100 measurements (1.00%)
-  1 (1.00%) high mild
-
-recursive_division/generate_100_x_100
-                        time:   [168.76 µs 169.02 µs 169.35 µs]
-Found 9 outliers among 100 measurements (9.00%)
-  1 (1.00%) high mild
-  8 (8.00%) high severe
-
-sidewinder/generate_10_x_10
-                        time:   [1.6033 µs 1.6047 µs 1.6060 µs]
-Found 14 outliers among 100 measurements (14.00%)
-  2 (2.00%) high mild
-  12 (12.00%) high severe
-
-sidewinder/generate_100_x_100
-                        time:   [143.58 µs 144.45 µs 145.82 µs]
-Found 3 outliers among 100 measurements (3.00%)
-  3 (3.00%) high severe
-
-game_map/format_10_x_10 time:   [317.58 µs 319.06 µs 320.62 µs]
-Found 13 outliers among 100 measurements (13.00%)
-  2 (2.00%) low severe
-  7 (7.00%) low mild
-  3 (3.00%) high mild
   1 (1.00%) high severe
 
-game_map/format_100_x_100
-                        time:   [3.3593 ms 3.3636 ms 3.3684 ms]
-Found 5 outliers among 100 measurements (5.00%)
+growing_tree_method_newest/generate_100_x_100
+                        time:   [984.81 µs 985.11 µs 985.46 µs]
+Found 23 outliers among 100 measurements (23.00%)
+  5 (5.00%) high mild
+  18 (18.00%) high severe
+
+growing_tree_method_middle/generate_10_x_10
+                        time:   [11.302 µs 11.309 µs 11.316 µs]
+Found 22 outliers among 100 measurements (22.00%)
+  16 (16.00%) high mild
+  6 (6.00%) high severe
+
+growing_tree_method_middle/generate_100_x_100
+                        time:   [1.1612 ms 1.1621 ms 1.1632 ms]
+Found 7 outliers among 100 measurements (7.00%)
+  1 (1.00%) low mild
+  5 (5.00%) high mild
+  1 (1.00%) high severe
+
+growing_tree_method_random/generate_10_x_10
+                        time:   [12.640 µs 12.647 µs 12.655 µs]
+Found 2 outliers among 100 measurements (2.00%)
   1 (1.00%) high mild
+  1 (1.00%) high severe
+
+growing_tree_method_random/generate_100_x_100
+                        time:   [1.5303 ms 1.5317 ms 1.5330 ms]
+Found 12 outliers among 100 measurements (12.00%)
+  6 (6.00%) high mild
+  6 (6.00%) high severe
+
+recursive_backtracking/generate_10_x_10
+                        time:   [6.0741 µs 6.0873 µs 6.1105 µs]
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) high severe
+
+recursive_backtracking/generate_100_x_100
+                        time:   [602.83 µs 603.19 µs 603.66 µs]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high severe
+
+prim/generate_10_x_10   time:   [10.049 µs 10.057 µs 10.066 µs]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+
+prim/generate_100_x_100 time:   [2.7083 ms 2.7231 ms 2.7381 ms]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+
+prim/generate_10_x_10   time:   [10.073 µs 10.080 µs 10.089 µs]
+Found 2 outliers among 100 measurements (2.00%)
+  1 (1.00%) high mild
+  1 (1.00%) high severe
+
+prim/generate_100_x_100 time:   [2.7002 ms 2.7133 ms 2.7267 ms]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+
+prim/generate_10_x_10   time:   [10.070 µs 10.078 µs 10.088 µs]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high severe
+
+prim/generate_100_x_100 time:   [2.6964 ms 2.7104 ms 2.7250 ms]
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) high mild
+
+aldous_broder/generate_10_x_10
+                        time:   [43.850 µs 43.980 µs 44.134 µs]
+Found 10 outliers among 100 measurements (10.00%)
+  4 (4.00%) low mild
+  3 (3.00%) high mild
+  3 (3.00%) high severe
+
+aldous_broder/generate_100_x_100
+                        time:   [12.997 ms 13.361 ms 13.736 ms]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+
+ascii_narrow/format_10_x_10
+                        time:   [270.02 µs 289.97 µs 330.33 µs]
+Found 4 outliers among 100 measurements (4.00%)
+  4 (4.00%) high severe
+
+ascii_narrow/format_100_x_100
+                        time:   [921.11 µs 932.28 µs 946.76 µs]
+Found 7 outliers among 100 measurements (7.00%)
+  3 (3.00%) high mild
   4 (4.00%) high severe
 
 ascii_broad/format_10_x_10
-                        time:   [301.03 µs 302.43 µs 303.76 µs]
-Found 7 outliers among 100 measurements (7.00%)
-  3 (3.00%) low mild
-  1 (1.00%) high mild
+                        time:   [264.94 µs 267.00 µs 269.13 µs]
+Found 5 outliers among 100 measurements (5.00%)
+  2 (2.00%) high mild
   3 (3.00%) high severe
 
 ascii_broad/format_100_x_100
-                        time:   [999.95 µs 1.0017 ms 1.0035 ms]
-Found 8 outliers among 100 measurements (8.00%)
-  1 (1.00%) low mild
-  4 (4.00%) high mild
+                        time:   [971.27 µs 979.57 µs 995.75 µs]
+Found 11 outliers among 100 measurements (11.00%)
+  8 (8.00%) high mild
   3 (3.00%) high severe
 
-ascii_narrow/format_10_x_10
-                        time:   [277.69 µs 280.77 µs 284.79 µs]
-Found 16 outliers among 100 measurements (16.00%)
-  4 (4.00%) low mild
-  5 (5.00%) high mild
-  7 (7.00%) high severe
+game_map/format_10_x_10 time:   [315.49 µs 362.48 µs 418.47 µs]
+Found 14 outliers among 100 measurements (14.00%)
+  4 (4.00%) high mild
+  10 (10.00%) high severe
 
-ascii_narrow/format_100_x_100
-                        time:   [938.55 µs 940.03 µs 941.44 µs]
-Found 7 outliers among 100 measurements (7.00%)
-  3 (3.00%) low mild
-  3 (3.00%) high mild
-  1 (1.00%) high severe
+game_map/format_100_x_100
+                        time:   [3.6767 ms 3.7856 ms 3.9381 ms]
+Found 14 outliers among 100 measurements (14.00%)
+  6 (6.00%) high mild
+  8 (8.00%) high severe
 
-image/format_10_x_10    time:   [9.0581 ms 9.0701 ms 9.0826 ms]
-Found 4 outliers among 100 measurements (4.00%)
-  1 (1.00%) low mild
-  3 (3.00%) high mild
+image/format_10_x_10    time:   [8.9147 ms 8.9758 ms 9.0558 ms]
+Found 20 outliers among 100 measurements (20.00%)
+  14 (14.00%) high mild
+  6 (6.00%) high severe
 
-image/format_100_x_100  time:   [770.69 ms 773.80 ms 778.30 ms]
+image/format_100_x_100  time:   [779.00 ms 781.22 ms 783.80 ms]
 Found 17 outliers among 100 measurements (17.00%)
-  15 (15.00%) high mild
-  2 (2.00%) high severe
+  8 (8.00%) high mild
+  9 (9.00%) high severe
 ```
+
+_(Benchmarks were run on an Apple M1 Max, Rust 1.84.0, Criterion 0.5.1)_
 
 ## CLI
 
