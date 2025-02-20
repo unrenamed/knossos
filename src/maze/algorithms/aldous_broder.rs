@@ -26,8 +26,8 @@ impl AldousBroder {}
 ///
 /// 3. Repeats step 2 until all vertices have been visited.
 impl Algorithm for AldousBroder {
-    fn generate(&mut self, grid: &mut Grid) {
-        let start_coords = get_start_coords(grid);
+    fn generate(&mut self, grid: &mut Grid, rng: &mut StdRng) {
+        let start_coords = get_start_coords(grid, rng);
         let mut x = start_coords.0;
         let mut y = start_coords.1;
 
@@ -35,7 +35,7 @@ impl Algorithm for AldousBroder {
 
         while remaining > 0 {
             let mut directions = [Cell::NORTH, Cell::SOUTH, Cell::WEST, Cell::EAST];
-            directions.shuffle(&mut rand::rng());
+            directions.shuffle(rng);
 
             for dir in directions {
                 let next_cell = grid.get_next_cell_coords((x, y), dir);
@@ -57,8 +57,7 @@ impl Algorithm for AldousBroder {
     }
 }
 
-fn get_start_coords(grid: &Grid) -> Coords {
-    let mut rng = rand::rng();
+fn get_start_coords<R: Rng>(grid: &Grid, rng: &mut R) -> Coords {
     let y = rng.random_range(0..grid.height());
     let x = rng.random_range(0..grid.width());
     (x, y)
