@@ -95,11 +95,11 @@ impl BinaryTree {
 /// The algorithm is pretty simple: for every cell in the grid, randomly carve a passage either
 /// north, or west.
 impl Algorithm for BinaryTree {
-    fn generate(&mut self, grid: &mut Grid) {
+    fn generate(&mut self, grid: &mut Grid, rng: &mut StdRng) {
         for y in 0..grid.height() {
             for x in 0..grid.width() {
                 let dirs = self.populate_dirs((x, y), grid);
-                if let Some(dir) = dirs.choose(&mut rand::rng()) {
+                if let Some(dir) = dirs.choose(rng) {
                     grid.carve_passage((x, y), *dir).ok();
                 }
             }

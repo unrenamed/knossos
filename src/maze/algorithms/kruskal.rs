@@ -1,4 +1,4 @@
-use rand::prelude::SliceRandom;
+use rand::prelude::*;
 
 use super::Algorithm;
 use crate::maze::grid::cell::Cell;
@@ -26,10 +26,10 @@ pub struct Kruskal;
 ///
 /// 3. Repeat until there are no more edges left in the set.
 impl Algorithm for Kruskal {
-    fn generate(&mut self, grid: &mut Grid) {
+    fn generate(&mut self, grid: &mut Grid, rng: &mut StdRng) {
         let mut arena = populate_arena(grid);
         let mut edges: Edges = populate_edges(grid);
-        edges.shuffle(&mut rand::rng());
+        edges.shuffle(rng);
 
         while !edges.is_empty() {
             let edge: Option<Edge> = edges.pop();

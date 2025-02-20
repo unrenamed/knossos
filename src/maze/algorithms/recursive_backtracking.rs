@@ -28,15 +28,15 @@ pub struct RecursiveBacktracking;
 /// 4. The algorithm ends when the process has backed all the way up to the starting
 ///    point.
 impl Algorithm for RecursiveBacktracking {
-    fn generate(&mut self, grid: &mut Grid) {
+    fn generate(&mut self, grid: &mut Grid, rng: &mut StdRng) {
         let start_coords = (0, 0);
-        carve_passages_from(start_coords, grid);
+        carve_passages_from(start_coords, grid, rng);
     }
 }
 
-fn carve_passages_from(coords: Coords, grid: &mut Grid) {
+fn carve_passages_from<R: Rng>(coords: Coords, grid: &mut Grid, rng: &mut R) {
     let mut dirs = [Cell::NORTH, Cell::SOUTH, Cell::WEST, Cell::EAST];
-    dirs.shuffle(&mut rand::rng());
+    dirs.shuffle(rng);
 
     for dir in dirs {
         let next = match grid.get_next_cell_coords(coords, dir) {
@@ -49,7 +49,7 @@ fn carve_passages_from(coords: Coords, grid: &mut Grid) {
         }
 
         if let Ok(next) = grid.carve_passage(coords, dir) {
-            carve_passages_from(next, grid);
+            carve_passages_from(next, grid, rng);
         }
     }
 }

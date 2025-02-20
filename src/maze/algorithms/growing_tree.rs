@@ -62,9 +62,7 @@ impl GrowingTree {
         GrowingTree { method }
     }
 
-    fn choose_index(&self, ceil: usize) -> usize {
-        let mut rng = rand::rng();
-
+    fn choose_index<R: Rng>(&self, ceil: usize, rng: &mut R) -> usize {
         match self.method {
             Method::Oldest => 0,
             Method::Newest => ceil - 1,
@@ -113,16 +111,16 @@ impl GrowingTree {
 ///
 /// 4. Repeats #3 until the C is empty.
 impl Algorithm for GrowingTree {
-    fn generate(&mut self, grid: &mut Grid) {
+    fn generate(&mut self, grid: &mut Grid, rng: &mut StdRng) {
         let mut directions = [Cell::NORTH, Cell::SOUTH, Cell::WEST, Cell::EAST];
         let mut cells = vec![];
-        cells.push(get_rand_coords(grid));
+        cells.push(get_rand_coords(grid, rng));
 
         while !cells.is_empty() {
-            let mut index = Some(self.choose_index(cells.len()));
+            let mut index = Some(self.choose_index(cells.len(), rng));
             let coords = cells[index.unwrap_or(0)];
 
-            directions.shuffle(&mut rand::rng());
+            directions.shuffle(rng);
             for dir in directions {
                 let next = match grid.get_next_cell_coords(coords, dir) {
                     Ok(next) => next,
@@ -147,8 +145,7 @@ impl Algorithm for GrowingTree {
     }
 }
 
-fn get_rand_coords(grid: &Grid) -> Coords {
-    let mut rng = rand::rng();
+fn get_rand_coords<R: Rng>(grid: &Grid, rng: &mut R) -> Coords {
     let x = rng.random_range(0..grid.width());
     let y = rng.random_range(0..grid.height());
     (x, y)

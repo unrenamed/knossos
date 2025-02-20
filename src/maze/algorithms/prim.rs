@@ -98,10 +98,8 @@ impl Default for Prim {
 ///
 /// 5. Repeats steps 3 and 4 until the F is empty.
 impl Algorithm for Prim {
-    fn generate(&mut self, grid: &mut Grid) {
-        let mut rng = rand::rng();
-
-        self.mark(get_rand_coords(grid), grid);
+    fn generate(&mut self, grid: &mut Grid, rng: &mut StdRng) {
+        self.mark(get_rand_coords(grid, rng), grid);
 
         while !self.frontiers.is_empty() {
             let index = rng.random_range(0..self.frontiers.len());
@@ -122,8 +120,7 @@ impl Algorithm for Prim {
     }
 }
 
-fn get_rand_coords(grid: &Grid) -> Coords {
-    let mut rng = rand::rng();
+fn get_rand_coords<R: Rng>(grid: &Grid, rng: &mut R) -> Coords {
     let x = rng.random_range(0..grid.width());
     let y = rng.random_range(0..grid.height());
     (x, y)

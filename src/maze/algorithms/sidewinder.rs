@@ -28,9 +28,7 @@ pub struct Sidewinder;
 ///
 /// 6. Continues until all rows have been processed.
 impl Algorithm for Sidewinder {
-    fn generate(&mut self, grid: &mut Grid) {
-        let mut rng = rand::rng();
-
+    fn generate(&mut self, grid: &mut Grid, rng: &mut StdRng) {
         for y in 0..grid.height() {
             let mut run_start = 0;
 
