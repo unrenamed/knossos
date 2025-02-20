@@ -6,6 +6,7 @@ mod sidewinder;
 mod growing_tree;
 mod kruskal;
 mod prim;
+mod eller;
 mod hunt_and_kill;
 mod recursive_backtracking;
 mod recursive_division;
@@ -17,6 +18,7 @@ criterion_main!(
     growing_tree::benches,
     kruskal::benches,
     prim::benches,
+    eller::benches,
     hunt_and_kill::benches,
     recursive_backtracking::benches,
     recursive_division::benches,

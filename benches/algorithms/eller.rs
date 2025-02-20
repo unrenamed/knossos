@@ -29,9 +29,5 @@ mod eller {
     }
 }
 
-criterion_group!(
-    benches,
-    eller::generate_10_x_10,
-    eller::generate_100_x_100
-);
+criterion_group!(benches, eller::generate_10_x_10, eller::generate_100_x_100);
 criterion_main!(benches);
