@@ -115,12 +115,16 @@ mod tests {
         let node1 = arena.new_node();
 
         arena.connect(node1, NodeId(2));
+        assert!(!arena.connected(node1, NodeId(2)));
+
         arena.connect(NodeId(2), node1);
+        assert!(!arena.connected(node1, NodeId(2)));
     }
 
     #[test]
     fn connect_two_none_node() {
-        let mut arena = ArenaTree::new();
-        arena.connect(NodeId(1), NodeId(2));
+        let arena = ArenaTree::new();
+        arena.connected(NodeId(1), NodeId(2));
+        assert!(!arena.connected(NodeId(1), NodeId(2)));
     }
 }

@@ -76,7 +76,7 @@ impl Grid {
                 self.cells[y * self.width + x] |= Cell::WEST;
                 self.cells[ny * self.width + nx] |= Cell::EAST;
             }
-            _ => (),
+            _ => unreachable!(),
         }
 
         self.visit_cell(coords);
@@ -94,7 +94,7 @@ impl Grid {
             Cell::SOUTH => (x, y + 1),
             Cell::WEST => (x - 1, y),
             Cell::EAST => (x + 1, y),
-            _ => (x, y),
+            _ => unreachable!(),
         };
         Ok((nx, ny))
     }
