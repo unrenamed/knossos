@@ -136,6 +136,10 @@ fn main() {
     println!("\nEller");
     println!("{}", &maze);
 
+    let maze = OrthogonalMazeBuilder::new().seed(Some(40)).build();
+    println!("\n Use seed value to generate mazes deterministically");
+    println!("{}", &maze);
+
     println!("\nMaze Formatted as a Game Map");
     println!("{}", &maze.format(GameMap::new().span(1)).into_inner());
 
