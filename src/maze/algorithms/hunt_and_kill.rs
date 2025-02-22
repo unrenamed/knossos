@@ -122,3 +122,14 @@ fn get_start_coords<R: Rng>(grid: &Grid, rng: &mut R) -> Coords {
     let x = rng.random_range(0..grid.width());
     (x, y)
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn default_call() {
+        let algo = HuntAndKill::default();
+        assert_eq!(0, algo.hunt_start_index);
+    }
+}
