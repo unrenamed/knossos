@@ -38,6 +38,13 @@
 //!  .build();
 //! ```
 //!
+//! ## Use seed value to generate mazes deterministically
+//! ```rust,no_run
+//! use knossos::maze::*;
+//!
+//! let maze = OrthogonalMazeBuilder::new().seed(Some(40)).build();
+//! ```
+//!
 //! Read more about [maze builder API](maze::OrthogonalMazeBuilder)
 //!
 //! ## Display
