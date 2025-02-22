@@ -51,7 +51,7 @@ impl OrthogonalMazeBuilder {
     pub fn build(mut self) -> OrthogonalMaze {
         let mut maze = OrthogonalMaze::new(self.width, self.height);
         let mut rng = match self.seed {
-            Some(val) => StdRng::seed_from_u64(val as u64),
+            Some(val) => StdRng::seed_from_u64(val),
             None => StdRng::from_os_rng(),
         };
         self.algorithm.generate(maze.get_grid_mut(), &mut rng);
