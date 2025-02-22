@@ -9,7 +9,7 @@
 
 # Knossos
 
-Knossos is a Rust library and CLI for maze generation, complete with fundamental functions for rendering and saving mazes to files.
+Knossos is a simple and flexible Rust library and CLI tool for generating mazes using various algorithms. It includes built-in utilities for rendering mazes as ASCII, images, or game maps and supports saving them in multiple formats.
 
 ## Reference
 
@@ -61,7 +61,7 @@ knossos = "1.0.0"
 
 Knossos is designed to be super easy and convenient to use. Here are some usage examples of how to generate, display and save mazes:
 
-### Generate with default parameters
+### Generate with Default Parameters
 
 ```rust,no_run
 use knossos::maze::*;
@@ -69,7 +69,7 @@ use knossos::maze::*;
 let maze = OrthogonalMazeBuilder::new().build();
 ```
 
-### Generate with custom parameters
+### Generate with Custom Parameters
 
 ```rust,no_run
 use knossos::maze::*;
@@ -81,15 +81,7 @@ let maze = OrthogonalMazeBuilder::new()
  .build();
 ```
 
-### Use seed value to generate mazes deterministically
-
-```rust,no_run
-use knossos::maze::*;
-
-let maze = OrthogonalMazeBuilder::new().seed(Some(40)).build();
-```
-
-### Display
+### Display Mazes
 
 ```rust,no_run
 use knossos::maze::*;
@@ -98,33 +90,33 @@ let maze = OrthogonalMazeBuilder::new().build();
 println!("{}", &maze);
 ```
 
-### Save to file
+### Save to File
 
 ```rust,no_run
 use knossos::maze::*;
 
 let maze = OrthogonalMazeBuilder::new().build();
 
-// Save as ascii
+// Save as ASCII text
 maze.save("output/maze.txt", AsciiNarrow).unwrap();
-// Save as a game map
+// Save as a game map (with adjustable span size)
 maze.save("output/maze_game_map.txt", GameMap::new().span(3)).unwrap();
-// Save as a PNG image
+// Save as a PNG image (adjusting wall and passage sizes)
 maze.save("output/maze.png", Image::new().wall(10).passage(30)).unwrap();
 ```
 
-### Format a maze for further processing, or logging
+### Format for Further Processing or Logging
 
 ```rust,no_run
 use knossos::maze::*;
 
 let maze = OrthogonalMazeBuilder::new().build();
 
-// Format as ascii
+// Convert to ASCII text
 let ascii = maze.format(AsciiNarrow).into_inner();
-// Format as a game map
+// Convert to a game map
 let game_map = maze.format(GameMap::new()).into_inner();
-// Format as a PNG image
+// Convert to an RGB image buffer
 let rgb_image = maze.format(Image::new().wall(10).passage(30)).into_inner();
 ```
 
@@ -133,6 +125,21 @@ You can find more examples in the [examples](examples) directory. To run the exa
 ```bash
 cargo run --example mazes
 ```
+
+### Seeding for Deterministic Mazes
+
+By default, each generated maze is randomized, producing a different layout every time. However,
+you can use a seed value to ensure that the same maze is generated consistently across runs.
+This is useful for debugging, testing, or sharing the exact same maze with others.
+
+```rust,no_run
+use knossos::maze::*;
+
+// Generate a maze with a fixed seed
+let maze = OrthogonalMazeBuilder::new().seed(Some(40)).build();
+```
+
+Passing `None` as the seed (or omitting the `.seed()` method) will result in a random maze each time.
 
 ## Benchmarks
 
