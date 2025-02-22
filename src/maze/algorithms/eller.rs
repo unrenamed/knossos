@@ -1,8 +1,7 @@
 use super::{Algorithm, BOOL_TRUE_PROBABILITY};
-use crate::{
-    maze::grid::{Grid, cell::Cell as GridCell},
-    utils::types::Coords,
-};
+use crate::utils::types::Coords;
+use crate::maze::grid::{Grid, cell::Cell as GridCell};
+
 use rand::prelude::*;
 use std::{cell::RefCell, collections::HashMap};
 

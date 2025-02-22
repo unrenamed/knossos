@@ -1,11 +1,9 @@
+use super::Algorithm;
+use crate::utils::types::Coords;
+use crate::maze::grid::{Grid, cell::Cell};
+
 use rand::prelude::*;
 use std::vec;
-
-use super::Algorithm;
-use crate::{
-    maze::grid::{Grid, cell::Cell},
-    utils::types::Coords,
-};
 
 /// The Prim's algorithm for generating mazes
 ///

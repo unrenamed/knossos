@@ -1,6 +1,7 @@
 use super::Algorithm;
 use crate::maze::grid::{Grid, cell::Cell};
 use crate::utils::types::Coords;
+
 use rand::prelude::*;
 
 /// The "Recursive Backtracking" algorithm for generating mazes

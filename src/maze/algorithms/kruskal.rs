@@ -1,9 +1,9 @@
-use rand::prelude::*;
-
 use super::Algorithm;
 use crate::maze::grid::cell::Cell;
 use crate::maze::grid::Grid;
 use crate::utils::arena::{ArenaTree, NodeId};
+
+use rand::prelude::*;
 
 type Edge = (usize, usize, Cell);
 type Edges = Vec<Edge>;

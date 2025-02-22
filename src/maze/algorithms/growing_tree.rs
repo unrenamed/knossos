@@ -1,6 +1,7 @@
 use super::Algorithm;
 use crate::maze::grid::{Grid, cell::Cell};
 use crate::utils::types::Coords;
+
 use clap::ValueEnum;
 use rand::prelude::*;
 

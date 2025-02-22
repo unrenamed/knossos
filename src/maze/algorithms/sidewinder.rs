@@ -1,5 +1,6 @@
 use super::Algorithm;
 use crate::maze::grid::{Grid, cell::Cell};
+
 use rand::prelude::*;
 
 /// The "Sidewinder" algorithm for generating mazes
