@@ -1,5 +1,6 @@
 use super::{Algorithm, BOOL_TRUE_PROBABILITY};
 use crate::maze::grid::{cell::Cell, Grid};
+
 use rand::prelude::*;
 
 enum Orientation {
