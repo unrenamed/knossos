@@ -31,6 +31,19 @@ fn build_valid_maze_with_custom_params() {
 }
 
 #[test]
+fn build_valid_maze_with_seed_value() {
+    let maze = OrthogonalMazeBuilder::new().seed(Some(40)).build();
+    assert!(maze.is_valid());
+}
+
+#[test]
+fn build_identical_mazes_with_same_seed() {
+    let old = OrthogonalMazeBuilder::new().seed(Some(40)).build();
+    let new = OrthogonalMazeBuilder::new().seed(Some(40)).build();
+    assert_eq!(old.to_string(), new.to_string());
+}
+
+#[test]
 fn build_valid_maze_with_aldou_broder_algorithm() {
     assert!(maze!(AldousBroder).is_valid());
 }
