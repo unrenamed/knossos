@@ -203,3 +203,29 @@ fn save_maze_as_png_returns_error() {
     let expected = "The image format could not be determined".to_string();
     assert_save_maze_error!("this is not valid path/", Image::new(), expected);
 }
+
+#[test]
+fn format_maze() {
+    let ascii = OrthogonalMazeBuilder::new()
+        .width(5)
+        .height(5)
+        .seed(Some(10))
+        .build()
+        .format(AsciiBroad)
+        .into_inner();
+
+    let mut expected = String::new();
+    expected.push_str("+---+---+---+---+---+\n");
+    expected.push_str("|       |           |\n");
+    expected.push_str("+---+   +---+   +   +\n");
+    expected.push_str("|   |       |   |   |\n");
+    expected.push_str("+   +---+   +   +---+\n");
+    expected.push_str("|   |       |       |\n");
+    expected.push_str("+   +   +---+---+   +\n");
+    expected.push_str("|   |   |       |   |\n");
+    expected.push_str("+   +   +   +   +   +\n");
+    expected.push_str("|           |       |\n");
+    expected.push_str("+---+---+---+---+---+\n");
+
+    assert_eq!(expected, ascii);
+}
