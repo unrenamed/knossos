@@ -48,6 +48,10 @@ enum Commands {
         /// Grid width in a number of cells
         width: usize,
 
+        /// Seed value for deterministic generation (must be a valid u64)
+        #[arg(long)]
+        seed: Option<u64>,
+
         /// Bias to use for the "Binary Tree" algorithm
         #[arg(
             long,
@@ -152,6 +156,7 @@ fn main() -> Result<(), maze::MazeSaveError> {
             algorithm,
             height,
             width,
+            seed,
             bias,
             growing_method,
         } => {
@@ -171,6 +176,7 @@ fn main() -> Result<(), maze::MazeSaveError> {
             let maze = maze::OrthogonalMazeBuilder::new()
                 .height(height)
                 .width(width)
+                .seed(seed)
                 .algorithm(algorithm)
                 .build();
 
