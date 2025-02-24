@@ -459,6 +459,8 @@ Options:
           Grid height in a number of cells [default: 10]
   -W, --width <WIDTH>
           Grid width in a number of cells [default: 10]
+      --seed <SEED>
+          Seed value for deterministic generation (must be a valid u64)
       --bias[=<BIAS>]
           Bias to use for the "Binary Tree" algorithm [default: north-east] [possible values: north-west, north-east, south-west, south-east]
       --growing-method[=<GROWING_METHOD>]
