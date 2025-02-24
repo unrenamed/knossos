@@ -7,6 +7,21 @@ and this project adheres to [Conventional Commits](https://www.conventionalcommi
 
 ## [Unreleased]
 
+## [1.1.0] - 2025-02-24
+
+### Added
+
+- Library: Implement optional random seeding for maze algorithms to enable deterministic outputs.
+- CLI: Introduce an optional `--seed` argument for reproducible maze generation.
+
+### Fixed
+
+- Resolve duplicate algorithm benchmarks.
+
+### Refactored
+
+- Re-order imports for better readability.
+
 ## [1.0.0] - 2025-02-16
 
 ### Breaking Changes
@@ -76,7 +91,8 @@ and this project adheres to [Conventional Commits](https://www.conventionalcommi
 - Orthogonal maze builder with 10 optional generation algorithms
 - Ascii, game map and image formatters to save the generated maze to files
 
-[unreleased]: https://github.com/unrenamed/knossos/compare/v1.0.0...HEAD
+[unreleased]: https://github.com/unrenamed/knossos/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/unrenamed/knossos/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/unrenamed/knossos/compare/v0.4.0...v1.0.0
 [0.4.0]: https://github.com/unrenamed/knossos/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/unrenamed/knossos/compare/v0.2.0...v0.3.0
