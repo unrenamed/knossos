@@ -7,6 +7,10 @@ use image::{ImageBuffer, RgbImage};
 use super::ImageWrapper;
 
 /// An Image formatter for a generated maze
+///
+/// This formatter generates a JPG or PNG image of a maze, designed for use in games,
+/// puzzle design, or visual content creation. It supports customizable maze parameters
+/// and ensures a visually clear output.
 pub struct Image {
     wall_width: usize,
     passage_width: usize,
