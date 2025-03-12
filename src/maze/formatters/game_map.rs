@@ -32,6 +32,13 @@ impl ExtraState for WithStartGoal {}
 /// # Examples:
 ///
 /// A standard map with a span set to 2, and no designated start or goal characters.
+///
+/// ```rust,no_run
+/// use knossos::maze::*;
+///
+/// let game_map = GameMap::new().span(2);
+/// ```
+///
 /// ```no_test
 /// #############
 /// #........#..#
@@ -49,6 +56,13 @@ impl ExtraState for WithStartGoal {}
 /// ```
 ///
 /// An alternative map with a span value of 1 and randomly placed start and goal characters.
+///
+/// ```rust,no_run
+/// use knossos::maze::*;
+///
+/// let game_map = GameMap::new().with_start_goal();
+/// ```
+///
 /// ```no_test
 /// #######
 /// S...#.#
@@ -57,6 +71,15 @@ impl ExtraState for WithStartGoal {}
 /// #.###.#
 /// #.....G
 /// #######
+/// ```
+///
+/// Or, set a seed value to ensure consistent and deterministic positioning of the start
+/// and goal characters.
+///
+/// ```rust,no_run
+/// use knossos::maze::*;
+///
+/// let game_map = GameMap::new().with_start_goal().seed(Some(10));
 /// ```
 pub struct GameMap<S: ExtraState> {
     state: Box<GameMapState>,
