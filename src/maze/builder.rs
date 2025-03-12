@@ -42,7 +42,7 @@ impl OrthogonalMazeBuilder {
     }
 
     /// Sets a seed value for deterministic generation and returns itself
-    pub fn seed(mut self, seed: Option<u64>) -> Self {
+    pub const fn seed(mut self, seed: Option<u64>) -> Self {
         self.seed = seed;
         self
     }
