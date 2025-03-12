@@ -7,6 +7,12 @@ and this project adheres to [Conventional Commits](https://www.conventionalcommi
 
 ## [Unreleased]
 
+## [1.2.0] - 2025-03-12
+
+### Added
+
+- Library: Make start & goal positions optionally seedable in `GameMap`.
+
 ## [1.1.0] - 2025-02-24
 
 ### Added
@@ -91,7 +97,8 @@ and this project adheres to [Conventional Commits](https://www.conventionalcommi
 - Orthogonal maze builder with 10 optional generation algorithms
 - Ascii, game map and image formatters to save the generated maze to files
 
-[unreleased]: https://github.com/unrenamed/knossos/compare/v1.1.0...HEAD
+[unreleased]: https://github.com/unrenamed/knossos/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/unrenamed/knossos/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/unrenamed/knossos/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/unrenamed/knossos/compare/v0.4.0...v1.0.0
 [0.4.0]: https://github.com/unrenamed/knossos/compare/v0.3.0...v0.4.0
