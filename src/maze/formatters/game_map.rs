@@ -1,11 +1,11 @@
-use crate::{
-    maze::{
-        formatters::Formatter,
-        grid::{Grid, cell::Cell},
-    },
-    utils::{types::Coords, rand::RandPositions},
-};
+use rand::rngs::StdRng;
+use rand::seq::SliceRandom;
+use rand::SeedableRng;
 use std::fmt::Write;
+
+use crate::utils::types::Coords;
+use crate::maze::grid::{Grid, cell::Cell};
+use crate::maze::formatters::Formatter;
 
 use super::StringWrapper;
 
@@ -14,6 +14,7 @@ pub struct NoStartGoal;
 pub struct WithStartGoal {
     start: char,
     goal: char,
+    seed: Option<u64>,
 }
 
 impl ExtraState for NoStartGoal {}
@@ -89,6 +90,7 @@ impl GameMap<NoStartGoal> {
             extra: WithStartGoal {
                 start: 'S',
                 goal: 'G',
+                seed: None,
             },
         }
     }
@@ -126,6 +128,12 @@ impl GameMap<WithStartGoal> {
         self
     }
 
+    /// Sets a seed value for deterministic start and goal positions and returns itself
+    pub const fn seed(mut self, seed: Option<u64>) -> Self {
+        self.extra.seed = seed;
+        self
+    }
+
     fn get_random_start_and_goal_positions(
         &self,
         map: &[char],
@@ -137,10 +145,13 @@ impl GameMap<WithStartGoal> {
             .collect();
 
         // shuffle possible positions
-        RandPositions::rand(&mut positions);
+        let mut rng = match self.extra.seed {
+            Some(val) => StdRng::seed_from_u64(val),
+            None => StdRng::from_os_rng(),
+        };
+        positions.shuffle(&mut rng);
 
         let (srow, scol) = positions[0];
-
         let (grow, gcol) = positions
             .iter()
             .filter(|(nrow, ncol)| *ncol != scol && *nrow != srow)
@@ -425,6 +436,12 @@ mod tests {
     }
 
     #[test]
+    fn seed_change() {
+        let formatter = GameMap::new().with_start_goal().seed(Some(10));
+        assert_eq!(Some(10), formatter.extra.seed);
+    }
+
+    #[test]
     fn possible_start_and_goal_positions() {
         let formatter = GameMap::new().with_start_goal();
         #[rustfmt::skip]
@@ -483,17 +500,17 @@ mod tests {
     #[test]
     fn format_with_start_and_goal() {
         let mut expected = String::new();
-        expected.push_str("#S#######\n");
-        expected.push_str("G.#.....#\n");
+        expected.push_str("#########\n");
+        expected.push_str("#.#.....#\n");
         expected.push_str("#.#####.#\n");
-        expected.push_str("#.....#.#\n");
+        expected.push_str("#.....#.G\n");
         expected.push_str("###.###.#\n");
         expected.push_str("#.......#\n");
         expected.push_str("#.#######\n");
-        expected.push_str("#.......#\n");
+        expected.push_str("S.......#\n");
         expected.push_str("#########\n");
 
-        let formatter = GameMap::new().span(1).with_start_goal();
+        let formatter = GameMap::new().span(1).with_start_goal().seed(Some(5));
         let grid = generate_maze();
         let actual = formatter.format(&grid).0;
 
